@@ -5,10 +5,7 @@ import android.graphics.*;
 import android.os.Debug;
 import android.util.Log;
 import android.view.View;
-import com.example.andrey.pacman.entity.Food;
-import com.example.andrey.pacman.entity.Pacman;
-import com.example.andrey.pacman.entity.Blinky;
-import com.example.andrey.pacman.entity.Ghost;
+import com.example.andrey.pacman.entity.*;
 
 import java.util.ArrayList;
 
@@ -16,7 +13,7 @@ public class Playfield {
 
     FoodDrawController foodDrawController;
 
-	private int map[][];
+	private TileSpecification map[][];
 
 	private Food foodMap[][];
 
@@ -66,7 +63,7 @@ public class Playfield {
 		this.Y_OFFSET = (int)((float) Y_OFFSET / (float)MAP_HEIGHT * mapTexture.getHeight());
         this.CELLS_SPACE_PERCENT = (float)CELLS_SPACE / (float)MAP_WIDTH ;
 
-		map = new int[26][29];
+		map = new TileSpecification[26][29];
 		foodMap = new Food[26][29];
 		initMap();
 
@@ -132,7 +129,7 @@ public class Playfield {
 	}
 
 
-	public int[][] getMap()
+	public TileSpecification[][] getMap()
 	{
 		return this.map;
 	}
@@ -165,7 +162,7 @@ public class Playfield {
 	{
 		for(int i = startPointX; i < endPointX; i++)
 		{
-			map[i][y] = 1;
+			map[i][y] = TileSpecification.PATH;
 			if(haveFood && foodMap[i][y] != Food.Point)
 			{
 				countPoints++;
@@ -178,7 +175,7 @@ public class Playfield {
 	{
 		for(int i = startPointY; i < endPointY; i++)
 		{
-			map[x][i] = 1;
+			map[x][i] = TileSpecification.PATH;
 			if(haveFood && foodMap[x][i] != Food.Point)
 			{
 				countPoints++;
@@ -193,7 +190,7 @@ public class Playfield {
 		{
 			for(int j = 0; j < map[1].length; j++)
 			{
-				map[i][j] = 0;
+				map[i][j] = TileSpecification.WALL;
 			}
 		}
 		createPaths();

@@ -25,10 +25,10 @@ public abstract class Actor extends Entity{
 	Direction movementDirection;
 	Direction nextDirection;
 
-	private int[][] map;
-	private float speed;
-	private float nextPositionX;
-	private float nextPositionY;
+	protected TileSpecification[][] map;
+	protected float speed;
+	protected float nextPositionX;
+	protected float nextPositionY;
 
 	private final int ACTOR_X_OFFSET;
 	private final int ACTOR_Y_OFFSET;
@@ -108,7 +108,7 @@ public abstract class Actor extends Entity{
                     nextPositionY = 0;
                 }
                 else {
-                	if(arrayYPos - 1 >= 0 && map[arrayXPos][arrayYPos - 1] == 0 && y - speed <= arrayYPos)
+                	if(arrayYPos - 1 >= 0 && map[arrayXPos][arrayYPos - 1] == TileSpecification.WALL && y - speed <= arrayYPos)
 					{
 						movementDirection = Direction.NONE;
 						nextPositionY = arrayYPos;
@@ -124,7 +124,7 @@ public abstract class Actor extends Entity{
                     nextPositionY = arrayYPos;
                 }
                 else {
-                	if(arrayYPos + 1 <= map[0].length - 1 && map[arrayXPos][arrayYPos + 1] == 0 && y + speed >= arrayYPos )
+                	if(arrayYPos + 1 <= map[0].length - 1 && map[arrayXPos][arrayYPos + 1] == TileSpecification.WALL && y + speed >= arrayYPos )
 					{
 						movementDirection = Direction.NONE;
 						nextPositionY = arrayYPos;
@@ -138,7 +138,7 @@ public abstract class Actor extends Entity{
                     nextPositionX = 0;
                 }
                 else {
-                	if(arrayXPos - 1 >= 0 && map[arrayXPos - 1][arrayYPos] == 0 && x - speed <= arrayXPos) {
+                	if(arrayXPos - 1 >= 0 && map[arrayXPos - 1][arrayYPos] == TileSpecification.WALL && x - speed <= arrayXPos) {
 						movementDirection = Direction.NONE;
 						nextPositionX = arrayXPos;
 					}
@@ -151,7 +151,7 @@ public abstract class Actor extends Entity{
 					nextPositionX = arrayXPos;
 				}
 				else {
-					if(arrayXPos + 1 <= map.length - 1 && map[arrayXPos + 1][arrayYPos] == 0 && x + speed >= arrayXPos )
+					if(arrayXPos + 1 <= map.length - 1 && map[arrayXPos + 1][arrayYPos] == TileSpecification.WALL && x + speed >= arrayXPos )
 					{
 						movementDirection = Direction.NONE;
 						nextPositionX = arrayXPos;
@@ -192,7 +192,7 @@ public abstract class Actor extends Entity{
 		frameToDraw.bottom = frameToDraw.top + frameHeight;
     }
 
-	private void checkNextDirection()
+	protected void checkNextDirection()
 	{
 		int arrayXPos = Math.round(x);
 		int arrayYPos = Math.round(y);
@@ -201,7 +201,7 @@ public abstract class Actor extends Entity{
 				return;
 
 			case UP:
-				if(arrayYPos != 0 && map[arrayXPos][arrayYPos - 1] == 1 && (x <= arrayXPos
+				if(arrayYPos != 0 && map[arrayXPos][arrayYPos - 1] != TileSpecification.WALL && (x <= arrayXPos
 						&& nextPositionX >= arrayXPos || x >= arrayXPos && nextPositionX <= arrayXPos))
 				{
 					nextPositionX = arrayXPos;
@@ -211,7 +211,7 @@ public abstract class Actor extends Entity{
 				break;
 			case DOWN:
 				if(arrayYPos < map[1].length - 1
-						&& map[arrayXPos][arrayYPos + 1] == 1
+						&& map[arrayXPos][arrayYPos + 1] != TileSpecification.WALL
 						&&(x <= arrayXPos && nextPositionX >= arrayXPos || x >= arrayXPos && nextPositionX <= arrayXPos)) {
 					nextPositionX = arrayXPos;
 					movementDirection = Direction.DOWN;
@@ -220,7 +220,7 @@ public abstract class Actor extends Entity{
 				break;
 			case LEFT:
 				if(arrayXPos > 0
-						&& map[arrayXPos-1][arrayYPos] == 1
+						&& map[arrayXPos-1][arrayYPos] != TileSpecification.WALL
 						&& (y <= arrayYPos && nextPositionY >= arrayYPos || y >= arrayYPos && nextPositionY <= arrayYPos))
 				{
 					nextPositionY = arrayYPos;
@@ -230,7 +230,7 @@ public abstract class Actor extends Entity{
 				break;
 			case RIGHT:
 				if(arrayXPos < map.length - 1
-						&& map[arrayXPos+1][arrayYPos] == 1
+						&& map[arrayXPos+1][arrayYPos] != TileSpecification.WALL
 						&& (y <= arrayYPos && nextPositionY >= arrayYPos || y >= arrayYPos && nextPositionY <= arrayYPos))
 				{
 				nextPositionY = arrayYPos;
