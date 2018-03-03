@@ -166,14 +166,13 @@ public abstract class Actor extends Entity{
 		x = nextPositionX;
 		y = nextPositionY;
 
-
-		if(movementDirection != Direction.NONE)
-		    animate();
-
+		animate();
 	}
 
-	private void animate()
+	protected void animate()
 	{
+        if(movementDirection == Direction.NONE)
+            return;
 		long time = System.currentTimeMillis();
 
         if (time > lastFrameChangeTime + frameLengthInMillisecond) {

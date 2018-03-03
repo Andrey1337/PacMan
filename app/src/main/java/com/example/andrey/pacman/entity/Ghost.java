@@ -18,8 +18,8 @@ public abstract class Ghost extends Actor {
     Ghost(Playfield playfield, View view, Bitmap bitmap, float x, float y) {
         super(playfield, bitmap, x, y, 8, 8);
 
-        destPoint = new Point(20, 5);
-        movementDirection = Direction.RIGHT;
+        destPoint = new Point(20, 0);
+        movementDirection = Direction.LEFT;
         prevDirection = movementDirection;
         frameLengthInMillisecond = 200;
         setSpeed(0.06f);
@@ -47,6 +47,9 @@ public abstract class Ghost extends Actor {
         pickShortestDirection();
 
         checkNextDirection();
+        x = nextPositionX;
+        y = nextPositionY;
+        animate();
     }
 
     private void pickShortestDirection() {
@@ -54,47 +57,128 @@ public abstract class Ghost extends Actor {
             return;
 
         Point currentPoint = new Point(Math.round(x), Math.round(y));
-        Point nextPoint;
+        Point nextPoint= new Point(0,0);
 
         switch (movementDirection) {
             case RIGHT:
                 nextPoint = new Point(currentPoint.x + 1, currentPoint.y);
-                if (!nextPoint.isWall(map)) {
-                    if (!new Point(nextPoint.x, nextPoint.y + 1).isWall(map)) {
-
-                    }
-                }
-
                 break;
             case LEFT:
+                nextPoint = new Point(currentPoint.x - 1, currentPoint.y);
                 break;
             case UP:
+                nextPoint = new Point(currentPoint.x, currentPoint.y - 1);
                 break;
             case DOWN:
+                nextPoint  = new Point(currentPoint.x, currentPoint.y + 1);
                 break;
+        }
+
+        if(nextPoint.isFork(map, movementDirection))
+        {
+            findDirection(movementDirection, nextPoint);
         }
     }
 
     private void findDirection(Direction currentDirection, Point point) {
+        Point minPoint;
         Direction bestDirection = Direction.NONE;
+        double minDistance = Double.MAX_VALUE;
+
         switch (currentDirection) {
             case RIGHT:
-                double minDistance = Double.MAX_VALUE;
-
-                Point minPoint = new Point(point.x + 1, point.y);
+                minPoint = new Point(point.x + 1, point.y);
                 if (!minPoint.isWall(map) && minPoint.distance(destPoint) < minDistance) {
+                    minDistance = minPoint.distance(destPoint);
                     bestDirection = Direction.RIGHT;
                 }
+
+                minPoint = new Point(point.x, point.y + 1);
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.DOWN;
+                }
+
+                minPoint = new Point(point.x, point.y - 1);
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.UP;
+                }
+
                 break;
             case LEFT:
+
+                minPoint = new Point(point.x - 1, point.y);
+                if (!minPoint.isWall(map) && minPoint.distance(destPoint) < minDistance) {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.LEFT;
+                }
+
+                minPoint = new Point(point.x, point.y + 1);
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.DOWN;
+                }
+
+                minPoint = new Point(point.x, point.y - 1);
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.UP;
+                }
                 break;
+
             case UP:
+                minPoint = new Point(point.x - 1, point.y);
+                if (!minPoint.isWall(map) && minPoint.distance(destPoint) < minDistance) {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.LEFT;
+                }
+
+                minPoint = new Point(point.x + 1, point.y );
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.RIGHT;
+                }
+
+                minPoint = new Point(point.x, point.y - 1);
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.UP;
+                }
                 break;
             case DOWN:
+                minPoint = new Point(point.x - 1, point.y);
+                if (!minPoint.isWall(map) && minPoint.distance(destPoint) < minDistance) {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.LEFT;
+                }
+
+                minPoint = new Point(point.x + 1, point.y );
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.RIGHT;
+                }
+
+                minPoint = new Point(point.x, point.y + 1);
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.DOWN;
+                }
                 break;
             case NONE:
                 break;
         }
 
+        nextDirection = bestDirection;
     }
+
+
 }
