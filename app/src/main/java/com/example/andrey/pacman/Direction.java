@@ -18,4 +18,24 @@ public enum Direction {
     {
         return value;
     }
+
+    public Direction getOposite()
+    {
+        if(value == RIGHT.getValue())
+        {
+            return LEFT;
+        }
+
+        if(value == LEFT.getValue())
+        {
+            return RIGHT;
+        }
+
+        if(value == UP.getValue())
+        {
+            return DOWN;
+        }
+
+        return UP;
+    }
 }

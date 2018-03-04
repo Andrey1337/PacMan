@@ -8,10 +8,9 @@ import android.util.Log;
 
 public abstract class Entity {
 
-
 	Bitmap bitmap;
-	protected float x;
-	protected float y;
+	float x;
+	float y;
 	
 	Entity(float x, float y)
 	{

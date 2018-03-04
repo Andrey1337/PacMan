@@ -18,14 +18,19 @@ public class Point {
     }
 
     public boolean isWall(TileSpecification map[][]) {
-        if (x < 0 || x >= map.length - 1)
+        if (x < 0 || x > map.length - 1)
             return true;
 
-        if (y < 0 || y >= map[0].length - 1)
+        if (y < 0 || y > map[0].length - 1)
             return true;
 
         return map[x][y] == TileSpecification.WALL;
 
+    }
+
+    public boolean isEqual(Point point)
+    {
+        return x == point.x && y == point.y;
     }
 
     public boolean isFork(TileSpecification map[][], Direction currentDirection)
@@ -53,7 +58,7 @@ public class Point {
                 return true;
             }
 
-            newPoint = new Point(x+1,y);
+            newPoint = new Point(x + 1,y);
 
             if(!newPoint.isWall(map))
             {

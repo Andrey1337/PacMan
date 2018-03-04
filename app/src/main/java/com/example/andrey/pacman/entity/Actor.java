@@ -20,15 +20,15 @@ public abstract class Actor extends Entity{
 
 	private Rect frameToDraw;
 
-	private Playfield playfield;
+	Playfield playfield;
 
 	Direction movementDirection;
 	Direction nextDirection;
 
-	protected TileSpecification[][] map;
-	protected float speed;
-	protected float nextPositionX;
-	protected float nextPositionY;
+	TileSpecification[][] map;
+	float speed;
+	float nextPositionX;
+	float nextPositionY;
 
 	private final int ACTOR_X_OFFSET;
 	private final int ACTOR_Y_OFFSET;
@@ -169,7 +169,7 @@ public abstract class Actor extends Entity{
 		animate();
 	}
 
-	protected void animate()
+	void animate()
 	{
         if(movementDirection == Direction.NONE)
             return;
@@ -191,7 +191,7 @@ public abstract class Actor extends Entity{
 		frameToDraw.bottom = frameToDraw.top + frameHeight;
     }
 
-	protected void checkNextDirection()
+	void checkNextDirection()
 	{
 		int arrayXPos = Math.round(x);
 		int arrayYPos = Math.round(y);

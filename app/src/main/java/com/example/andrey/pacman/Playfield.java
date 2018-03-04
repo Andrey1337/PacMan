@@ -31,12 +31,13 @@ public class Playfield {
 
     private int countPoints;
 
-    PacmanGame game;
+    private PacmanGame game;
 
 	Pacman pacman;
-	ArrayList<Ghost> ghosts;
+	private ArrayList<Ghost> ghosts;
 
 	GameView view;
+
 
 	Playfield(PacmanGame game,GameView view)
 	{
@@ -67,9 +68,9 @@ public class Playfield {
 		foodMap = new Food[26][29];
 		initMap();
 
-		foodDrawController = new FoodDrawController(view, this);
-
         initCharacters(view);
+
+		foodDrawController = new FoodDrawController(view, this);
 	}
 
 	public void restartGame()
@@ -96,6 +97,7 @@ public class Playfield {
 
 		pacmanFoodIntersect();
 		charactersIntersect();
+
 	}
 
 	private void pacmanFoodIntersect()
@@ -143,6 +145,9 @@ public class Playfield {
 		return pacman;
 	}
 
+	public ArrayList<Ghost> getGhosts() {
+		return ghosts;
+	}
 
 	public void onDraw(Canvas canvas)
 	{

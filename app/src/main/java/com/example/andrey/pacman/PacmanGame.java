@@ -10,9 +10,11 @@ public class PacmanGame implements Runnable{
 
 	private Playfield playfield;
 
+	private GameModeController gameModeController;
+
 	private GameView view;
 
-	private int pacmanLives = 3;
+	private int pacmanLives = 4;
 
 	private float touchDX;
 	private float touchDY;
@@ -23,12 +25,11 @@ public class PacmanGame implements Runnable{
 
 	PacmanGame(GameView view)
 	{
-
 		isExit = false;
 	    this.view = view;
 		playfield = new Playfield(this,view);
+		gameModeController = new GameModeController(playfield);
 		new Thread(this, "update game").start();
-
 	}
 
 	public void killPacman()
@@ -41,6 +42,7 @@ public class PacmanGame implements Runnable{
 		else
 		{
 			playfield.initCharacters(view);
+			gameModeController = new GameModeController(playfield);
 		}
 	}
 
@@ -55,6 +57,7 @@ public class PacmanGame implements Runnable{
 		{
 		    if(view.isGameRunning) {
                 playfield.update();
+                gameModeController.update();
             }
 
 			try {

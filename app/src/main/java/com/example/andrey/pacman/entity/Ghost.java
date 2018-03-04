@@ -3,8 +3,8 @@ package com.example.andrey.pacman.entity;
 import android.graphics.Bitmap;
 import android.view.View;
 import com.example.andrey.pacman.Direction;
+import com.example.andrey.pacman.GameMode;
 import com.example.andrey.pacman.Playfield;
-import com.example.andrey.pacman.entity.Actor;
 
 public abstract class Ghost extends Actor {
 
@@ -14,15 +14,36 @@ public abstract class Ghost extends Actor {
     protected Direction prevDirection;
 
     Point destPoint;
+    Point scatterPoint;
 
-    Ghost(Playfield playfield, View view, Bitmap bitmap, float x, float y) {
+    Ghost(Playfield playfield, View view, Bitmap bitmap,Point scatterPoint, float x, float y) {
         super(playfield, bitmap, x, y, 8, 8);
 
-        destPoint = new Point(20, 0);
+        this.scatterPoint = scatterPoint;
+        destPoint = this.scatterPoint;
+
         movementDirection = Direction.LEFT;
+        nextDirection = Direction.NONE;
         prevDirection = movementDirection;
         frameLengthInMillisecond = 200;
-        setSpeed(0.06f);
+        setSpeed(0.065f);
+    }
+
+    public void changeMode(GameMode gameMode)
+    {
+        movementDirection = movementDirection.getOposite();
+
+        switch (gameMode)
+        {
+            case CHASE:
+                choseNextPoint();
+                break;
+            case SCATTER:
+                destPoint = scatterPoint;
+                break;
+            case FRIGHTENED:
+                break;
+        }
     }
 
     @Override
@@ -43,20 +64,30 @@ public abstract class Ghost extends Actor {
                 break;
         }
 
+        Point currentPoint = new Point(Math.round(x), Math.round(y));
 
-        pickShortestDirection();
+        if(currentPoint.isEqual(destPoint))
+        {
+            choseNextPoint();
+        }
+
+        choseDirection(currentPoint);
 
         checkNextDirection();
+
         x = nextPositionX;
         y = nextPositionY;
+
         animate();
     }
 
-    private void pickShortestDirection() {
+    abstract void choseNextPoint();
+
+
+    private void choseDirection(Point currentPoint) {
         if (nextDirection != Direction.NONE)
             return;
 
-        Point currentPoint = new Point(Math.round(x), Math.round(y));
         Point nextPoint= new Point(0,0);
 
         switch (movementDirection) {
@@ -76,11 +107,11 @@ public abstract class Ghost extends Actor {
 
         if(nextPoint.isFork(map, movementDirection))
         {
-            findDirection(movementDirection, nextPoint);
+            findShortestDirection(movementDirection, nextPoint);
         }
     }
 
-    private void findDirection(Direction currentDirection, Point point) {
+    private void findShortestDirection(Direction currentDirection, Point point) {
         Point minPoint;
         Direction bestDirection = Direction.NONE;
         double minDistance = Double.MAX_VALUE;
