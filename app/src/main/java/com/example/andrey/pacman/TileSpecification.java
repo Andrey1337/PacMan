@@ -1,4 +1,4 @@
-package com.example.andrey.pacman.entity;
+package com.example.andrey.pacman;
 
 public enum TileSpecification {
     WALL,

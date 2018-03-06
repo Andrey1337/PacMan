@@ -9,14 +9,22 @@ import com.example.andrey.pacman.Playfield;
 public abstract class Ghost extends Actor {
 
     private Bitmap scaryGhost;
-    protected boolean inCage;
-
-    protected Direction prevDirection;
+    boolean inCage;
 
     Point destPoint;
-    Point scatterPoint;
+    private Point scatterPoint;
 
-    Ghost(Playfield playfield, View view, Bitmap bitmap,Point scatterPoint, float x, float y) {
+    private boolean isNormalPoint;
+
+    private float bottomCagePosition;
+    private float topCagePosition;
+    private boolean exiting;
+
+    private float speedInCage;
+
+    private boolean touchTheBottom;
+
+    Ghost(Playfield playfield, View view, Bitmap bitmap, Point scatterPoint, float x, float y) {
         super(playfield, bitmap, x, y, 8, 8);
 
         this.scatterPoint = scatterPoint;
@@ -24,19 +32,94 @@ public abstract class Ghost extends Actor {
 
         movementDirection = Direction.LEFT;
         nextDirection = Direction.NONE;
-        prevDirection = movementDirection;
-        frameLengthInMillisecond = 200;
-        setSpeed(0.065f);
+
+        topCagePosition = 12.50f;
+        bottomCagePosition = 13.50f;
+
+        speedInCage = 0.035f;
+        frameLengthInMillisecond = 130;
+        setSpeed(0.07f);
+    }
+
+    public void startExit()
+    {
+        exiting = true;
+    }
+
+    private void exitFromCage()
+    {
+        if(movementDirection == Direction.UP)
+            nextPositionY = y - speedInCage;
+        if(movementDirection == Direction.DOWN)
+            nextPositionY = y + speedInCage;
+
+
+        if(movementDirection == Direction.UP)
+        {
+            if(nextPositionY <= topCagePosition)
+            {
+                if(touchTheBottom)
+                {
+                    movementDirection = Direction.LEFT;
+                    inCage = false;
+                }
+                else {
+                    movementDirection = movementDirection.getOposite();
+                }
+                nextPositionY = topCagePosition;
+            }
+        }
+
+        if(movementDirection == Direction.DOWN)
+        {
+            if(nextPositionY >= bottomCagePosition)
+            {
+                nextPositionY = bottomCagePosition;
+                touchTheBottom = true;
+                topCagePosition = 10f;
+                movementDirection = movementDirection.getOposite();
+            }
+        }
+
+    }
+
+    private void moveInCage()
+    {
+        if(movementDirection == Direction.UP)
+            nextPositionY -= speedInCage;
+        if(movementDirection == Direction.DOWN)
+            nextPositionY += speedInCage;
+
+        if(nextPositionY >= bottomCagePosition)
+        {
+            nextPositionY = bottomCagePosition;
+            movementDirection = movementDirection.getOposite();
+        }
+
+        if(nextPositionY < topCagePosition)
+        {
+            nextPositionY = topCagePosition;
+            movementDirection = movementDirection.getOposite();
+        }
+
+        if(nextPositionY > bottomCagePosition)
+        {
+            nextPositionY = bottomCagePosition;
+            movementDirection = movementDirection.getOposite();
+        }
     }
 
     public void changeMode(GameMode gameMode)
     {
+        if(inCage)
+            return;
         movementDirection = movementDirection.getOposite();
 
         switch (gameMode)
         {
             case CHASE:
                 choseNextPoint();
+                isNormalPoint = !destPoint.isWall(map);
                 break;
             case SCATTER:
                 destPoint = scatterPoint;
@@ -44,36 +127,47 @@ public abstract class Ghost extends Actor {
             case FRIGHTENED:
                 break;
         }
+
+        choseDirection(new Point(Math.round(x), Math.round(y)), movementDirection);
     }
 
     @Override
     public void move() {
 
-        switch (movementDirection) {
-            case RIGHT:
-                nextPositionX += speed;
-                break;
-            case LEFT:
-                nextPositionX -= speed;
-                break;
-            case UP:
-                nextPositionY -= speed;
-                break;
-            case DOWN:
-                nextPositionY += speed;
-                break;
-        }
-
-        Point currentPoint = new Point(Math.round(x), Math.round(y));
-
-        if(currentPoint.isEqual(destPoint))
+        if(inCage)
         {
-            choseNextPoint();
+            if(!exiting)
+                moveInCage();
+            else
+                exitFromCage();
         }
+        else {
+            switch (movementDirection) {
+                case RIGHT:
+                    nextPositionX += speed;
+                    break;
+                case LEFT:
+                    nextPositionX -= speed;
+                    break;
+                case UP:
+                    nextPositionY -= speed;
+                    break;
+                case DOWN:
+                    nextPositionY += speed;
+                    break;
+            }
 
-        choseDirection(currentPoint);
+            Point currentPoint = new Point(Math.round(x), Math.round(y));
 
-        checkNextDirection();
+            if (currentPoint.isEqual(destPoint) || (!isNormalPoint && playfield.getGameMode() == GameMode.CHASE)) {
+                choseNextPoint();
+                isNormalPoint = !destPoint.isWall(map);
+            }
+
+            choseDirection(currentPoint, movementDirection);
+
+            this.checkNextDirection();
+        }
 
         x = nextPositionX;
         y = nextPositionY;
@@ -83,14 +177,13 @@ public abstract class Ghost extends Actor {
 
     abstract void choseNextPoint();
 
-
-    private void choseDirection(Point currentPoint) {
+    private void choseDirection(Point currentPoint, Direction currentDirection) {
         if (nextDirection != Direction.NONE)
             return;
 
         Point nextPoint= new Point(0,0);
 
-        switch (movementDirection) {
+        switch (currentDirection) {
             case RIGHT:
                 nextPoint = new Point(currentPoint.x + 1, currentPoint.y);
                 break;
@@ -105,7 +198,11 @@ public abstract class Ghost extends Actor {
                 break;
         }
 
-        if(nextPoint.isFork(map, movementDirection))
+        if(nextPoint.isWall(map))
+        {
+            findShortestDirection(movementDirection, currentPoint);
+        }
+        else if(nextPoint.isFork(map, movementDirection))
         {
             findShortestDirection(movementDirection, nextPoint);
         }
@@ -132,9 +229,8 @@ public abstract class Ghost extends Actor {
                 }
 
                 minPoint = new Point(point.x, point.y - 1);
-                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
-                {
-                    minDistance = minPoint.distance(destPoint);
+
+                if (!minPoint.isWall(map) && minPoint.distance(destPoint) < minDistance) {
                     bestDirection = Direction.UP;
                 }
 
@@ -155,11 +251,10 @@ public abstract class Ghost extends Actor {
                 }
 
                 minPoint = new Point(point.x, point.y - 1);
-                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
-                {
-                    minDistance = minPoint.distance(destPoint);
+                if (!minPoint.isWall(map) && minPoint.distance(destPoint) < minDistance) {
                     bestDirection = Direction.UP;
                 }
+
                 break;
 
             case UP:
@@ -177,11 +272,11 @@ public abstract class Ghost extends Actor {
                 }
 
                 minPoint = new Point(point.x, point.y - 1);
-                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
-                {
-                    minDistance = minPoint.distance(destPoint);
+
+                if (!minPoint.isWall(map) && minPoint.distance(destPoint) < minDistance ) {
                     bestDirection = Direction.UP;
                 }
+
                 break;
             case DOWN:
                 minPoint = new Point(point.x - 1, point.y);
@@ -200,7 +295,6 @@ public abstract class Ghost extends Actor {
                 minPoint = new Point(point.x, point.y + 1);
                 if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
                 {
-                    minDistance = minPoint.distance(destPoint);
                     bestDirection = Direction.DOWN;
                 }
                 break;
@@ -208,8 +302,8 @@ public abstract class Ghost extends Actor {
                 break;
         }
 
-        nextDirection = bestDirection;
+        if(bestDirection == Direction.NONE)
+            nextDirection = movementDirection.getOposite();
+        else nextDirection = bestDirection;
     }
-
-
 }

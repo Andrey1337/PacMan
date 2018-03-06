@@ -3,6 +3,8 @@ package com.example.andrey.pacman;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -13,8 +15,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public Boolean isGameRunning;
 
-
-
     private PacmanGame game;
 
     public GameView(Context context) {
@@ -24,10 +24,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
     }
 
-    public void onStop()
-    {
-        game.isExit = true;
-    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

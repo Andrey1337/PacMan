@@ -23,7 +23,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        gameView.onStop();
+
         super.onStop();
     }
 }

@@ -2,7 +2,6 @@ package com.example.andrey.pacman;
 
 import android.graphics.*;
 
-import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import com.example.andrey.pacman.entity.*;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 
 public class Playfield {
 
-    FoodDrawController foodDrawController;
+    FoodDrawManager foodDrawController;
 
 	private TileSpecification map[][];
 
@@ -33,14 +32,22 @@ public class Playfield {
 
     private PacmanGame game;
 
+    GameMode gameMode;
+
 	Pacman pacman;
 	private ArrayList<Ghost> ghosts;
+
+	private Pinky pinky;
 
 	GameView view;
 
 
 	Playfield(PacmanGame game,GameView view)
 	{
+
+		long testTime = System.currentTimeMillis();
+	    gameMode = GameMode.SCATTER;
+
 	    this.game = game;
 
 		this.view = view;
@@ -70,7 +77,10 @@ public class Playfield {
 
         initCharacters(view);
 
-		foodDrawController = new FoodDrawController(view, this);
+		foodDrawController = new FoodDrawManager(view, this);
+
+		long num =System.currentTimeMillis() - testTime;
+		Log.i("test", Long.toString(System.currentTimeMillis() - testTime));
 	}
 
 	public void restartGame()
@@ -79,11 +89,39 @@ public class Playfield {
         initCharacters(view);
     }
 
-	public void initCharacters(View view)
+    public void nextLevel()
+	{
+		changeGameMode(GameMode.SCATTER);
+		initCharacters(view);
+		initMap();
+	}
+
+    public Pinky getPinky() {
+        return pinky;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public void changeGameMode(GameMode newGameMode)
+	{
+		gameMode = newGameMode;
+
+		for(Ghost ghost : ghosts)
+			ghost.changeMode(gameMode);
+
+	}
+
+
+    public void initCharacters(View view)
 	{
 		pacman = new Pacman(this, view,12.5f,22);
 		ghosts = new ArrayList<>();
 		ghosts.add(new Blinky(this, view,12.5f, 10));
+
+		pinky = new Pinky(this, view,12.5f, 13);
+        ghosts.add(pinky);
 	}
 
 	public void update()
@@ -111,22 +149,19 @@ public class Playfield {
 			countPoints--;
 			if(countPoints <= 0)
             {
-                restartGame();
+                game.nextLevel();
             }
 		}
 	}
 
 	private void charactersIntersect()
 	{
-		for(Ghost ghost : ghosts)
-		{
-			Log.i("tag", Float.toString(Math.abs(pacman.getX() - ghost.getX())));
-
+		for(Ghost ghost : ghosts) {
 			if(Math.abs(pacman.getX() - ghost.getX()) <= 0.5f && Math.abs(pacman.getY() - ghost.getY()) <= 0.5f)
 			{
 				game.killPacman();
-
 			}
+
 		}
 	}
 
@@ -198,8 +233,12 @@ public class Playfield {
 				map[i][j] = TileSpecification.WALL;
 			}
 		}
-		createPaths();
 
+		createPaths();
+		map[11][10] = TileSpecification.SPECIFIC;
+		map[14][10] = TileSpecification.SPECIFIC;
+		map[11][22]= TileSpecification.SPECIFIC;
+		map[14][22]= TileSpecification.SPECIFIC;
 	}
 
 	private void createPaths()

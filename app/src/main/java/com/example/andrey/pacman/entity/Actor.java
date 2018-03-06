@@ -5,13 +5,14 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import com.example.andrey.pacman.Direction;
 import com.example.andrey.pacman.Playfield;
+import com.example.andrey.pacman.TileSpecification;
 
 
 public abstract class Actor extends Entity{
 
 	private int currentFrame = 0;
 	private long lastFrameChangeTime = 0;
-	protected int frameLengthInMillisecond = 60;
+	int frameLengthInMillisecond = 60;
 
 	private int frameWidth, frameHeight, frameSpace;
 
@@ -24,6 +25,8 @@ public abstract class Actor extends Entity{
 
 	Direction movementDirection;
 	Direction nextDirection;
+	Direction lookingDirection;
+
 
 	TileSpecification[][] map;
 	float speed;
@@ -71,7 +74,7 @@ public abstract class Actor extends Entity{
 		nextDirection = direction;
 	}
 
-	protected void setSpeed(float speed)
+	void setSpeed(float speed)
 	{
 		this.speed = speed;
 	}
@@ -97,6 +100,7 @@ public abstract class Actor extends Entity{
 
 	public void move()
 	{
+
         int arrayXPos = Math.round(x);
         int arrayYPos = Math.round(y);
 		switch (movementDirection) {
@@ -238,6 +242,7 @@ public abstract class Actor extends Entity{
 				}
 				break;
 		}
+		lookingDirection = movementDirection;
 	}
 
 }

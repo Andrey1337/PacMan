@@ -8,14 +8,14 @@ import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.R;
 import com.example.andrey.pacman.entity.Food;
 
-public class FoodDrawController {
+public class FoodDrawManager {
 
     private Bitmap pointBitmap;
     private Food foodMap[][];
 
     private Playfield playfield;
 
-    FoodDrawController(View view, Playfield playfield){
+    FoodDrawManager(View view, Playfield playfield){
         this.playfield = playfield;
         foodMap = playfield.getFoodMap();
 

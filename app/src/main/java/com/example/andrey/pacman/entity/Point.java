@@ -1,6 +1,7 @@
 package com.example.andrey.pacman.entity;
 
 import com.example.andrey.pacman.Direction;
+import com.example.andrey.pacman.TileSpecification;
 
 public class Point {
 
@@ -8,7 +9,7 @@ public class Point {
     public int x;
     public int y;
 
-    public Point(int x, int y) {
+    Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -35,18 +36,21 @@ public class Point {
 
     public boolean isFork(TileSpecification map[][], Direction currentDirection)
     {
+
         if(currentDirection == Direction.RIGHT || currentDirection == Direction.LEFT)
         {
             Point newPoint = new Point(x, y + 1);
-            if(!newPoint.isWall(map))
-            {
+
+            if (!newPoint.isWall(map)) {
                 return true;
             }
 
-            newPoint = new Point(x, y - 1);
-            if(!newPoint.isWall(map))
-            {
-                return true;
+            if(!isWall(map) && map[x][y] != TileSpecification.SPECIFIC) {
+                newPoint = new Point(x, y - 1);
+
+                if (!newPoint.isWall(map) && map[newPoint.x][newPoint.y] != TileSpecification.SPECIFIC) {
+                    return true;
+                }
             }
         }
 
