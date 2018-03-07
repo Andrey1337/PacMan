@@ -16,7 +16,7 @@ public class Pacman extends Actor{
 		movementDirection = Direction.NONE;
 		lookingDirection = Direction.RIGHT;
 
-		setSpeed(0.08f);
+		setSpeed(0.10f);
 	}
 }
 

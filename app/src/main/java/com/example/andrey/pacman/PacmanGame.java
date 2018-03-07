@@ -6,7 +6,7 @@ import com.example.andrey.pacman.entity.Pacman;
 
 import java.util.Date;
 
-public class PacmanGame implements Runnable{
+public class PacmanGame{
 
 	private Playfield playfield;
 
@@ -17,7 +17,7 @@ public class PacmanGame implements Runnable{
 	private int pacmanLives = 4;
 
 
-	long lastUpdateTime;
+	private long lastTime;
 
 	private float touchDX;
 	private float touchDY;
@@ -26,14 +26,17 @@ public class PacmanGame implements Runnable{
 	private boolean touchCanceld = true;
 
 
+	private float tickInterval;
+
 	PacmanGame(GameView view)
 	{
 	    this.view = view;
 		playfield = new Playfield(this,view);
 		gameModeController = new GhostManager(playfield);
 
-		new Thread(this, "update game").start();
-
+		setTimeout();
+		tickInterval = 1000 / 90;
+		lastTime = new Date().getTime();
 	}
 
 	public void nextLevel()
@@ -62,27 +65,26 @@ public class PacmanGame implements Runnable{
 		playfield.onDraw(canvas);
 	}
 
-	@Override
-	public void run() {
+	private void setTimeout() {
+		view.redrawHandler.sleep(Math.round(tickInterval));
+	}
 
-		lastUpdateTime = System.currentTimeMillis();
-		while(true)
-		{
-		    if(view.isGameRunning) {
-                playfield.update();
-                gameModeController.update(System.currentTimeMillis() - lastUpdateTime);
-                lastUpdateTime = System.currentTimeMillis();
-            }
 
-			try {
-				Thread.sleep(13);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+	public void tick() {
+		long now = new Date().getTime();
+
+		if(view.isGameRunning) {
+			playfield.update(now - lastTime);
+			gameModeController.update(now - lastTime);
 		}
+
+		lastTime = now;
+
+		setTimeout();
 	}
 
 	public Playfield getPlayfield() { return playfield; }
+
 	Pacman getPacman()
 	{
 		return playfield.getPacman();

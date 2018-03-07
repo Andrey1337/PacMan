@@ -98,8 +98,9 @@ public abstract class Actor extends Entity{
 		canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, null);
 	}
 
-	public void move()
+	public void move(long deltaTime)
 	{
+		float frameSpeed = speed * deltaTime / 17;
 
         int arrayXPos = Math.round(x);
         int arrayYPos = Math.round(y);
@@ -107,65 +108,66 @@ public abstract class Actor extends Entity{
 			case NONE:
 				break;
 			case UP:
-                if(y - speed <= 0 ) {
+                if(y - frameSpeed <= 0 ) {
                     movementDirection = Direction.NONE;
                     nextPositionY = 0;
                 }
                 else {
-                	if(arrayYPos - 1 >= 0 && map[arrayXPos][arrayYPos - 1] == TileSpecification.WALL && y - speed <= arrayYPos)
+                	if(arrayYPos - 1 >= 0 && map[arrayXPos][arrayYPos - 1] == TileSpecification.WALL && y - frameSpeed <= arrayYPos)
 					{
 						movementDirection = Direction.NONE;
 						nextPositionY = arrayYPos;
 					}
 					else
-						nextPositionY = y - speed;
+						nextPositionY = y - frameSpeed;
                 }
 				break;
 
 			case DOWN:
-                if(y + speed >= map[0].length - 1) {
+                if(y + frameSpeed >= map[0].length - 1) {
                     movementDirection = Direction.NONE;
                     nextPositionY = arrayYPos;
                 }
                 else {
-                	if(arrayYPos + 1 <= map[0].length - 1 && map[arrayXPos][arrayYPos + 1] == TileSpecification.WALL && y + speed >= arrayYPos )
+                	if(arrayYPos + 1 <= map[0].length - 1 && map[arrayXPos][arrayYPos + 1] == TileSpecification.WALL && y + frameSpeed >= arrayYPos )
 					{
 						movementDirection = Direction.NONE;
 						nextPositionY = arrayYPos;
 					}
-					else nextPositionY = y + speed;
+					else nextPositionY = y + frameSpeed;
                 }
 				break;
 			case LEFT:
-                if(x - speed <= 0) {
+                if(x - frameSpeed <= 0) {
                     movementDirection = Direction.NONE;
                     nextPositionX = 0;
                 }
                 else {
-                	if(arrayXPos - 1 >= 0 && map[arrayXPos - 1][arrayYPos] == TileSpecification.WALL && x - speed <= arrayXPos) {
+                	if(arrayXPos - 1 >= 0 && map[arrayXPos - 1][arrayYPos] == TileSpecification.WALL && x - frameSpeed <= arrayXPos) {
 						movementDirection = Direction.NONE;
 						nextPositionX = arrayXPos;
 					}
-                    else nextPositionX = x - speed;
+                    else nextPositionX = x - frameSpeed;
                 }
 				break;
 			case RIGHT:
-				if(x + speed >= map.length - 1) {
+				if(x + frameSpeed >= map.length - 1) {
 					movementDirection = Direction.NONE;
 					nextPositionX = arrayXPos;
 				}
 				else {
-					if(arrayXPos + 1 <= map.length - 1 && map[arrayXPos + 1][arrayYPos] == TileSpecification.WALL && x + speed >= arrayXPos )
+					if(arrayXPos + 1 <= map.length - 1 && map[arrayXPos + 1][arrayYPos] == TileSpecification.WALL && x + frameSpeed >= arrayXPos )
 					{
 						movementDirection = Direction.NONE;
 						nextPositionX = arrayXPos;
 					}
-					else nextPositionX = x + speed;
+					else nextPositionX = x + frameSpeed;
 				}
 				break;
 		}
 
 		checkNextDirection();
+
 
 		x = nextPositionX;
 		y = nextPositionY;
@@ -213,7 +215,7 @@ public abstract class Actor extends Entity{
 				}
 				break;
 			case DOWN:
-				if(arrayYPos < map[1].length - 1
+				if(arrayYPos < map[0].length - 1
 						&& map[arrayXPos][arrayYPos + 1] != TileSpecification.WALL
 						&&(x <= arrayXPos && nextPositionX >= arrayXPos || x >= arrayXPos && nextPositionX <= arrayXPos)) {
 					nextPositionX = arrayXPos;

@@ -36,9 +36,9 @@ public abstract class Ghost extends Actor {
         topCagePosition = 12.50f;
         bottomCagePosition = 13.50f;
 
-        speedInCage = 0.035f;
+        speedInCage = 0.04f;
         frameLengthInMillisecond = 130;
-        setSpeed(0.07f);
+        setSpeed(0.085f);
     }
 
     public void startExit()
@@ -46,12 +46,14 @@ public abstract class Ghost extends Actor {
         exiting = true;
     }
 
-    private void exitFromCage()
+    private void exitFromCage(long deltaTime)
     {
+        float frameSpeed = speedInCage * deltaTime / 17;
+
         if(movementDirection == Direction.UP)
-            nextPositionY = y - speedInCage;
+            nextPositionY = y - frameSpeed;
         if(movementDirection == Direction.DOWN)
-            nextPositionY = y + speedInCage;
+            nextPositionY = y + frameSpeed;
 
 
         if(movementDirection == Direction.UP)
@@ -83,12 +85,14 @@ public abstract class Ghost extends Actor {
 
     }
 
-    private void moveInCage()
+    private void moveInCage(long deltaTime)
     {
+        float frameSpeed = speedInCage * deltaTime / 17;
+
         if(movementDirection == Direction.UP)
-            nextPositionY -= speedInCage;
+            nextPositionY -= frameSpeed;
         if(movementDirection == Direction.DOWN)
-            nextPositionY += speedInCage;
+            nextPositionY += frameSpeed;
 
         if(nextPositionY >= bottomCagePosition)
         {
@@ -132,28 +136,30 @@ public abstract class Ghost extends Actor {
     }
 
     @Override
-    public void move() {
+    public void move(long deltaTime) {
+
+        float frameSpeed = speed * deltaTime / 17;
 
         if(inCage)
         {
             if(!exiting)
-                moveInCage();
+                moveInCage(deltaTime);
             else
-                exitFromCage();
+                exitFromCage(deltaTime);
         }
         else {
             switch (movementDirection) {
                 case RIGHT:
-                    nextPositionX += speed;
+                    nextPositionX += frameSpeed;
                     break;
                 case LEFT:
-                    nextPositionX -= speed;
+                    nextPositionX -= frameSpeed;
                     break;
                 case UP:
-                    nextPositionY -= speed;
+                    nextPositionY -= frameSpeed;
                     break;
                 case DOWN:
-                    nextPositionY += speed;
+                    nextPositionY += frameSpeed;
                     break;
             }
 

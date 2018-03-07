@@ -8,10 +8,9 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
-class GameView extends SurfaceView implements SurfaceHolder.Callback {
-
-    private DrawThread drawThread;
+class GameView extends View {
 
     public Boolean isGameRunning;
 
@@ -21,9 +20,29 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         isGameRunning = true;
         game = new PacmanGame(this);
-        getHolder().addCallback(this);
+
     }
 
+    @Override
+    public void onDraw(Canvas canvas) {
+        game.onDraw(canvas);
+    }
+
+    final RefreshHandler redrawHandler = new RefreshHandler();
+
+    class RefreshHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            game.tick();
+            GameView.this.invalidate();
+        }
+
+        public void sleep(long delayMillis) {
+            this.removeMessages(0);
+            sendMessageDelayed(obtainMessage(0), delayMillis);
+        }
+    }
 
 
     @Override
@@ -43,62 +62,5 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        drawThread = new DrawThread(getHolder());
-        drawThread.setRunning(true);
-        drawThread.start();
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry = true;
-        drawThread.setRunning(false);
-        while (retry) {
-            try {
-                drawThread.join();
-                retry = false;
-            } catch (InterruptedException ignored) {
-            }
-        }
-    }
-
-    class DrawThread extends Thread {
-
-        private boolean running = false;
-        private SurfaceHolder surfaceHolder;
-
-        public DrawThread(SurfaceHolder surfaceHolder) {
-            this.surfaceHolder = surfaceHolder;
-        }
-
-        public void setRunning(boolean running) {
-            this.running = running;
-        }
-
-        @Override
-        public void run() {
-            Canvas canvas;
-
-            while (running) {
-                canvas = null;
-                try {
-                    canvas = surfaceHolder.lockCanvas(null);
-                    if (canvas == null)
-                        continue;
-                    canvas.drawColor(Color.BLACK);
-                    game.onDraw(canvas);
-                } finally {
-                    if (canvas != null) {
-                        surfaceHolder.unlockCanvasAndPost(canvas);
-                    }
-                }
-            }
-        }
-    }
 
 }

@@ -124,13 +124,13 @@ public class Playfield {
         ghosts.add(pinky);
 	}
 
-	public void update()
+	public void update(long deltaTime)
 	{
-		pacman.move();
+		pacman.move(deltaTime);
 
 		for (Ghost ghost : ghosts)
         {
-            ghost.move();
+            ghost.move(deltaTime);
         }
 
 		pacmanFoodIntersect();
