@@ -44,6 +44,7 @@ public class PacmanGame{
 	private void nextLevel()
 	{
 		playfield.nextLevel();
+		countPoints = playfield.getCountPoints();
 		ghostModeController = new GhostManager(playfield);
 
 	}
@@ -54,7 +55,7 @@ public class PacmanGame{
 		if(pacmanLives <= 0)
 		{
 			playfield.initCharacters(view);
-			ghostModeController = new GhostManager(playfield);
+			ghostModeController.pacmanDied();
 		}
 	}
 

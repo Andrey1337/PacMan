@@ -17,7 +17,7 @@ public class GhostManager {
     private int inkyPointsExit = 30;
     private int clydePointsExit = 60;
     private int inkyExitTime = 1000 * 4;
-    private int clydeExitTime = 1000 *  7;
+    private int clydeExitTime = 1000 * 7;
 
     private Pinky pinky;
     private Inky inky;
@@ -29,8 +29,7 @@ public class GhostManager {
 
     private int eatedDots;
 
-    GhostManager(Playfield playfield)
-    {
+    GhostManager(Playfield playfield) {
         this.playfield = playfield;
 
         pinky = playfield.getPinky();
@@ -52,9 +51,14 @@ public class GhostManager {
         afkTimer = 0;
     }
 
-    public void reset() {
-        waveTimeCounter = 0;
+    public void pacmanDied()
+    {
         afkTimer = 0;
+        inkyPointsExit -= inkyPointsExit / 4;
+        clydePointsExit -= clydePointsExit / 4;
+        pinky = playfield.getPinky();
+        inky = playfield.getInky();
+        clyde = playfield.getClyde();
     }
 
     public void increaseEatenDots()

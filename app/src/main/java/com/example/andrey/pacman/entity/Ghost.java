@@ -12,15 +12,15 @@ public abstract class Ghost extends Actor {
     boolean inCage;
 
     Point destPoint;
-    private Point scatterPoint;
+    Point scatterPoint;
 
-    private boolean isNormalPoint;
+    boolean isNormalPoint;
 
     private float bottomCagePosition;
     private float topCagePosition;
     private float middleCagePositionX;
     private float middleCagePositionY;
-    private boolean isExiting;
+    boolean isExiting;
 
     private float speedInCage;
 
@@ -50,7 +50,7 @@ public abstract class Ghost extends Actor {
         isExiting = true;
     }
 
-    private void exitFromCage(long deltaTime)
+    void exitFromCage(long deltaTime)
     {
         float frameSpeed = speedInCage * deltaTime;
 
@@ -112,7 +112,7 @@ public abstract class Ghost extends Actor {
         }
     }
 
-    private void moveInCage(long deltaTime)
+    void moveInCage(long deltaTime)
     {
         float frameSpeed = speedInCage * deltaTime;
 
@@ -214,7 +214,7 @@ public abstract class Ghost extends Actor {
 
     abstract void choseNextPoint();
 
-    private void choseDirection(Point currentPoint, Direction currentDirection) {
+    void choseDirection(Point currentPoint, Direction currentDirection) {
         if (nextDirection != Direction.NONE)
             return;
 
