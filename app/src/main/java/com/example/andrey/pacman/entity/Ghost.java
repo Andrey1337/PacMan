@@ -40,9 +40,9 @@ public abstract class Ghost extends Actor {
         middleCagePositionX = 12.5f;
         middleCagePositionY = (bottomCagePosition + topCagePosition)/2;
 
-        speedInCage = 0.035f;
+        speedInCage = 0.002f;
         frameLengthInMillisecond = 130;
-        setSpeed(0.085f);
+        setSpeed(0.005f);
     }
 
     public void startExit()
@@ -52,7 +52,7 @@ public abstract class Ghost extends Actor {
 
     private void exitFromCage(long deltaTime)
     {
-        float frameSpeed = speedInCage * deltaTime / 17;
+        float frameSpeed = speedInCage * deltaTime;
 
         if(movementDirection == Direction.RIGHT)
             nextPositionX = x + frameSpeed;
@@ -114,7 +114,7 @@ public abstract class Ghost extends Actor {
 
     private void moveInCage(long deltaTime)
     {
-        float frameSpeed = speedInCage * deltaTime / 17;
+        float frameSpeed = speedInCage * deltaTime;
 
         if(movementDirection == Direction.UP)
             nextPositionY -= frameSpeed;
@@ -169,7 +169,7 @@ public abstract class Ghost extends Actor {
     @Override
     public void move(long deltaTime) {
 
-        float frameSpeed = speed * deltaTime / 17;
+        float frameSpeed = speed * deltaTime;
 
         if(inCage)
         {

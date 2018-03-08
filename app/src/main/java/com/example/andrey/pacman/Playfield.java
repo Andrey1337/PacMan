@@ -170,7 +170,7 @@ public class Playfield {
 	private void charactersIntersect()
 	{
 		for(Ghost ghost : ghosts) {
-			if(Math.abs(pacman.getX() - ghost.getX()) <= 0.5f && Math.abs(pacman.getY() - ghost.getY()) <= 0.5f)
+			if(Math.abs(pacman.getX() - ghost.getX()) <= 0.8f && Math.abs(pacman.getY() - ghost.getY()) <= 0.8f)
 			{
 				game.killPacman();
 			}

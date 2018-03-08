@@ -12,9 +12,9 @@ public abstract class Actor extends Entity{
 
 	private int currentFrame = 0;
 	private long lastFrameChangeTime = 0;
-	int frameLengthInMillisecond = 60;
+	int frameLengthInMillisecond;
 
-	private int frameWidth, frameHeight, frameSpace;
+	private int frameWidth, frameHeight;
 
 	private int frameCount = 2;
     private int framesMovesCount = 4;
@@ -27,6 +27,7 @@ public abstract class Actor extends Entity{
 	Direction nextDirection;
 	Direction lookingDirection;
 
+	Point currentPoint;
 
 	TileSpecification[][] map;
 	float speed;
@@ -49,8 +50,7 @@ public abstract class Actor extends Entity{
 		frameWidth *= 6;
 		frameHeight *= 6;
 
-        this.bitmap  = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount + frameSpace * (frameCount - 1),
-				frameHeight * framesMovesCount + frameSpace * (framesMovesCount - 1),false);
+        this.bitmap  = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount, frameHeight * framesMovesCount,false);
 
         actorWidth = (int)((float)bitmap.getWidth() * playfield.scale / (float)frameCount);
         actorHeight = (int)((float)bitmap.getHeight() * playfield.scale / (float)framesMovesCount);
@@ -79,13 +79,6 @@ public abstract class Actor extends Entity{
 		this.speed = speed;
 	}
 
-	public void setDirection(Direction direction) {this.movementDirection = direction;}
-	
-	public Direction getDirection()
-	{
-		return movementDirection;
-	}
-
 	@Override
 	public void onDraw(Canvas canvas)
 	{
@@ -98,82 +91,7 @@ public abstract class Actor extends Entity{
 		canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, null);
 	}
 
-	public void move(long deltaTime)
-	{
-		float frameSpeed = speed * deltaTime / 17;
-
-        int arrayXPos = Math.round(x);
-        int arrayYPos = Math.round(y);
-		switch (movementDirection) {
-			case NONE:
-				break;
-			case UP:
-                if(y - frameSpeed <= 0 ) {
-                    movementDirection = Direction.NONE;
-                    nextPositionY = 0;
-                }
-                else {
-                	if(arrayYPos - 1 >= 0 && map[arrayXPos][arrayYPos - 1] == TileSpecification.WALL && y - frameSpeed <= arrayYPos)
-					{
-						movementDirection = Direction.NONE;
-						nextPositionY = arrayYPos;
-					}
-					else
-						nextPositionY = y - frameSpeed;
-                }
-				break;
-
-			case DOWN:
-                if(y + frameSpeed >= map[0].length - 1) {
-                    movementDirection = Direction.NONE;
-                    nextPositionY = arrayYPos;
-                }
-                else {
-                	if(arrayYPos + 1 <= map[0].length - 1 && map[arrayXPos][arrayYPos + 1] == TileSpecification.WALL && y + frameSpeed >= arrayYPos )
-					{
-						movementDirection = Direction.NONE;
-						nextPositionY = arrayYPos;
-					}
-					else nextPositionY = y + frameSpeed;
-                }
-				break;
-			case LEFT:
-                if(x - frameSpeed <= 0) {
-                    movementDirection = Direction.NONE;
-                    nextPositionX = 0;
-                }
-                else {
-                	if(arrayXPos - 1 >= 0 && map[arrayXPos - 1][arrayYPos] == TileSpecification.WALL && x - frameSpeed <= arrayXPos) {
-						movementDirection = Direction.NONE;
-						nextPositionX = arrayXPos;
-					}
-                    else nextPositionX = x - frameSpeed;
-                }
-				break;
-			case RIGHT:
-				if(x + frameSpeed >= map.length - 1) {
-					movementDirection = Direction.NONE;
-					nextPositionX = arrayXPos;
-				}
-				else {
-					if(arrayXPos + 1 <= map.length - 1 && map[arrayXPos + 1][arrayYPos] == TileSpecification.WALL && x + frameSpeed >= arrayXPos )
-					{
-						movementDirection = Direction.NONE;
-						nextPositionX = arrayXPos;
-					}
-					else nextPositionX = x + frameSpeed;
-				}
-				break;
-		}
-
-		checkNextDirection();
-
-
-		x = nextPositionX;
-		y = nextPositionY;
-
-		animate();
-	}
+	public abstract void move(long deltaTime);
 
 	void animate()
 	{
@@ -190,60 +108,84 @@ public abstract class Actor extends Entity{
             }
         }
 
-		frameToDraw.left = currentFrame * frameWidth + frameSpace * currentFrame;
+		frameToDraw.left = currentFrame * frameWidth;
 		frameToDraw.right = frameToDraw.left + frameWidth;
 
-		frameToDraw.top = movementDirection.getValue() * frameHeight + frameSpace * movementDirection.getValue() ;
+		frameToDraw.top = movementDirection.getValue() * frameHeight;
 		frameToDraw.bottom = frameToDraw.top + frameHeight;
     }
 
+
+	float turnCutSpeed;
 	void checkNextDirection()
 	{
-		int arrayXPos = Math.round(x);
-		int arrayYPos = Math.round(y);
-		switch (nextDirection) {
-			case NONE:
-				return;
-
+        currentPoint = new Point(Math.round(x), Math.round(y));
+		float nextPositionXWithCut = nextPositionX;
+		float nextPositionYWithCut = nextPositionY;
+		switch (movementDirection)
+		{
+			case RIGHT:
+				nextPositionXWithCut += turnCutSpeed;
+				break;
+			case LEFT:
+				nextPositionXWithCut -= turnCutSpeed;
+				break;
 			case UP:
-				if(arrayYPos != 0 && map[arrayXPos][arrayYPos - 1] != TileSpecification.WALL && (x <= arrayXPos
-						&& nextPositionX >= arrayXPos || x >= arrayXPos && nextPositionX <= arrayXPos))
+				nextPositionYWithCut -= turnCutSpeed;
+				break;
+			case DOWN:
+				nextPositionYWithCut += turnCutSpeed;
+				break;
+
+		}
+
+	    switch (nextDirection)
+        {
+            case NONE:
+                return;
+            case UP:
+                if(!new Point(currentPoint.x, currentPoint.y - 1).isWall(map)
+                        && (x <= currentPoint.x && nextPositionXWithCut >= currentPoint.x
+						|| x >= currentPoint.x && nextPositionXWithCut <= currentPoint.x))
 				{
-					nextPositionX = arrayXPos;
+					nextPositionX = currentPoint.x;
 					movementDirection = Direction.UP;
 					nextDirection = Direction.NONE;
 				}
-				break;
-			case DOWN:
-				if(arrayYPos < map[0].length - 1
-						&& map[arrayXPos][arrayYPos + 1] != TileSpecification.WALL
-						&&(x <= arrayXPos && nextPositionX >= arrayXPos || x >= arrayXPos && nextPositionX <= arrayXPos)) {
-					nextPositionX = arrayXPos;
+                break;
+            case DOWN:
+				if(!new Point(currentPoint.x, currentPoint.y + 1).isWall(map)
+						&& (x <= currentPoint.x && nextPositionXWithCut >= currentPoint.x
+						|| x >= currentPoint.x && nextPositionXWithCut <= currentPoint.x))
+				{
+					nextPositionX = currentPoint.x;
 					movementDirection = Direction.DOWN;
 					nextDirection = Direction.NONE;
 				}
-				break;
-			case LEFT:
-				if(arrayXPos > 0
-						&& map[arrayXPos-1][arrayYPos] != TileSpecification.WALL
-						&& (y <= arrayYPos && nextPositionY >= arrayYPos || y >= arrayYPos && nextPositionY <= arrayYPos))
+                break;
+            case RIGHT:
+				if(!new Point(currentPoint.x + 1, currentPoint.y).isWall(map)
+						&& (y <= currentPoint.y && nextPositionYWithCut >= currentPoint.y
+						|| y >= currentPoint.y && nextPositionYWithCut <= currentPoint.y))
 				{
-					nextPositionY = arrayYPos;
+					nextPositionY = currentPoint.y;
+					movementDirection = Direction.RIGHT;
+					nextDirection = Direction.NONE;
+				}
+                break;
+            case LEFT:
+				if(!new Point(currentPoint.x - 1, currentPoint.y).isWall(map)
+						&& (y <= currentPoint.y && nextPositionYWithCut >= currentPoint.y
+						|| y >= currentPoint.y && nextPositionYWithCut <= currentPoint.y))
+				{
+					nextPositionY = currentPoint.y;
 					movementDirection = Direction.LEFT;
 					nextDirection = Direction.NONE;
 				}
-				break;
-			case RIGHT:
-				if(arrayXPos <= map.length - 1
-						&& map[arrayXPos + 1][arrayYPos] != TileSpecification.WALL
-						&& (y <= arrayYPos && nextPositionY >= arrayYPos || y >= arrayYPos && nextPositionY <= arrayYPos))
-				{
-				nextPositionY = arrayYPos;
-				movementDirection = Direction.RIGHT;
-				nextDirection = Direction.NONE;
-				}
-				break;
-		}
+                break;
+
+        }
+
 		lookingDirection = movementDirection;
 	}
 
