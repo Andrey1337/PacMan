@@ -1,6 +1,10 @@
 package com.example.andrey.pacman;
 
 
+import com.example.andrey.pacman.entity.Clyde;
+import com.example.andrey.pacman.entity.Inky;
+import com.example.andrey.pacman.entity.Pinky;
+
 public class GhostManager {
 
     private Playfield playfield;
@@ -8,60 +12,75 @@ public class GhostManager {
     private int waveNum;
 
     private long waveTimeCounter;
-    private long totalTimeCounter;
+    private long afkTimer;
 
-    private int pinkyExitTime = 1000 * 3;
-    private boolean isPinkyExit;
+    private int inkyPointsExit = 30;
+    private int clydePointsExit = 60;
+    private int inkyExitTime = 1000 * 4;
+    private int clydeExitTime = 1000 *  7;
+
+    private Pinky pinky;
+    private Inky inky;
+    private Clyde clyde;
 
     private Wave[] waves;
 
-
     private GameMode gameMode;
+
+    private int eatedDots;
 
     GhostManager(Playfield playfield)
     {
         this.playfield = playfield;
 
+        pinky = playfield.getPinky();
+        inky = playfield.getInky();
+        clyde = playfield.getClyde();
+
         waves = new Wave[4];
 
         waves[0] = new Wave(1000 * 11, 1000 * 20);
-        waves[1] = new Wave(1000 * 8, 1000 * 20);
-        waves[2] = new Wave(1000 * 11, 1000 * 20);
-        waves[3] = new Wave(1000 * 5, Long.MAX_VALUE);
+        waves[1] = new Wave(1000 * 11, 1000 * 20);
+        waves[2] = new Wave(1000 * 8, 1000 * 20);
+        waves[3] = new Wave(1000 * 8, Long.MAX_VALUE);
 
         waveNum = 0;
 
         gameMode = playfield.getGameMode();
 
         waveTimeCounter = 0;
-        totalTimeCounter = 0;
+        afkTimer = 0;
     }
 
-    public void reset()
-    {
+    public void reset() {
         waveTimeCounter = 0;
-        totalTimeCounter = 0;
-        isPinkyExit = false;
+        afkTimer = 0;
     }
 
+    public void increaseEatenDots()
+    {
+        afkTimer = 0;
+        eatedDots++;
+    }
 
     public void update(long deltaTime) {
 
         waveTimeCounter += deltaTime;
-        totalTimeCounter += deltaTime;
+        afkTimer += deltaTime;
 
-        if(!isPinkyExit && totalTimeCounter > pinkyExitTime)
-        {
+        if(pinky.isInCage()) {
             playfield.getPinky().startExit();
-            isPinkyExit = true;
         }
 
-        if (gameMode == GameMode.SCATTER && waveTimeCounter > waves[waveNum].getScatterTime()) {
-            waveTimeCounter = 0;
-            changeGameMode();
+        if(!pinky.isInCage() && inky.isInCage() && (eatedDots >= inkyPointsExit || afkTimer > inkyExitTime)) {
+            playfield.getInky().startExit();
         }
-        if (gameMode == GameMode.CHASE && waveTimeCounter > waves[waveNum].getChaseTime())
-        {
+
+        if(!inky.isInCage() && clyde.isInCage() && eatedDots >= clydePointsExit) {
+            playfield.getClyde().startExit();
+        }
+
+        if (gameMode == GameMode.SCATTER && waveTimeCounter > waves[waveNum].getScatterTime() || (gameMode == GameMode.CHASE && waveTimeCounter > waves[waveNum].getChaseTime())) {
             waveTimeCounter = 0;
             changeGameMode();
         }

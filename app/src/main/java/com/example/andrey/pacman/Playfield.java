@@ -12,17 +12,17 @@ public class Playfield {
 
     FoodDrawManager foodDrawController;
 
-	private TileSpecification map[][];
+    private TileSpecification map[][];
 
-	private Food foodMap[][];
+    private Food foodMap[][];
 
-	public Bitmap mapTexture;
+    public Bitmap mapTexture;
 
     public final int MAP_WIDTH;
-	public final int MAP_HEIGHT;
+    public final int MAP_HEIGHT;
 
-	public final int X_OFFSET;
-	public final int Y_OFFSET;
+    public final int X_OFFSET;
+    public final int Y_OFFSET;
 
     public final float CELLS_SPACE_PERCENT;
 
@@ -34,54 +34,55 @@ public class Playfield {
 
     GameMode gameMode;
 
-	Pacman pacman;
-	private ArrayList<Ghost> ghosts;
+    Pacman pacman;
+    private ArrayList<Ghost> ghosts;
 
-	private Pinky pinky;
+    private Pinky pinky;
+    private Inky inky;
+    private Blinky blinky;
+    private Clyde clyde;
 
-	GameView view;
-
-
-	Playfield(PacmanGame game,GameView view)
-	{
-
-		long testTime = System.currentTimeMillis();
-	    gameMode = GameMode.SCATTER;
-
-	    this.game = game;
-
-		this.view = view;
-		MAP_WIDTH = 224;
-		MAP_HEIGHT = 248;
+    GameView view;
 
 
-		int X_OFFSET = 11;
-		int Y_OFFSET = 11;
+    Playfield(PacmanGame game, GameView view) {
+        gameMode = GameMode.SCATTER;
+
+        this.game = game;
+
+        this.view = view;
+        MAP_WIDTH = 224;
+        MAP_HEIGHT = 248;
+
+        int X_OFFSET = 11;
+        int Y_OFFSET = 11;
 
         int CELLS_SPACE = 8;
 
-		mapTexture = BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_map);
+        mapTexture = BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_map);
 
-		scale = (float)view.getContext().getResources().getDisplayMetrics().widthPixels / (float)mapTexture.getWidth();
+        scale = (float) view.getContext().getResources().getDisplayMetrics().widthPixels / (float) mapTexture.getWidth();
 
-		mapTexture = Bitmap.createScaledBitmap(mapTexture, (int)(mapTexture.getWidth() * scale),
-				(int)(mapTexture.getHeight() * scale),false);
+        mapTexture = Bitmap.createScaledBitmap(mapTexture, (int) (mapTexture.getWidth() * scale),
+                (int) (mapTexture.getHeight() * scale), false);
 
-		this.X_OFFSET = (int)((float) X_OFFSET / (float)MAP_WIDTH * mapTexture.getWidth());
-		this.Y_OFFSET = (int)((float) Y_OFFSET / (float)MAP_HEIGHT * mapTexture.getHeight());
-        this.CELLS_SPACE_PERCENT = (float)CELLS_SPACE / (float)MAP_WIDTH ;
+        this.X_OFFSET = (int) ((float) X_OFFSET / (float) MAP_WIDTH * mapTexture.getWidth());
+        this.Y_OFFSET = (int) ((float) Y_OFFSET / (float) MAP_HEIGHT * mapTexture.getHeight());
+        this.CELLS_SPACE_PERCENT = (float) CELLS_SPACE / (float) MAP_WIDTH;
 
-		map = new TileSpecification[26][29];
-		foodMap = new Food[26][29];
-		initMap();
+        map = new TileSpecification[26][29];
+        foodMap = new Food[26][29];
+        initMap();
 
         initCharacters(view);
 
-		foodDrawController = new FoodDrawManager(view, this);
+        foodDrawController = new FoodDrawManager(view, this);
+    }
 
-		long num =System.currentTimeMillis() - testTime;
-		Log.i("test", Long.toString(System.currentTimeMillis() - testTime));
-	}
+    public int getCountPoints()
+    {
+        return countPoints;
+    }
 
 	public void restartGame()
     {
@@ -100,7 +101,19 @@ public class Playfield {
         return pinky;
     }
 
-    public GameMode getGameMode() {
+	public Inky getInky() {
+		return inky;
+	}
+	public Blinky getBlinky()
+	{
+		return blinky;
+	}
+
+	public Clyde getClyde() {
+		return clyde;
+	}
+
+	public GameMode getGameMode() {
         return gameMode;
     }
 
@@ -113,16 +126,20 @@ public class Playfield {
 
 	}
 
-
     public void initCharacters(View view)
 	{
 		pacman = new Pacman(this, view,12.5f,22);
 		ghosts = new ArrayList<>();
-		ghosts.add(new Blinky(this, view,12.5f, 10));
 
-		pinky = new Pinky(this, view,12.5f, 13);
+		blinky = new Blinky(this, view,12.5f, 10);
+        pinky = new Pinky(this, view,12.5f, 13);
+        inky = new Inky(this, view, 10.5f,13);
+        clyde = new Clyde(this,view,14.5f, 13);
+        ghosts.add(blinky);
         ghosts.add(pinky);
-	}
+        ghosts.add(inky);
+        ghosts.add(clyde);
+    }
 
 	public void update(long deltaTime)
 	{
@@ -146,11 +163,7 @@ public class Playfield {
 		if(foodMap[arrayPosX][arrayPosY] == Food.Point)
 		{
 			foodMap[arrayPosX][arrayPosY] = null;
-			countPoints--;
-			if(countPoints <= 0)
-            {
-                game.nextLevel();
-            }
+			game.eatPoint();
 		}
 	}
 

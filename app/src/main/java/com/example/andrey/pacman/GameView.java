@@ -20,7 +20,6 @@ class GameView extends View {
         super(context);
         isGameRunning = true;
         game = new PacmanGame(this);
-
     }
 
     @Override
@@ -44,7 +43,6 @@ class GameView extends View {
         }
     }
 
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -61,6 +59,4 @@ class GameView extends View {
         }
         return true;
     }
-
-
 }

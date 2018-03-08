@@ -18,7 +18,9 @@ public abstract class Ghost extends Actor {
 
     private float bottomCagePosition;
     private float topCagePosition;
-    private boolean exiting;
+    private float middleCagePositionX;
+    private float middleCagePositionY;
+    private boolean isExiting;
 
     private float speedInCage;
 
@@ -35,26 +37,63 @@ public abstract class Ghost extends Actor {
 
         topCagePosition = 12.50f;
         bottomCagePosition = 13.50f;
+        middleCagePositionX = 12.5f;
+        middleCagePositionY = (bottomCagePosition + topCagePosition)/2;
 
-        speedInCage = 0.04f;
+        speedInCage = 0.035f;
         frameLengthInMillisecond = 130;
         setSpeed(0.085f);
     }
 
     public void startExit()
     {
-        exiting = true;
+        isExiting = true;
     }
 
     private void exitFromCage(long deltaTime)
     {
         float frameSpeed = speedInCage * deltaTime / 17;
 
+        if(movementDirection == Direction.RIGHT)
+            nextPositionX = x + frameSpeed;
+        if(movementDirection == Direction.LEFT)
+            nextPositionX = x - frameSpeed;
         if(movementDirection == Direction.UP)
             nextPositionY = y - frameSpeed;
         if(movementDirection == Direction.DOWN)
             nextPositionY = y + frameSpeed;
 
+        if(movementDirection == Direction.DOWN)
+        {
+            if(nextPositionY >= bottomCagePosition)
+            {
+                nextPositionY = bottomCagePosition;
+                touchTheBottom = true;
+                topCagePosition = 10f;
+                movementDirection = movementDirection.getOposite();
+            }
+        }
+
+        if(movementDirection == Direction.UP && touchTheBottom)
+        {
+            if(x < middleCagePositionX && nextPositionY <= middleCagePositionY)
+            {
+                nextPositionY = middleCagePositionY;
+                movementDirection = Direction.RIGHT;
+            }
+            if(x > middleCagePositionX && nextPositionY <= middleCagePositionY)
+            {
+                nextPositionY = middleCagePositionY;
+                movementDirection = Direction.LEFT;
+            }
+        }
+
+        if(movementDirection == Direction.LEFT && nextPositionX <= middleCagePositionX
+                || movementDirection == Direction.RIGHT && nextPositionX >= middleCagePositionX)
+        {
+            nextPositionX = middleCagePositionX;
+            movementDirection = Direction.UP;
+        }
 
         if(movementDirection == Direction.UP)
         {
@@ -71,18 +110,6 @@ public abstract class Ghost extends Actor {
                 nextPositionY = topCagePosition;
             }
         }
-
-        if(movementDirection == Direction.DOWN)
-        {
-            if(nextPositionY >= bottomCagePosition)
-            {
-                nextPositionY = bottomCagePosition;
-                touchTheBottom = true;
-                topCagePosition = 10f;
-                movementDirection = movementDirection.getOposite();
-            }
-        }
-
     }
 
     private void moveInCage(long deltaTime)
@@ -135,6 +162,10 @@ public abstract class Ghost extends Actor {
         choseDirection(new Point(Math.round(x), Math.round(y)), movementDirection);
     }
 
+    public boolean isInCage() {
+        return inCage;
+    }
+
     @Override
     public void move(long deltaTime) {
 
@@ -142,7 +173,7 @@ public abstract class Ghost extends Actor {
 
         if(inCage)
         {
-            if(!exiting)
+            if(!isExiting)
                 moveInCage(deltaTime);
             else
                 exitFromCage(deltaTime);
@@ -187,7 +218,7 @@ public abstract class Ghost extends Actor {
         if (nextDirection != Direction.NONE)
             return;
 
-        Point nextPoint= new Point(0,0);
+        Point nextPoint = new Point(0,0);
 
         switch (currentDirection) {
             case RIGHT:

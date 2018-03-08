@@ -10,12 +10,11 @@ public class PacmanGame{
 
 	private Playfield playfield;
 
-	private GhostManager gameModeController;
+	private GhostManager ghostModeController;
 
 	private GameView view;
 
 	private int pacmanLives = 4;
-
 
 	private long lastTime;
 
@@ -25,6 +24,7 @@ public class PacmanGame{
 	private float touchStartY;
 	private boolean touchCanceld = true;
 
+	private int countPoints;
 
 	private float tickInterval;
 
@@ -32,17 +32,19 @@ public class PacmanGame{
 	{
 	    this.view = view;
 		playfield = new Playfield(this,view);
-		gameModeController = new GhostManager(playfield);
+		countPoints = playfield.getCountPoints();
 
-		setTimeout();
+		ghostModeController = new GhostManager(playfield);
+
 		tickInterval = 1000 / 90;
+		setTimeout();
 		lastTime = new Date().getTime();
 	}
 
-	public void nextLevel()
+	private void nextLevel()
 	{
 		playfield.nextLevel();
-		gameModeController = new GhostManager(playfield);
+		ghostModeController = new GhostManager(playfield);
 
 	}
 
@@ -51,12 +53,19 @@ public class PacmanGame{
 		pacmanLives--;
 		if(pacmanLives <= 0)
 		{
-
-		}
-		else
-		{
 			playfield.initCharacters(view);
-			gameModeController = new GhostManager(playfield);
+			ghostModeController = new GhostManager(playfield);
+		}
+	}
+
+	public void eatPoint()
+	{
+		countPoints--;
+        ghostModeController.increaseEatenDots();
+
+		if(countPoints <= 0)
+		{
+			nextLevel();
 		}
 	}
 
@@ -75,7 +84,7 @@ public class PacmanGame{
 
 		if(view.isGameRunning) {
 			playfield.update(now - lastTime);
-			gameModeController.update(now - lastTime);
+			ghostModeController.update(now - lastTime);
 		}
 
 		lastTime = now;
@@ -122,9 +131,9 @@ public class PacmanGame{
 		float absDx = Math.abs(touchDX);
 		float absDy = Math.abs(touchDY);
 		Pacman pacman = getPacman();
-		if (absDx > 15 && absDy < absDx * 2 / 3) {
+		if (absDx > 15 && absDy < absDx ) {
 			pacman.setRequestDirection(touchDX > 0 ? Direction.RIGHT : Direction.LEFT);
-		} else if (absDy > 15 && absDx < absDy * 2 / 3) {
+		} else if (absDy > 15 && absDx < absDy) {
 			pacman.setRequestDirection(touchDY > 0 ? Direction.DOWN : Direction.UP);
 		}
 		cancelTouch();

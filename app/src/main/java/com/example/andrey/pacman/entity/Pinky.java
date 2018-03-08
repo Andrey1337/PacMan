@@ -1,8 +1,6 @@
 package com.example.andrey.pacman.entity;
 
 import android.graphics.BitmapFactory;
-import android.os.Debug;
-import android.util.Log;
 import android.view.View;
 import com.example.andrey.pacman.Direction;
 import com.example.andrey.pacman.Playfield;
@@ -19,8 +17,6 @@ public class Pinky extends Ghost {
 
     @Override
     protected void choseNextPoint() {
-
-        Log.i("PINKY", "CHOSE NEXT POS");
         Pacman pacman = playfield.getPacman();
         Point pacmanPoint = new Point(Math.round(pacman.getX()), Math.round(pacman.getY()));
 
@@ -39,11 +35,6 @@ public class Pinky extends Ghost {
                 destPoint = new Point(pacmanPoint.x, pacmanPoint.y + 4);
                 break;
             case NONE:
-                try {
-                    throw new Exception("looking direction NONE");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 break;
         }
     }

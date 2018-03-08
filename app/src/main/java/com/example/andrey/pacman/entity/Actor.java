@@ -234,8 +234,8 @@ public abstract class Actor extends Entity{
 				}
 				break;
 			case RIGHT:
-				if(arrayXPos < map.length - 1
-						&& map[arrayXPos+1][arrayYPos] != TileSpecification.WALL
+				if(arrayXPos <= map.length - 1
+						&& map[arrayXPos + 1][arrayYPos] != TileSpecification.WALL
 						&& (y <= arrayYPos && nextPositionY >= arrayYPos || y >= arrayYPos && nextPositionY <= arrayYPos))
 				{
 				nextPositionY = arrayYPos;
