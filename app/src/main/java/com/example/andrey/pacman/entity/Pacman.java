@@ -52,7 +52,7 @@ public class Pacman extends Actor{
                 }
                 break;
             case LEFT:
-                if(x - frameSpeed < 0 || new Point(currentPoint.x - 1, currentPoint.y).isWall(map) && x - frameSpeed <= currentPoint.x)
+                if(new Point(currentPoint.x - 1, currentPoint.y).isWall(map) && x - frameSpeed <= currentPoint.x)
                 {
                     movementDirection = Direction.NONE;
                     nextPositionX = currentPoint.x;
@@ -78,6 +78,7 @@ public class Pacman extends Actor{
         x = nextPositionX;
         y = nextPositionY;
 
+        checkTunnel();
         animate();
     }
 }

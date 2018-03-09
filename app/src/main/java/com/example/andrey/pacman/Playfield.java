@@ -54,7 +54,7 @@ public class Playfield {
         MAP_WIDTH = 224;
         MAP_HEIGHT = 248;
 
-        int X_OFFSET = 11;
+        int X_OFFSET = 3;
         int Y_OFFSET = 11;
 
         int CELLS_SPACE = 8;
@@ -70,8 +70,8 @@ public class Playfield {
         this.Y_OFFSET = (int) ((float) Y_OFFSET / (float) MAP_HEIGHT * mapTexture.getHeight());
         this.CELLS_SPACE_PERCENT = (float) CELLS_SPACE / (float) MAP_WIDTH;
 
-        map = new TileSpecification[26][29];
-        foodMap = new Food[26][29];
+        map = new TileSpecification[28][29];
+        foodMap = new Food[28][29];
         initMap();
 
         initCharacters(view);
@@ -128,13 +128,13 @@ public class Playfield {
 
     public void initCharacters(View view)
 	{
-		pacman = new Pacman(this, view,12.5f,22);
+		pacman = new Pacman(this, view,13.5f,22);
 		ghosts = new ArrayList<>();
 
-		blinky = new Blinky(this, view,12.5f, 10);
-        pinky = new Pinky(this, view,12.5f, 13);
-        inky = new Inky(this, view, 10.5f,13);
-        clyde = new Clyde(this,view,14.5f, 13);
+		blinky = new Blinky(this, view,13.5f, 10);
+        pinky = new Pinky(this, view,13.5f, 13);
+        inky = new Inky(this, view, 11.5f,13);
+        clyde = new Clyde(this,view,15.5f, 13);
         ghosts.add(blinky);
         ghosts.add(pinky);
         ghosts.add(inky);
@@ -258,73 +258,73 @@ public class Playfield {
 	{
 		//HORIZONTAL PATHS
 
-		createHorizontalPath(0, 12, 0,true);
-		createHorizontalPath(14, 26, 0,true);
+		createHorizontalPath(1, 13, 0,true);
+		createHorizontalPath(15, 27, 0,true);
 
-		createHorizontalPath(0, 26, 4,true);
+		createHorizontalPath(1, 27, 4,true);
 
-		createHorizontalPath(0, 6, 7,true);
-		createHorizontalPath(8, 12, 7,true);
-		createHorizontalPath(14, 18, 7,true);
-		createHorizontalPath(20, 26, 7,true);
+		createHorizontalPath(1, 7, 7,true);
+		createHorizontalPath(9, 13, 7,true);
+		createHorizontalPath(15, 19, 7,true);
+		createHorizontalPath(21, 27, 7,true);
 
-		createHorizontalPath(8, 18, 10,false);
+		createHorizontalPath(9, 19, 10,false);
 
-		createHorizontalPath(0, 9, 13,false);
-		createHorizontalPath(17, 26, 13,false);
+		createHorizontalPath(0, 10, 13,false);
+		createHorizontalPath(18, 28, 13,false);
 
-		createHorizontalPath(8, 18, 16,false);
+		createHorizontalPath(9, 19, 16,false);
 
-		createHorizontalPath(0, 12, 19,true);
-		createHorizontalPath(14, 26, 19,true);
+		createHorizontalPath(1, 13, 19,true);
+		createHorizontalPath(15, 27, 19,true);
 
-		createHorizontalPath(0, 3, 22,true);
-		createHorizontalPath(5, 20, 22,false);
-		createHorizontalPath(5, 12, 22,true);
-		createHorizontalPath(14, 20, 22,true);
+		createHorizontalPath(1, 4, 22,true);
+		createHorizontalPath(6, 21, 22,false);
+		createHorizontalPath(6, 13, 22,true);
+		createHorizontalPath(15, 21, 22,true);
 
-		createHorizontalPath(23, 26, 22,true);
+		createHorizontalPath(24, 27, 22,true);
 
 
 
-		createHorizontalPath(0, 6, 25,true);
-		createHorizontalPath(8, 12, 25,true);
-		createHorizontalPath(14, 18, 25,true);
-		createHorizontalPath(20, 26, 25,true);
+		createHorizontalPath(1, 7, 25,true);
+		createHorizontalPath(9, 13, 25,true);
+		createHorizontalPath(15, 19, 25,true);
+		createHorizontalPath(21, 27, 25,true);
 
-		createHorizontalPath(0, 26, 28,true);
+		createHorizontalPath(1, 27, 28,true);
 
 		//VERTICAL PATHS
-		createVerticalPath(0,8,0,true);
-		createVerticalPath(19,23,0,true);
-		createVerticalPath(26,29,0,true);
-		createVerticalPath(23,26,2,true);
-		createVerticalPath(0, 26, 5,true);
+		createVerticalPath(0,8,1,true);
+		createVerticalPath(19,23,1,true);
+		createVerticalPath(26,29,1,true);
+		createVerticalPath(23,26,3,true);
+		createVerticalPath(0, 26, 6,true);
 
-		createVerticalPath(4,7,8,true);
-		createVerticalPath(11,20,8,false);
-		createVerticalPath(23,26,8,true);
+		createVerticalPath(4,7,9,true);
+		createVerticalPath(11,20,9,false);
+		createVerticalPath(23,26,9,true);
 
-		createVerticalPath(0,4,11,true);
-		createVerticalPath(7,11,11,false);
-		createVerticalPath(19,23,11,true);
-		createVerticalPath(25,29,11,true);
+		createVerticalPath(0,4,12,true);
+		createVerticalPath(7,11,12,false);
+		createVerticalPath(19,23,12,true);
+		createVerticalPath(25,29,12,true);
 
-		createVerticalPath(0,4,14,true);
-		createVerticalPath(7,11,14,false);
-		createVerticalPath(19,23,14,true);
-		createVerticalPath(25,28,14,true);
+		createVerticalPath(0,4,15,true);
+		createVerticalPath(7,11,15,false);
+		createVerticalPath(19,23,15,true);
+		createVerticalPath(25,28,15,true);
 
-		createVerticalPath(4,7,17,true);
-		createVerticalPath(11,20,17,false);
-		createVerticalPath(22,26,17,true);
+		createVerticalPath(4,7,18,true);
+		createVerticalPath(11,20,18,false);
+		createVerticalPath(22,26,18,true);
 
-		createVerticalPath(0,26,20,true);
-		createVerticalPath(22,26,23,true);
+		createVerticalPath(0,26,21,true);
+		createVerticalPath(22,26,24,true);
 
-		createVerticalPath(0,8,25,true);
-		createVerticalPath(19,23,25,true);
-		createVerticalPath(26,29,25,true);
+		createVerticalPath(0,8,26,true);
+		createVerticalPath(19,23,26,true);
+		createVerticalPath(26,29,26,true);
 
 	}
 

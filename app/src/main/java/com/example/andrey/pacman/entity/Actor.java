@@ -115,6 +115,20 @@ public abstract class Actor extends Entity{
 		frameToDraw.bottom = frameToDraw.top + frameHeight;
     }
 
+	void checkTunnel()
+	{
+		if(x < -1)
+		{
+			x = map.length + 1;
+		}
+
+		if(x > map.length + 1)
+		{
+			x = -1;
+		}
+
+
+	}
 
 	float turnCutSpeed;
 	void checkNextDirection()

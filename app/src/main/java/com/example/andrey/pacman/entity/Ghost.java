@@ -37,7 +37,7 @@ public abstract class Ghost extends Actor {
 
         topCagePosition = 12.50f;
         bottomCagePosition = 13.50f;
-        middleCagePositionX = 12.5f;
+        middleCagePositionX = 13.5f;
         middleCagePositionY = (bottomCagePosition + topCagePosition)/2;
 
         speedInCage = 0.002f;

@@ -21,7 +21,7 @@ class GameView extends View {
         isGameRunning = true;
         game = new PacmanGame(this);
         setBackgroundColor(Color.BLACK);
-        
+
     }
 
     @Override
