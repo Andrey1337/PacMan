@@ -14,7 +14,7 @@ public abstract class Ghost extends Actor {
     Point destPoint;
     Point scatterPoint;
 
-    boolean isNormalPoint;
+    private boolean isNormalPoint;
 
     private float bottomCagePosition;
     private float topCagePosition;
@@ -181,10 +181,10 @@ public abstract class Ghost extends Actor {
         else {
             switch (movementDirection) {
                 case RIGHT:
-                    nextPositionX += frameSpeed;
+                    nextPositionX = nextPositionX + frameSpeed;
                     break;
                 case LEFT:
-                    nextPositionX -= frameSpeed;
+                    nextPositionX = nextPositionX - frameSpeed;
                     break;
                 case UP:
                     nextPositionY -= frameSpeed;
@@ -235,13 +235,9 @@ public abstract class Ghost extends Actor {
                 break;
         }
 
-        if(nextPoint.isWall(map))
+        if(nextPoint.isFork(map, currentDirection))
         {
-            findShortestDirection(movementDirection, currentPoint);
-        }
-        else if(nextPoint.isFork(map, movementDirection))
-        {
-            findShortestDirection(movementDirection, nextPoint);
+            findShortestDirection(currentDirection, nextPoint);
         }
     }
 

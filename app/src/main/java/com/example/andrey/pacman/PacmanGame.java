@@ -52,11 +52,10 @@ public class PacmanGame{
 	public void killPacman()
 	{
 		pacmanLives--;
-		if(pacmanLives <= 0)
-		{
-			playfield.initCharacters(view);
-			ghostModeController.pacmanDied();
-		}
+
+		playfield.initCharacters(view);
+		ghostModeController.pacmanDied();
+
 	}
 
 	public void eatPoint()

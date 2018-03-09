@@ -27,6 +27,8 @@ public class GhostManager {
 
     private GameMode gameMode;
 
+    private int levelNum;
+
     private int eatedDots;
 
     GhostManager(Playfield playfield) {
@@ -37,16 +39,15 @@ public class GhostManager {
         clyde = playfield.getClyde();
 
         waves = new Wave[4];
-
         waves[0] = new Wave(1000 * 11, 1000 * 20);
         waves[1] = new Wave(1000 * 11, 1000 * 20);
         waves[2] = new Wave(1000 * 8, 1000 * 20);
         waves[3] = new Wave(1000 * 8, Long.MAX_VALUE);
 
         waveNum = 0;
+        levelNum = 1;
 
         gameMode = playfield.getGameMode();
-
         waveTimeCounter = 0;
         afkTimer = 0;
     }
@@ -77,10 +78,12 @@ public class GhostManager {
         }
 
         if(!pinky.isInCage() && inky.isInCage() && (eatedDots >= inkyPointsExit || afkTimer > inkyExitTime)) {
+            afkTimer = 0;
             playfield.getInky().startExit();
         }
 
-        if(!inky.isInCage() && clyde.isInCage() && eatedDots >= clydePointsExit) {
+        if(!inky.isInCage() && clyde.isInCage() && (eatedDots >= clydePointsExit || afkTimer > clydeExitTime)) {
+            afkTimer = 0;
             playfield.getClyde().startExit();
         }
 

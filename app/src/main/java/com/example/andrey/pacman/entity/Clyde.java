@@ -30,16 +30,16 @@ public class Clyde extends Ghost {
         else {
             switch (movementDirection) {
                 case RIGHT:
-                    nextPositionX += frameSpeed;
+                    nextPositionX = nextPositionX + frameSpeed;
                     break;
                 case LEFT:
-                    nextPositionX -= frameSpeed;
+                    nextPositionX = nextPositionX - frameSpeed;
                     break;
                 case UP:
-                    nextPositionY -= frameSpeed;
+                    nextPositionY = nextPositionY - frameSpeed;
                     break;
                 case DOWN:
-                    nextPositionY += frameSpeed;
+                    nextPositionY = nextPositionY + frameSpeed;
                     break;
             }
 
