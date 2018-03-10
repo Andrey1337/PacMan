@@ -91,6 +91,15 @@ public abstract class Actor extends Entity{
 		canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, null);
 	}
 
+	boolean isInTonel()
+	{
+		if(y == 13 && (x < 4 || x > map.length - 5))
+		{
+			return true;
+		}
+		return false;
+	}
+
 	public abstract void move(long deltaTime);
 
 	void animate()
@@ -117,14 +126,17 @@ public abstract class Actor extends Entity{
 
 	void checkTunnel()
 	{
-		if(x < -1)
+		if(!isInTonel())
+			return;
+
+		if(x < - 1.5)
 		{
-			x = map.length + 1;
+			x = map.length + 1.5f;
 		}
 
-		if(x > map.length + 1)
+		if(x > map.length + 1.5f)
 		{
-			x = -1;
+			x = -1.5f;
 		}
 
 

@@ -1,6 +1,7 @@
 package com.example.andrey.pacman.entity;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import com.example.andrey.pacman.Direction;
 import com.example.andrey.pacman.GameMode;
@@ -23,7 +24,7 @@ public abstract class Ghost extends Actor {
     boolean isExiting;
 
     private float speedInCage;
-
+    float speedInTonel;
     private boolean touchTheBottom;
 
     Ghost(Playfield playfield, View view, Bitmap bitmap, Point scatterPoint, float x, float y) {
@@ -40,6 +41,7 @@ public abstract class Ghost extends Actor {
         middleCagePositionX = 13.5f;
         middleCagePositionY = (bottomCagePosition + topCagePosition)/2;
 
+        speedInTonel = 0.003f;
         speedInCage = 0.002f;
         frameLengthInMillisecond = 130;
         setSpeed(0.005f);
@@ -169,7 +171,11 @@ public abstract class Ghost extends Actor {
     @Override
     public void move(long deltaTime) {
 
-        float frameSpeed = speed * deltaTime;
+        float frameSpeed = deltaTime;
+        if(isInTonel())
+            frameSpeed *= speedInTonel;
+        else
+            frameSpeed *= speed;
 
         if(inCage)
         {
@@ -181,25 +187,27 @@ public abstract class Ghost extends Actor {
         else {
             switch (movementDirection) {
                 case RIGHT:
-                    nextPositionX = nextPositionX + frameSpeed;
+                    nextPositionX = x + frameSpeed;
                     break;
                 case LEFT:
-                    nextPositionX = nextPositionX - frameSpeed;
+                    nextPositionX = x - frameSpeed;
                     break;
                 case UP:
-                    nextPositionY -= frameSpeed;
+                    nextPositionY = y - frameSpeed;
                     break;
                 case DOWN:
-                    nextPositionY += frameSpeed;
+                    nextPositionY = y + frameSpeed;
                     break;
             }
 
             Point currentPoint = new Point(Math.round(x), Math.round(y));
 
-            if (currentPoint.isEqual(destPoint) || (!isNormalPoint && playfield.getGameMode() == GameMode.CHASE)) {
+            if (currentPoint.isEqual(destPoint)
+                    || (!isNormalPoint && playfield.getGameMode() == GameMode.CHASE)) {
                 choseNextPoint();
                 isNormalPoint = !destPoint.isWall(map);
             }
+
 
             choseDirection(currentPoint, movementDirection);
 
@@ -209,16 +217,17 @@ public abstract class Ghost extends Actor {
         x = nextPositionX;
         y = nextPositionY;
 
+        checkTunnel();
         animate();
     }
 
     abstract void choseNextPoint();
 
     void choseDirection(Point currentPoint, Direction currentDirection) {
-        if (nextDirection != Direction.NONE)
+        if (nextDirection != Direction.NONE || isInTonel())
             return;
 
-        Point nextPoint = new Point(0,0);
+        Point nextPoint = new Point(0, 0);
 
         switch (currentDirection) {
             case RIGHT:
@@ -231,11 +240,15 @@ public abstract class Ghost extends Actor {
                 nextPoint = new Point(currentPoint.x, currentPoint.y - 1);
                 break;
             case DOWN:
-                nextPoint  = new Point(currentPoint.x, currentPoint.y + 1);
+                nextPoint = new Point(currentPoint.x, currentPoint.y + 1);
                 break;
         }
 
-        if(nextPoint.isFork(map, currentDirection))
+        if(nextPoint.isWall(map))
+        {
+            findShortestDirection(currentDirection, currentPoint);
+        }
+        else if(nextPoint.isFork(map, currentDirection))
         {
             findShortestDirection(currentDirection, nextPoint);
         }
@@ -335,8 +348,6 @@ public abstract class Ghost extends Actor {
                 break;
         }
 
-        if(bestDirection == Direction.NONE)
-            nextDirection = movementDirection.getOposite();
-        else nextDirection = bestDirection;
+       nextDirection = bestDirection;
     }
 }

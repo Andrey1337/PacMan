@@ -2,104 +2,104 @@ package com.example.andrey.pacman;
 
 import android.graphics.*;
 
-import android.util.Log;
 import android.view.View;
 import com.example.andrey.pacman.entity.*;
+import com.example.andrey.pacman.entity.Point;
 
 import java.util.ArrayList;
 
 public class Playfield {
 
-    FoodDrawManager foodDrawController;
+	FoodDrawManager foodDrawController;
 
-    private TileSpecification map[][];
+	private TileSpecification map[][];
 
-    private Food foodMap[][];
+	private Food foodMap[][];
 
-    public Bitmap mapTexture;
+	public Bitmap mapTexture;
 
-    public final int MAP_WIDTH;
-    public final int MAP_HEIGHT;
+	public final int MAP_WIDTH;
+	public final int MAP_HEIGHT;
 
-    public final int X_OFFSET;
-    public final int Y_OFFSET;
+	public final int X_OFFSET;
+	public final int Y_OFFSET;
 
-    public final float CELLS_SPACE_PERCENT;
+	public final float CELLS_SPACE_PERCENT;
 
-    public final float scale;
+	public final float scale;
 
-    private int countPoints;
+	private int countPoints;
 
-    private PacmanGame game;
+	private PacmanGame game;
 
-    GameMode gameMode;
+	GameMode gameMode;
 
-    Pacman pacman;
-    private ArrayList<Ghost> ghosts;
+	Pacman pacman;
+	private ArrayList<Ghost> ghosts;
 
-    private Pinky pinky;
-    private Inky inky;
-    private Blinky blinky;
-    private Clyde clyde;
+	private Pinky pinky;
+	private Inky inky;
+	private Blinky blinky;
+	private Clyde clyde;
 
-    GameView view;
+	GameView view;
 
 
-    Playfield(PacmanGame game, GameView view) {
-        gameMode = GameMode.SCATTER;
+	Playfield(PacmanGame game, GameView view) {
+		gameMode = GameMode.SCATTER;
 
-        this.game = game;
+		this.game = game;
 
-        this.view = view;
-        MAP_WIDTH = 224;
-        MAP_HEIGHT = 248;
+		this.view = view;
+		MAP_WIDTH = 224;
+		MAP_HEIGHT = 248;
 
-        int X_OFFSET = 3;
-        int Y_OFFSET = 11;
+		int X_OFFSET = 3;
+		int Y_OFFSET = 11;
 
-        int CELLS_SPACE = 8;
+		int CELLS_SPACE = 8;
 
-        mapTexture = BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_map);
+		mapTexture = BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_map);
 
-        scale = (float) view.getContext().getResources().getDisplayMetrics().widthPixels / (float) mapTexture.getWidth();
+		scale = (float) view.getContext().getResources().getDisplayMetrics().widthPixels / (float) mapTexture.getWidth();
 
-        mapTexture = Bitmap.createScaledBitmap(mapTexture, (int) (mapTexture.getWidth() * scale),
-                (int) (mapTexture.getHeight() * scale), false);
+		mapTexture = Bitmap.createScaledBitmap(mapTexture, (int) (mapTexture.getWidth() * scale),
+				(int) (mapTexture.getHeight() * scale), false);
 
-        this.X_OFFSET = (int) ((float) X_OFFSET / (float) MAP_WIDTH * mapTexture.getWidth());
-        this.Y_OFFSET = (int) ((float) Y_OFFSET / (float) MAP_HEIGHT * mapTexture.getHeight());
-        this.CELLS_SPACE_PERCENT = (float) CELLS_SPACE / (float) MAP_WIDTH;
+		this.X_OFFSET = (int) ((float) X_OFFSET / (float) MAP_WIDTH * mapTexture.getWidth());
+		this.Y_OFFSET = (int) ((float) Y_OFFSET / (float) MAP_HEIGHT * mapTexture.getHeight());
+		this.CELLS_SPACE_PERCENT = (float) CELLS_SPACE / (float) MAP_WIDTH;
 
-        map = new TileSpecification[28][29];
-        foodMap = new Food[28][29];
-        initMap();
+		map = new TileSpecification[28][29];
+		foodMap = new Food[28][29];
+		initMap();
 
-        initCharacters(view);
+		initCharacters(view);
 
-        foodDrawController = new FoodDrawManager(view, this);
-    }
+		foodDrawController = new FoodDrawManager(view, this);
+	}
 
-    public int getCountPoints()
-    {
-        return countPoints;
-    }
+	public int getCountPoints()
+	{
+		return countPoints;
+	}
 
 	public void restartGame()
-    {
-        initMap();
-        initCharacters(view);
-    }
+	{
+		initMap();
+		initCharacters(view);
+	}
 
-    public void nextLevel()
+	public void nextLevel()
 	{
 		changeGameMode(GameMode.SCATTER);
 		initCharacters(view);
 		initMap();
 	}
 
-    public Pinky getPinky() {
-        return pinky;
-    }
+	public Pinky getPinky() {
+		return pinky;
+	}
 
 	public Inky getInky() {
 		return inky;
@@ -114,10 +114,10 @@ public class Playfield {
 	}
 
 	public GameMode getGameMode() {
-        return gameMode;
-    }
+		return gameMode;
+	}
 
-    public void changeGameMode(GameMode newGameMode)
+	public void changeGameMode(GameMode newGameMode)
 	{
 		gameMode = newGameMode;
 
@@ -126,45 +126,57 @@ public class Playfield {
 
 	}
 
-    public void initCharacters(View view)
+	public void initCharacters(View view)
 	{
 		pacman = new Pacman(this, view,13.5f,22);
 		ghosts = new ArrayList<>();
 
 		blinky = new Blinky(this, view,13.5f, 10);
-        pinky = new Pinky(this, view,13.5f, 13);
-        inky = new Inky(this, view, 11.5f,13);
-        clyde = new Clyde(this,view,15.5f, 13);
+		pinky = new Pinky(this, view,13.5f, 13);
+		inky = new Inky(this, view, 11.5f,13);
+		clyde = new Clyde(this,view,15.5f, 13);
+
         ghosts.add(blinky);
         ghosts.add(pinky);
-        ghosts.add(inky);
-        ghosts.add(clyde);
-    }
+		ghosts.add(inky);
+		ghosts.add(clyde);
+	}
 
 	public void update(long deltaTime)
 	{
 		pacman.move(deltaTime);
 
 		for (Ghost ghost : ghosts)
-        {
-            ghost.move(deltaTime);
-        }
+		{
+			ghost.move(deltaTime);
+		}
 
 		pacmanFoodIntersect();
 		charactersIntersect();
-
+        foodDrawController.onUpdate(deltaTime);
 	}
 
 	private void pacmanFoodIntersect()
 	{
-		int arrayPosX = Math.round(pacman.getX());
-		int arrayPosY = Math.round(pacman.getY());
+        Point pacmanPoint = new Point(Math.round(pacman.getX()),Math.round(pacman.getY()));
 
-		if(foodMap[arrayPosX][arrayPosY] == Food.Point)
+		if(pacmanPoint.isWall(map))
+			return;
+		if(foodMap[pacmanPoint.x][pacmanPoint.y] == Food.POINT)
 		{
-			foodMap[arrayPosX][arrayPosY] = null;
+			foodMap[pacmanPoint.x][pacmanPoint.y] = null;
 			game.eatPoint();
 		}
+
+		if(foodMap[pacmanPoint.x][pacmanPoint.y] == Food.ENERGIZER)
+		{
+			foodMap[pacmanPoint.x][pacmanPoint.y] = null;
+			game.eatPoint();
+			changeGameMode(GameMode.FRIGHTENED);
+		}
+
+
+
 	}
 
 	private void charactersIntersect()
@@ -200,7 +212,7 @@ public class Playfield {
 	public void onDraw(Canvas canvas)
 	{
 		canvas.drawBitmap(mapTexture,0,0, null);
-        foodDrawController.onDraw(canvas);
+		foodDrawController.onDraw(canvas);
 
 		pacman.onDraw(canvas);
 
@@ -216,10 +228,10 @@ public class Playfield {
 		for(int i = startPointX; i < endPointX; i++)
 		{
 			map[i][y] = TileSpecification.PATH;
-			if(haveFood && foodMap[i][y] != Food.Point)
+			if(haveFood && foodMap[i][y] != Food.POINT)
 			{
 				countPoints++;
-				foodMap[i][y] = Food.Point;
+				foodMap[i][y] = Food.POINT;
 			}
 		}
 	}
@@ -229,10 +241,10 @@ public class Playfield {
 		for(int i = startPointY; i < endPointY; i++)
 		{
 			map[x][i] = TileSpecification.PATH;
-			if(haveFood && foodMap[x][i] != Food.Point)
+			if(haveFood && foodMap[x][i] != Food.POINT)
 			{
 				countPoints++;
-				foodMap[x][i] = Food.Point;
+				foodMap[x][i] = Food.POINT;
 			}
 		}
 	}
@@ -248,10 +260,16 @@ public class Playfield {
 		}
 
 		createPaths();
-		map[11][10] = TileSpecification.SPECIFIC;
-		map[14][10] = TileSpecification.SPECIFIC;
-		map[11][22]= TileSpecification.SPECIFIC;
-		map[14][22]= TileSpecification.SPECIFIC;
+		map[12][10] = TileSpecification.SPECIFIC;
+		map[15][10] = TileSpecification.SPECIFIC;
+		map[12][22]= TileSpecification.SPECIFIC;
+		map[15][22]= TileSpecification.SPECIFIC;
+
+		foodMap[1][2] = Food.ENERGIZER;
+        foodMap[1][22] = Food.ENERGIZER;
+		foodMap[26][2] = Food.ENERGIZER;
+		foodMap[26][22] = Food.ENERGIZER;
+
 	}
 
 	private void createPaths()

@@ -9,7 +9,7 @@ import com.example.andrey.pacman.R;
 public class Pinky extends Ghost {
 
     public Pinky(Playfield playfield, View view, float x, float y) {
-        super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.mipmap.pinky_move), new Point(0, -3), x, y);
+        super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.mipmap.pinky_move), new Point(3, -3), x, y);
         inCage = true;
         movementDirection = Direction.UP;
         nextDirection = Direction.NONE;

@@ -32,7 +32,7 @@ public class Pacman extends Actor{
             case NONE:
                 break;
             case UP:
-                if(y - frameSpeed < 0 || new Point(currentPoint.x, currentPoint.y - 1).isWall(map) && y - frameSpeed <= currentPoint.y)
+                if(new Point(currentPoint.x, currentPoint.y - 1).isWall(map) && y - frameSpeed <= currentPoint.y)
                 {
                     movementDirection = Direction.NONE;
                     nextPositionY = currentPoint.y;
@@ -42,7 +42,7 @@ public class Pacman extends Actor{
                 }
                 break;
             case DOWN:
-                if(y + frameSpeed >= map[0].length - 1 || new Point(currentPoint.x, currentPoint.y + 1).isWall(map) && y + frameSpeed >= currentPoint.y)
+                if(new Point(currentPoint.x, currentPoint.y + 1).isWall(map) && y + frameSpeed >= currentPoint.y)
                 {
                     movementDirection = Direction.NONE;
                     nextPositionY = currentPoint.y;
@@ -52,7 +52,7 @@ public class Pacman extends Actor{
                 }
                 break;
             case LEFT:
-                if(new Point(currentPoint.x - 1, currentPoint.y).isWall(map) && x - frameSpeed <= currentPoint.x)
+                if(new Point(currentPoint.x - 1, currentPoint.y).isWall(map) && x - frameSpeed <= currentPoint.x && !isInTonel())
                 {
                     movementDirection = Direction.NONE;
                     nextPositionX = currentPoint.x;
@@ -62,7 +62,7 @@ public class Pacman extends Actor{
                 }
                 break;
             case RIGHT:
-                if(x + frameSpeed >= map.length - 1 || new Point(currentPoint.x + 1, currentPoint.y).isWall(map) && x + frameSpeed >= currentPoint.x)
+                if(new Point(currentPoint.x + 1, currentPoint.y).isWall(map) && x + frameSpeed >= currentPoint.x && !isInTonel())
                 {
                     movementDirection = Direction.NONE;
                     nextPositionX = currentPoint.x;

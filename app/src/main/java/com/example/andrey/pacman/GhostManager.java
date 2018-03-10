@@ -39,7 +39,7 @@ public class GhostManager {
         clyde = playfield.getClyde();
 
         waves = new Wave[4];
-        waves[0] = new Wave(1000 * 110, 1000 * 20);
+        waves[0] = new Wave(1000 * 11, 1000 * 20);
         waves[1] = new Wave(1000 * 11, 1000 * 20);
         waves[2] = new Wave(1000 * 8, 1000 * 20);
         waves[3] = new Wave(1000 * 8, Long.MAX_VALUE);

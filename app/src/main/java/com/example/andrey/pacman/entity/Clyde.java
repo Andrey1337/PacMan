@@ -10,7 +10,7 @@ import com.example.andrey.pacman.R;
 public class Clyde extends Ghost {
 
     public Clyde(Playfield playfield, View view, float x, float y) {
-        super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.mipmap.clyde_move), new Point(-1, 31), x, y);
+        super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.mipmap.clyde_move), new Point(0, 31), x, y);
         inCage = true;
         movementDirection = Direction.DOWN;
         nextDirection = Direction.NONE;
@@ -18,7 +18,12 @@ public class Clyde extends Ghost {
 
     @Override
     public void move(long deltaTime) {
-        float frameSpeed = speed * deltaTime;
+        float frameSpeed = deltaTime;
+        if(isInTonel())
+            frameSpeed *= speedInTonel;
+        else
+            frameSpeed *= speed;
+
 
         if(inCage)
         {
@@ -30,16 +35,16 @@ public class Clyde extends Ghost {
         else {
             switch (movementDirection) {
                 case RIGHT:
-                    nextPositionX = nextPositionX + frameSpeed;
+                    nextPositionX = x + frameSpeed;
                     break;
                 case LEFT:
-                    nextPositionX = nextPositionX - frameSpeed;
+                    nextPositionX = x - frameSpeed;
                     break;
                 case UP:
-                    nextPositionY = nextPositionY - frameSpeed;
+                    nextPositionY = y - frameSpeed;
                     break;
                 case DOWN:
-                    nextPositionY = nextPositionY + frameSpeed;
+                    nextPositionY = y + frameSpeed;
                     break;
             }
 
@@ -54,7 +59,7 @@ public class Clyde extends Ghost {
                 }
             }
 
-            this.choseDirection(currentPoint, movementDirection);
+            choseDirection(currentPoint, movementDirection);
 
             this.checkNextDirection();
         }
@@ -62,6 +67,7 @@ public class Clyde extends Ghost {
         x = nextPositionX;
         y = nextPositionY;
 
+        checkTunnel();
         animate();
     }
 
