@@ -1,6 +1,8 @@
 package com.example.andrey.pacman.entity;
 
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.view.View;
 import com.example.andrey.pacman.Direction;
 import com.example.andrey.pacman.Playfield;
@@ -79,7 +81,20 @@ public class Pacman extends Actor{
         y = nextPositionY;
 
         checkTunnel();
-        animate();
+        animate(deltaTime);
+    }
+
+
+    @Override
+    public void onDraw(Canvas canvas)
+    {
+        float left = playfield.X_OFFSET + x * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_X_OFFSET;
+
+        float top = playfield.Y_OFFSET + y * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_Y_OFFSET;
+
+        RectF whereToDraw = new RectF(left, top, left + actorWidth, top + actorHeight);
+
+        canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, null);
     }
 }
 

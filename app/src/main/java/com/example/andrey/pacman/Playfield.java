@@ -122,7 +122,7 @@ public class Playfield {
 		gameMode = newGameMode;
 
 		for(Ghost ghost : ghosts)
-			ghost.changeMode(gameMode);
+			ghost.changeMode(this.gameMode, newGameMode);
 
 	}
 

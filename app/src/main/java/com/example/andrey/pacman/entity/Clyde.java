@@ -16,63 +16,23 @@ public class Clyde extends Ghost {
         nextDirection = Direction.NONE;
     }
 
-    @Override
-    public void move(long deltaTime) {
-        float frameSpeed = deltaTime;
-        if(isInTonel())
-            frameSpeed *= speedInTonel;
-        else
-            frameSpeed *= speed;
-
-
-        if(inCage)
-        {
-            if(!isExiting)
-                moveInCage(deltaTime);
-            else
-                exitFromCage(deltaTime);
-        }
-        else {
-            switch (movementDirection) {
-                case RIGHT:
-                    nextPositionX = x + frameSpeed;
-                    break;
-                case LEFT:
-                    nextPositionX = x - frameSpeed;
-                    break;
-                case UP:
-                    nextPositionY = y - frameSpeed;
-                    break;
-                case DOWN:
-                    nextPositionY = y + frameSpeed;
-                    break;
-            }
-
-            Point currentPoint = new Point(Math.round(x), Math.round(y));
-            Point pacmanPoint = new Point(Math.round(playfield.getPacman().getX()),Math.round(playfield.getPacman().getY()));
-
-            if(playfield.getGameMode() == GameMode.CHASE) {
-                if (currentPoint.distance(pacmanPoint) > 8) {
-                    choseNextPoint();
-                } else {
-                    destPoint = scatterPoint;
-                }
-            }
-
-            choseDirection(currentPoint, movementDirection);
-
-            this.checkNextDirection();
-        }
-
-        x = nextPositionX;
-        y = nextPositionY;
-
-        checkTunnel();
-        animate();
-    }
 
     @Override
     void choseNextPoint() {
         destPoint = new Point(Math.round(playfield.getPacman().getX()),Math.round(playfield.getPacman().getY()));
+    }
+
+    @Override
+    void ghostLogic() {
+        Point currentPoint = new Point(Math.round(x), Math.round(y));
+        Point pacmanPoint = new Point(Math.round(playfield.getPacman().getX()),Math.round(playfield.getPacman().getY()));
+
+        if(playfield.getGameMode() == GameMode.CHASE) {
+            if (currentPoint.distance(pacmanPoint) > 8) {
+                choseNextPoint();
+            } else {
+                destPoint = scatterPoint;
+            }
+        }
     }
 }

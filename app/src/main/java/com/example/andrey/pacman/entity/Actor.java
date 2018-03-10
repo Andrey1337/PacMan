@@ -10,16 +10,15 @@ import com.example.andrey.pacman.TileSpecification;
 
 public abstract class Actor extends Entity{
 
-	private int currentFrame = 0;
-	private long lastFrameChangeTime = 0;
+	int currentFrame = 0;
 	int frameLengthInMillisecond;
 
-	private int frameWidth, frameHeight;
+	int frameWidth, frameHeight;
 
-	private int frameCount = 2;
+	int frameCount = 2;
     private int framesMovesCount = 4;
 
-	private Rect frameToDraw;
+    Rect frameToDraw;
 
 	Playfield playfield;
 
@@ -34,10 +33,11 @@ public abstract class Actor extends Entity{
 	float nextPositionX;
 	float nextPositionY;
 
-	private final int ACTOR_X_OFFSET;
-	private final int ACTOR_Y_OFFSET;
+	final int ACTOR_X_OFFSET;
+	final int ACTOR_Y_OFFSET;
 
-	private int actorWidth,actorHeight;
+	int actorWidth,actorHeight;
+
 
 	Actor(Playfield playfield, Bitmap bitmap, float x, float y, float actorXOffset, float actorYOffset) {
 		super(x, y);
@@ -52,8 +52,8 @@ public abstract class Actor extends Entity{
 
         this.bitmap  = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount, frameHeight * framesMovesCount,false);
 
-        actorWidth = (int)((float)bitmap.getWidth() * playfield.scale / (float)frameCount);
-        actorHeight = (int)((float)bitmap.getHeight() * playfield.scale / (float)framesMovesCount);
+		actorWidth = (int)((float)bitmap.getWidth() * playfield.scale / (float)frameCount);
+		actorHeight = (int)((float)bitmap.getHeight() * playfield.scale / (float)framesMovesCount);
 
 		nextPositionX = x;
 		nextPositionY = y;
@@ -65,8 +65,8 @@ public abstract class Actor extends Entity{
 		ACTOR_X_OFFSET = (int)(actorXOffset / (float)playfield.MAP_WIDTH * playfield.mapTexture.getWidth());
 		ACTOR_Y_OFFSET = (int)(actorYOffset / (float)playfield.MAP_HEIGHT * playfield.mapTexture.getHeight());
 
-        map = playfield.getMap();
-	}	
+		map = playfield.getMap();
+	}
 
 
 	public void setRequestDirection(Direction direction)
@@ -79,17 +79,9 @@ public abstract class Actor extends Entity{
 		this.speed = speed;
 	}
 
-	@Override
-	public void onDraw(Canvas canvas)
-	{
-		float left = playfield.X_OFFSET + x * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_X_OFFSET;
+	public abstract void onDraw(Canvas canvas);
 
-		float top = playfield.Y_OFFSET + y * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_Y_OFFSET;
-
-		RectF whereToDraw = new RectF(left, top, left + actorWidth, top + actorHeight);
-
-		canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, null);
-	}
+	public abstract void move(long deltaTime);
 
 	boolean isInTonel()
 	{
@@ -100,18 +92,17 @@ public abstract class Actor extends Entity{
 		return false;
 	}
 
-	public abstract void move(long deltaTime);
 
-	void animate()
+	long animationTime;
+	void animate(long deltaTime)
 	{
         if(movementDirection == Direction.NONE)
             return;
-		long time = System.currentTimeMillis();
 
-        if (time > lastFrameChangeTime + frameLengthInMillisecond) {
-            lastFrameChangeTime = time;
+        animationTime += deltaTime;
+        if (animationTime > frameLengthInMillisecond) {
             currentFrame++;
-
+            animationTime = 0;
             if (currentFrame >= frameCount) {
                 currentFrame = 0;
             }
@@ -145,7 +136,6 @@ public abstract class Actor extends Entity{
 	float turnCutSpeed;
 	void checkNextDirection()
 	{
-        currentPoint = new Point(Math.round(x), Math.round(y));
 		float nextPositionXWithCut = nextPositionX;
 		float nextPositionYWithCut = nextPositionY;
 		switch (movementDirection)

@@ -1,11 +1,15 @@
 package com.example.andrey.pacman.entity;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.util.Log;
 import android.view.View;
 import com.example.andrey.pacman.Direction;
 import com.example.andrey.pacman.GameMode;
 import com.example.andrey.pacman.Playfield;
+import com.example.andrey.pacman.R;
 
 public abstract class Ghost extends Actor {
 
@@ -21,14 +25,19 @@ public abstract class Ghost extends Actor {
     private float topCagePosition;
     private float middleCagePositionX;
     private float middleCagePositionY;
-    boolean isExiting;
+    private boolean isExiting;
 
     private float speedInCage;
-    float speedInTonel;
+    private float speedInTonel;
     private boolean touchTheBottom;
+
+    private boolean isFrightened;
 
     Ghost(Playfield playfield, View view, Bitmap bitmap, Point scatterPoint, float x, float y) {
         super(playfield, bitmap, x, y, 8, 8);
+
+
+        scaryGhost = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.frightened), frameWidth * 2, frameHeight* 2,false);
 
         this.scatterPoint = scatterPoint;
         destPoint = this.scatterPoint;
@@ -52,7 +61,7 @@ public abstract class Ghost extends Actor {
         isExiting = true;
     }
 
-    void exitFromCage(long deltaTime)
+    private void exitFromCage(long deltaTime)
     {
         float frameSpeed = speedInCage * deltaTime;
 
@@ -114,7 +123,7 @@ public abstract class Ghost extends Actor {
         }
     }
 
-    void moveInCage(long deltaTime)
+    private void moveInCage(long deltaTime)
     {
         float frameSpeed = speedInCage * deltaTime;
 
@@ -142,13 +151,18 @@ public abstract class Ghost extends Actor {
         }
     }
 
-    public void changeMode(GameMode gameMode)
+    public void changeMode(GameMode prevGameMode,GameMode newGameMode)
     {
+        if(newGameMode == GameMode.FRIGHTENED)
+            startFrightened();
+
         if(inCage)
             return;
-        movementDirection = movementDirection.getOposite();
 
-        switch (gameMode)
+        if(prevGameMode != GameMode.FRIGHTENED)
+            movementDirection = movementDirection.getOposite();
+
+        switch (newGameMode)
         {
             case CHASE:
                 choseNextPoint();
@@ -158,10 +172,58 @@ public abstract class Ghost extends Actor {
                 destPoint = scatterPoint;
                 break;
             case FRIGHTENED:
+                startFrightened();
                 break;
         }
 
-        choseDirection(new Point(Math.round(x), Math.round(y)), movementDirection);
+        choseDirection(movementDirection);
+    }
+
+    private void startFrightened()
+    {
+        isFrightened = true;
+    }
+
+    @Override
+    void animate(long deltaTime) {
+
+        if(movementDirection == Direction.NONE)
+            return;
+
+        animationTime += deltaTime;
+        if (animationTime > frameLengthInMillisecond) {
+            currentFrame++;
+            animationTime = 0;
+            if (currentFrame >= frameCount) {
+                currentFrame = 0;
+            }
+        }
+
+        if(!isFrightened) {
+            frameToDraw.left = currentFrame * frameWidth;
+            frameToDraw.right = frameToDraw.left + frameWidth;
+
+            frameToDraw.top = movementDirection.getValue() * frameHeight;
+            frameToDraw.bottom = frameToDraw.top + frameHeight;
+        }
+        else {
+            frameToDraw.left = currentFrame * frameWidth;
+            frameToDraw.right = frameToDraw.left + frameWidth;
+            frameToDraw.top = 0;
+            frameToDraw.bottom = frameToDraw.top + frameHeight;
+        }
+    }
+
+    @Override
+    public void onDraw(Canvas canvas)
+    {
+        float left = playfield.X_OFFSET + x * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_X_OFFSET;
+
+        float top = playfield.Y_OFFSET + y * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_Y_OFFSET;
+
+        RectF whereToDraw = new RectF(left, top, left + actorWidth, top + actorHeight);
+
+        canvas.drawBitmap(isFrightened ? scaryGhost: bitmap, frameToDraw, whereToDraw, null);
     }
 
     public boolean isInCage() {
@@ -184,7 +246,9 @@ public abstract class Ghost extends Actor {
             else
                 exitFromCage(deltaTime);
         }
-        else {
+        else
+        {
+            currentPoint = new Point(Math.round(x), Math.round(y));
             switch (movementDirection) {
                 case RIGHT:
                     nextPositionX = x + frameSpeed;
@@ -200,17 +264,9 @@ public abstract class Ghost extends Actor {
                     break;
             }
 
-            Point currentPoint = new Point(Math.round(x), Math.round(y));
+            ghostLogic();
 
-            if (currentPoint.isEqual(destPoint)
-                    || (!isNormalPoint && playfield.getGameMode() == GameMode.CHASE)) {
-                choseNextPoint();
-                isNormalPoint = !destPoint.isWall(map);
-            }
-
-
-            choseDirection(currentPoint, movementDirection);
-
+            choseDirection( movementDirection);
             this.checkNextDirection();
         }
 
@@ -218,12 +274,24 @@ public abstract class Ghost extends Actor {
         y = nextPositionY;
 
         checkTunnel();
-        animate();
+        animate(deltaTime);
     }
+
+    void ghostLogic()
+    {
+        Point currentPoint = new Point(Math.round(x), Math.round(y));
+        if (currentPoint.isEqual(destPoint) || (!isNormalPoint && playfield.getGameMode() == GameMode.CHASE)) {
+            choseNextPoint();
+            isNormalPoint = !destPoint.isWall(map);
+        }
+
+    }
+
+
 
     abstract void choseNextPoint();
 
-    void choseDirection(Point currentPoint, Direction currentDirection) {
+    private void choseDirection(Direction currentDirection) {
         if (nextDirection != Direction.NONE || isInTonel())
             return;
 
