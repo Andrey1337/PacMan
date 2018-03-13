@@ -92,7 +92,6 @@ public class Playfield {
 
 	public void nextLevel()
 	{
-		changeGameMode(GameMode.SCATTER);
 		initCharacters(view);
 		initMap();
 	}
@@ -113,18 +112,14 @@ public class Playfield {
 		return clyde;
 	}
 
+	public void setGameMode(GameMode gameMode) {
+		this.gameMode = gameMode;
+	}
+
 	public GameMode getGameMode() {
 		return gameMode;
 	}
 
-	public void changeGameMode(GameMode newGameMode)
-	{
-		gameMode = newGameMode;
-
-		for(Ghost ghost : ghosts)
-			ghost.changeMode(this.gameMode, newGameMode);
-
-	}
 
 	public void initCharacters(View view)
 	{
@@ -162,20 +157,11 @@ public class Playfield {
 
 		if(pacmanPoint.isWall(map))
 			return;
-		if(foodMap[pacmanPoint.x][pacmanPoint.y] == Food.POINT)
-		{
+
+		if(foodMap[pacmanPoint.x][pacmanPoint.y] != null) {
+			game.eatPoint(foodMap[pacmanPoint.x][pacmanPoint.y]);
 			foodMap[pacmanPoint.x][pacmanPoint.y] = null;
-			game.eatPoint();
 		}
-
-		if(foodMap[pacmanPoint.x][pacmanPoint.y] == Food.ENERGIZER)
-		{
-			foodMap[pacmanPoint.x][pacmanPoint.y] = null;
-			game.eatPoint();
-			changeGameMode(GameMode.FRIGHTENED);
-		}
-
-
 
 	}
 
@@ -184,9 +170,14 @@ public class Playfield {
 		for(Ghost ghost : ghosts) {
 			if(Math.abs(pacman.getX() - ghost.getX()) <= 0.8f && Math.abs(pacman.getY() - ghost.getY()) <= 0.8f)
 			{
-				game.killPacman();
-			}
+				if(gameMode != GameMode.FRIGHTENED && !ghost.isEyes())
+					game.killPacman();
 
+				/*if(!ghost.isEyes())
+				{
+					ghost.beEaten();
+				}*/
+			}
 		}
 	}
 
@@ -205,9 +196,6 @@ public class Playfield {
 		return pacman;
 	}
 
-	public ArrayList<Ghost> getGhosts() {
-		return ghosts;
-	}
 
 	public void onDraw(Canvas canvas)
 	{
@@ -221,6 +209,10 @@ public class Playfield {
 		{
 			ghost.onDraw(canvas);
 		}
+	}
+
+	public ArrayList<Ghost> getGhosts() {
+		return ghosts;
 	}
 
 	private void createHorizontalPath(int startPointX, int endPointX, int y, boolean haveFood)

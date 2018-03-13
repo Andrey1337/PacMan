@@ -14,6 +14,15 @@ public class Point {
         this.y = y;
     }
 
+    public float floatX;
+    public float floatY;
+
+    public Point(float x, float y)
+    {
+        floatX = x;
+        floatY = y;
+    }
+
     public double distance(Point point) {
         return Math.sqrt(Math.pow(this.x - point.x, 2) + Math.pow(this.y - point.y, 2));
     }
@@ -36,8 +45,6 @@ public class Point {
 
     public boolean isFork(TileSpecification map[][], Direction currentDirection)
     {
-
-
         if(currentDirection == Direction.RIGHT || currentDirection == Direction.LEFT)
         {
             Point newPoint = new Point(x, y + 1);
@@ -55,7 +62,7 @@ public class Point {
             }
         }
 
-        if(currentDirection == Direction.UP || currentDirection == Direction.DOWN)
+        if(currentDirection == Direction.UP || currentDirection == Direction.DOWN )
         {
             Point newPoint = new Point(x - 1, y);
             if(!newPoint.isWall(map))
@@ -70,6 +77,7 @@ public class Point {
                 return true;
             }
         }
+
         return false;
     }
 

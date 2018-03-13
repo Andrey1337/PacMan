@@ -2,6 +2,7 @@ package com.example.andrey.pacman;
 
 import android.graphics.Canvas;
 import android.view.MotionEvent;
+import com.example.andrey.pacman.entity.Food;
 import com.example.andrey.pacman.entity.Pacman;
 
 import java.util.Date;
@@ -45,23 +46,28 @@ public class PacmanGame{
 	{
 		playfield.nextLevel();
 		countPoints = playfield.getCountPoints();
-		ghostModeController = new GhostManager(playfield);
+		ghostModeController.nextLevel();
 
 	}
+
 
 	public void killPacman()
 	{
 		pacmanLives--;
-
 		playfield.initCharacters(view);
 		ghostModeController.pacmanDied();
-
 	}
 
-	public void eatPoint()
+
+	public void eatPoint(Food food)
 	{
 		countPoints--;
         ghostModeController.increaseEatenDots();
+
+        if(food == Food.ENERGIZER)
+        {
+            ghostModeController.startFrightened();
+        }
 
 		if(countPoints <= 0)
 		{

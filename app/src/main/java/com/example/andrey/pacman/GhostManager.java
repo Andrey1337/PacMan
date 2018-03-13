@@ -1,7 +1,9 @@
 package com.example.andrey.pacman;
 
 
+import android.util.Log;
 import com.example.andrey.pacman.entity.Clyde;
+import com.example.andrey.pacman.entity.Ghost;
 import com.example.andrey.pacman.entity.Inky;
 import com.example.andrey.pacman.entity.Pinky;
 
@@ -25,11 +27,15 @@ public class GhostManager {
 
     private Wave[] waves;
 
+    private GameMode prevGameMode;
     private GameMode gameMode;
 
     private int levelNum;
 
     private int eatedDots;
+
+    private long frightenedTimer;
+    private long frightenedTime = 8 * 1000;
 
     GhostManager(Playfield playfield) {
         this.playfield = playfield;
@@ -48,6 +54,7 @@ public class GhostManager {
         levelNum = 1;
 
         gameMode = playfield.getGameMode();
+        prevGameMode = gameMode;
         waveTimeCounter = 0;
         afkTimer = 0;
     }
@@ -62,16 +69,38 @@ public class GhostManager {
         clyde = playfield.getClyde();
     }
 
+    public void nextLevel()
+    {
+        eatedDots = 0;
+        waveNum = 0;
+        frightenedTimer = 0;
+        waveTimeCounter = 0;
+        afkTimer = 0;
+
+        changeGameMode(GameMode.CHASE);
+    }
+
     public void increaseEatenDots()
     {
         afkTimer = 0;
         eatedDots++;
     }
 
+
+
     public void update(long deltaTime) {
 
-        waveTimeCounter += deltaTime;
-        afkTimer += deltaTime;
+        Log.i("GAME MODE", prevGameMode.toString());
+
+        if(gameMode != GameMode.FRIGHTENED) {
+            waveTimeCounter += deltaTime;
+            afkTimer += deltaTime;
+        }
+        else {
+            frightenedTimer += deltaTime;
+            if(frightenedTimer >= frightenedTime)
+                changeGameMode(prevGameMode);
+        }
 
         if(pinky.isInCage()) {
             playfield.getPinky().startExit();
@@ -87,26 +116,51 @@ public class GhostManager {
             playfield.getClyde().startExit();
         }
 
-        if (gameMode == GameMode.SCATTER && waveTimeCounter > waves[waveNum].getScatterTime() || (gameMode == GameMode.CHASE && waveTimeCounter > waves[waveNum].getChaseTime())) {
+        if (gameMode == GameMode.SCATTER && waveTimeCounter > waves[waveNum].getScatterTime()) {
             waveTimeCounter = 0;
-            changeGameMode();
+            prevGameMode = GameMode.SCATTER;
+            changeGameMode(GameMode.CHASE);
+        }
+
+        if(gameMode == GameMode.CHASE && waveTimeCounter > waves[waveNum].getChaseTime()) {
+            waveTimeCounter = 0;
+            prevGameMode = GameMode.CHASE;
+            changeGameMode(GameMode.SCATTER);
         }
     }
 
-    private void changeGameMode()
+    public void startFrightened() {
+        changeGameMode(GameMode.FRIGHTENED);
+    }
+
+    private void changeGameMode(GameMode newGameMode)
     {
-        if(gameMode == GameMode.SCATTER)
+        switch (newGameMode)
         {
-            gameMode = GameMode.CHASE;
+            case CHASE:
+                break;
+            case SCATTER:
+                waveNum++;
+                break;
+            case FRIGHTENED:
+                frightenedTimer = 0;
+                break;
         }
-        else
-        {
-             gameMode = GameMode.SCATTER;
-             waveNum++;
-        }
+        gameMode = newGameMode;
 
-        playfield.changeGameMode(gameMode);
+        changeGameModeToGhosts(gameMode);
+
+        playfield.setGameMode(newGameMode);
     }
+
+    private void changeGameModeToGhosts(GameMode newGameMode)
+    {
+        for(Ghost ghost : playfield.getGhosts())
+        {
+            ghost.changeMode(newGameMode);
+        }
+    }
+
 
     private class Wave
     {

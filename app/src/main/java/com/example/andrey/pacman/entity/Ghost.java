@@ -29,9 +29,13 @@ public abstract class Ghost extends Actor {
 
     private float speedInCage;
     private float speedInTonel;
+    private float speedInFrightened;
+
     private boolean touchTheBottom;
 
     private boolean isFrightened;
+
+    private boolean isEyes;
 
     Ghost(Playfield playfield, View view, Bitmap bitmap, Point scatterPoint, float x, float y) {
         super(playfield, bitmap, x, y, 8, 8);
@@ -52,7 +56,8 @@ public abstract class Ghost extends Actor {
 
         speedInTonel = 0.003f;
         speedInCage = 0.002f;
-        frameLengthInMillisecond = 130;
+        speedInFrightened = 0.003f;
+        frameLengthInMillisecond = 110;
         setSpeed(0.005f);
     }
 
@@ -151,37 +156,36 @@ public abstract class Ghost extends Actor {
         }
     }
 
-    public void changeMode(GameMode prevGameMode,GameMode newGameMode)
+    public boolean isEyes() {
+        return isEyes;
+    }
+
+    public void changeMode(GameMode newGameMode)
     {
-        if(newGameMode == GameMode.FRIGHTENED)
-            startFrightened();
+        isFrightened = newGameMode == GameMode.FRIGHTENED;
 
         if(inCage)
             return;
 
-        if(prevGameMode != GameMode.FRIGHTENED)
+        /*if(prevGameMode != GameMode.FRIGHTENED) {
             movementDirection = movementDirection.getOposite();
-
+            nextDirection = Direction.NONE;
+        }*/
         switch (newGameMode)
         {
             case CHASE:
                 choseNextPoint();
                 isNormalPoint = !destPoint.isWall(map);
+                isFrightened = false;
                 break;
             case SCATTER:
                 destPoint = scatterPoint;
+                isFrightened = false;
                 break;
-            case FRIGHTENED:
-                startFrightened();
-                break;
+
         }
 
         choseDirection(movementDirection);
-    }
-
-    private void startFrightened()
-    {
-        isFrightened = true;
     }
 
     @Override
@@ -234,7 +238,9 @@ public abstract class Ghost extends Actor {
     public void move(long deltaTime) {
 
         float frameSpeed = deltaTime;
-        if(isInTonel())
+        if(isFrightened)
+            frameSpeed *= speedInFrightened;
+        else if(isInTonel())
             frameSpeed *= speedInTonel;
         else
             frameSpeed *= speed;
@@ -287,7 +293,14 @@ public abstract class Ghost extends Actor {
 
     }
 
-
+    public void beEaten()
+    {
+        isEyes = true;
+        isFrightened = false;
+        destPoint = new Point(13, 10);
+        movementDirection = Direction.NONE;
+        nextDirection = Direction.NONE;
+    }
 
     abstract void choseNextPoint();
 
@@ -309,6 +322,9 @@ public abstract class Ghost extends Actor {
                 break;
             case DOWN:
                 nextPoint = new Point(currentPoint.x, currentPoint.y + 1);
+                break;
+            case NONE:
+                nextPoint = new Point(currentPoint.x, currentPoint.y);
                 break;
         }
 
@@ -413,6 +429,32 @@ public abstract class Ghost extends Actor {
                 }
                 break;
             case NONE:
+                minPoint = new Point(point.x - 1, point.y);
+                if (!minPoint.isWall(map) && minPoint.distance(destPoint) < minDistance) {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.LEFT;
+                }
+
+                minPoint = new Point(point.x + 1, point.y );
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.RIGHT;
+                }
+
+                minPoint = new Point(point.x, point.y + 1);
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    minDistance = minPoint.distance(destPoint);
+                    bestDirection = Direction.DOWN;
+                }
+
+                minPoint = new Point(point.x, point.y - 1);
+                if(!minPoint.isWall(map) &&  minPoint.distance(destPoint) < minDistance)
+                {
+                    bestDirection = Direction.UP;
+                }
+
                 break;
         }
 
