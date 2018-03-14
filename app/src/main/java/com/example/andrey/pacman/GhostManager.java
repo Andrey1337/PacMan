@@ -27,7 +27,8 @@ public class GhostManager {
 
     private Wave[] waves;
 
-    private GameMode prevGameMode;
+    private GameMode safePrevMode;
+    private GameMode prevMode;
     private GameMode gameMode;
 
     private int levelNum;
@@ -36,9 +37,14 @@ public class GhostManager {
 
     private long frightenedTimer;
     private long frightenedTime = 8 * 1000;
+    private long startPingingTime;
+    private long pingingTime;
+    private long pingingTimer = 0;
 
     GhostManager(Playfield playfield) {
         this.playfield = playfield;
+        pingingTime = 300;
+        startPingingTime = frightenedTime - pingingTime * 10;
 
         pinky = playfield.getPinky();
         inky = playfield.getInky();
@@ -54,7 +60,8 @@ public class GhostManager {
         levelNum = 1;
 
         gameMode = playfield.getGameMode();
-        prevGameMode = gameMode;
+        safePrevMode = gameMode;
+        prevMode = gameMode;
         waveTimeCounter = 0;
         afkTimer = 0;
     }
@@ -86,11 +93,14 @@ public class GhostManager {
         eatedDots++;
     }
 
-
+    private void ghostPing() {
+        for (Ghost ghost : playfield.getGhosts())
+        {
+            ghost.ping();
+        }
+    }
 
     public void update(long deltaTime) {
-
-        Log.i("GAME MODE", prevGameMode.toString());
 
         if(gameMode != GameMode.FRIGHTENED) {
             waveTimeCounter += deltaTime;
@@ -98,8 +108,19 @@ public class GhostManager {
         }
         else {
             frightenedTimer += deltaTime;
+            if(frightenedTimer >= startPingingTime)
+            {
+                pingingTimer += deltaTime;
+            }
+
+            if(pingingTimer >= pingingTime)
+            {
+                ghostPing();
+                pingingTimer = 0;
+            }
+
             if(frightenedTimer >= frightenedTime)
-                changeGameMode(prevGameMode);
+                changeGameMode(safePrevMode);
         }
 
         if(pinky.isInCage()) {
@@ -118,23 +139,26 @@ public class GhostManager {
 
         if (gameMode == GameMode.SCATTER && waveTimeCounter > waves[waveNum].getScatterTime()) {
             waveTimeCounter = 0;
-            prevGameMode = GameMode.SCATTER;
+            safePrevMode = GameMode.SCATTER;
             changeGameMode(GameMode.CHASE);
         }
 
         if(gameMode == GameMode.CHASE && waveTimeCounter > waves[waveNum].getChaseTime()) {
             waveTimeCounter = 0;
-            prevGameMode = GameMode.CHASE;
+            safePrevMode = GameMode.CHASE;
             changeGameMode(GameMode.SCATTER);
         }
     }
 
     public void startFrightened() {
+        frightenedTimer = 0;
+        pingingTimer = 0;
         changeGameMode(GameMode.FRIGHTENED);
     }
 
     private void changeGameMode(GameMode newGameMode)
     {
+        prevMode = gameMode;
         switch (newGameMode)
         {
             case CHASE:
@@ -148,16 +172,16 @@ public class GhostManager {
         }
         gameMode = newGameMode;
 
-        changeGameModeToGhosts(gameMode);
+        changeGameModeToGhosts(prevMode, gameMode);
 
         playfield.setGameMode(newGameMode);
     }
 
-    private void changeGameModeToGhosts(GameMode newGameMode)
+    private void changeGameModeToGhosts(GameMode prevMode,GameMode newGameMode)
     {
         for(Ghost ghost : playfield.getGhosts())
         {
-            ghost.changeMode(newGameMode);
+            ghost.changeMode(prevMode, newGameMode);
         }
     }
 

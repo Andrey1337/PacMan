@@ -23,7 +23,7 @@ public class PacmanGame{
 	private float touchDY;
 	private float touchStartX;
 	private float touchStartY;
-	private boolean touchCanceld = true;
+	private boolean touchCanceled = true;
 
 	private int countPoints;
 
@@ -110,14 +110,14 @@ public class PacmanGame{
 		touchDX = 0;
 		touchDY = 0;
 		if (e.getPointerCount() == 1) {
-			touchCanceld = false;
+			touchCanceled = false;
 			touchStartX = e.getX(0);
 			touchStartY = e.getY(0);
 		}
 	}
 
 	void handleTouchMove(MotionEvent e) {
-		if (touchCanceld) {
+		if (touchCanceled) {
 			return;
 		}
 
@@ -130,7 +130,7 @@ public class PacmanGame{
 	}
 
 	void handleTouchEnd(MotionEvent e) {
-		if (touchCanceld) {
+		if (touchCanceled) {
 			return;
 		}
 
@@ -148,7 +148,7 @@ public class PacmanGame{
 	private void cancelTouch() {
 		touchStartX = Float.NaN;
 		touchStartY = Float.NaN;
-		touchCanceld = true;
+		touchCanceled = true;
 	}
 
 }

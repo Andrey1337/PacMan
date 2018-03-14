@@ -28,12 +28,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ecb24598-0b74-49b1-b8ad-c5d7dd30e2fe" name="Default" comment="Ghost clyde working good">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/GhostManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/GhostManager.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/PacmanGame.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/PacmanGame.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/Playfield.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/Playfield.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Ghost.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Ghost.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Point.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Point.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -63,7 +61,7 @@
             <file leaf-file-name="Blinky.java" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Blinky.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="260">
+                  <state relative-caret-position="182">
                     <caret line="10" column="115" lean-forward="false" selection-start-line="10" selection-start-column="115" selection-end-line="10" selection-end-column="115" />
                     <folding>
                       <element signature="imports" expanded="true" />
@@ -85,7 +83,7 @@
             <file leaf-file-name="Actor.java" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Actor.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="4706">
+                  <state relative-caret-position="1712">
                     <caret line="193" column="54" lean-forward="false" selection-start-line="193" selection-start-column="54" selection-end-line="193" selection-end-column="54" />
                     <folding />
                   </state>
@@ -95,9 +93,11 @@
             <file leaf-file-name="Playfield.java" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/Playfield.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="-251">
-                    <caret line="111" column="21" lean-forward="false" selection-start-line="111" selection-start-column="21" selection-end-line="111" selection-end-column="21" />
+                  <state relative-caret-position="588">
+                    <caret line="81" column="15" lean-forward="false" selection-start-line="81" selection-start-column="15" selection-end-line="81" selection-end-column="15" />
                     <folding>
+                      <element signature="e#1808#1809#0" expanded="true" />
+                      <element signature="e#1833#1834#0" expanded="true" />
                       <element signature="method#restartGame#0;class#Playfield#0" expanded="false" />
                       <element signature="e#2001#2002#0" expanded="true" />
                       <element signature="e#2020#2021#0" expanded="true" />
@@ -128,15 +128,13 @@
             <file leaf-file-name="GhostManager.java" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/GhostManager.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="1524">
-                    <caret line="145" column="31" lean-forward="false" selection-start-line="145" selection-start-column="16" selection-end-line="145" selection-end-column="31" />
+                  <state relative-caret-position="520">
+                    <caret line="39" column="33" lean-forward="false" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="33" />
                     <folding>
-                      <element signature="e#3403#3404#0" expanded="true" />
-                      <element signature="e#3454#3455#0" expanded="true" />
-                      <element signature="e#4376#4377#0" expanded="true" />
-                      <element signature="e#4416#4417#0" expanded="true" />
-                      <element signature="e#4449#4450#0" expanded="true" />
-                      <element signature="e#4491#4492#0" expanded="true" />
+                      <element signature="e#5085#5086#0" expanded="true" />
+                      <element signature="e#5125#5126#0" expanded="true" />
+                      <element signature="e#5158#5159#0" expanded="true" />
+                      <element signature="e#5200#5201#0" expanded="true" />
                     </folding>
                   </state>
                 </provider>
@@ -145,7 +143,7 @@
             <file leaf-file-name="Pacman.java" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Pacman.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="806">
+                  <state relative-caret-position="962">
                     <caret line="51" column="22" lean-forward="false" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
                     <folding>
                       <element signature="method#Pacman#0;class#Pacman#0" expanded="false" />
@@ -157,7 +155,7 @@
             <file leaf-file-name="Clyde.java" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Clyde.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="754">
+                  <state relative-caret-position="624">
                     <caret line="29" column="37" lean-forward="false" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="37" />
                     <folding>
                       <element signature="imports" expanded="true" />
@@ -169,7 +167,7 @@
             <file leaf-file-name="Inky.java" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Inky.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="286">
+                  <state relative-caret-position="182">
                     <caret line="11" column="100" lean-forward="false" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="100" />
                     <folding>
                       <element signature="imports" expanded="true" />
@@ -253,7 +251,7 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="338">
               <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding />
             </state>
@@ -263,28 +261,38 @@
       <file leaf-file-name="PacmanGame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/PacmanGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-17">
-              <caret line="53" column="28" lean-forward="false" selection-start-line="53" selection-start-column="28" selection-end-line="53" selection-end-column="28" />
+            <state relative-caret-position="-390">
+              <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Ghost.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Ghost.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Ghost.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="172" column="11" lean-forward="false" selection-start-line="172" selection-start-column="11" selection-end-line="172" selection-end-column="11" />
+            <state relative-caret-position="-407">
+              <caret line="188" column="33" lean-forward="false" selection-start-line="188" selection-start-column="33" selection-end-line="188" selection-end-column="33" />
               <folding>
-                <element signature="e#1814#1815#0" expanded="true" />
-                <element signature="e#1846#1847#0" expanded="true" />
+                <element signature="e#1897#1898#0" expanded="true" />
+                <element signature="e#1929#1930#0" expanded="true" />
                 <element signature="method#exitFromCage#0;class#Ghost#0" expanded="false" />
                 <element signature="method#moveInCage#0;class#Ghost#0" expanded="false" />
-                <element signature="method#animate#0;class#Ghost#0" expanded="false" />
-                <element signature="e#7027#7028#0" expanded="true" />
-                <element signature="e#7056#7057#0" expanded="true" />
-                <element signature="method#findShortestDirection#0;class#Ghost#0" expanded="false" />
+                <element signature="e#4947#4948#0" expanded="true" />
+                <element signature="e#4981#4982#0" expanded="true" />
+                <element signature="e#7545#7546#0" expanded="true" />
+                <element signature="e#7574#7575#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FoodDrawManager.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/FoodDrawManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-338">
+              <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -302,8 +310,8 @@
       <file leaf-file-name="Food.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Food.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+            <state relative-caret-position="52">
+              <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -325,6 +333,7 @@
       <find>arrayYPos</find>
       <find>arrayXPos</find>
       <find>getOposi</find>
+      <find>an</find>
     </findStrings>
     <replaceStrings>
       <replace>currentPoint.y</replace>
@@ -2291,8 +2300,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Actor.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Point.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/Playfield.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/PacmanGame.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Food.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/PacmanGame.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Ghost.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/GhostManager.java" />
       </list>
@@ -2476,6 +2485,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -2552,15 +2563,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="res" type="462c0819:PsiDirectoryNode" />
-              <item name="mipmap-hdpi" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Pacman" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Pacman" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="res" type="462c0819:PsiDirectoryNode" />
               <item name="values" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -2568,8 +2570,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -2580,9 +2580,9 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="device.picker.selection" value="Nexus_5X_API_19" />
+    <property name="device.picker.selection" value="LGH850eed36d22" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://D:/My/Documents/Intellij-Projects/Pacman/app/src/main/java/com/example/andrey/pacman/Playfield.java" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://D:/My/Documents/Intellij-Projects/Pacman/app/src/main/java/com/example/andrey/pacman/PacmanGame.java" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -2933,6 +2933,11 @@
       <workItem from="1520884532797" duration="5168000" />
       <workItem from="1520943906081" duration="1600000" />
       <workItem from="1520952934475" duration="5848000" />
+      <workItem from="1520960013138" duration="256000" />
+      <workItem from="1520961385322" duration="194000" />
+      <workItem from="1520965429411" duration="3581000" />
+      <workItem from="1521012235214" duration="988000" />
+      <workItem from="1521024081643" duration="6568000" />
     </task>
     <task id="LOCAL-00001" summary="Ghost move logic added">
       <created>1520114188594</created>
@@ -2973,7 +2978,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="382487000" />
+    <option name="totallyTimeSpent" value="394074000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -3009,7 +3014,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.55885714" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32837528" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.216971" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2019334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21428572" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -3154,11 +3159,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -3336,25 +3336,62 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="338">
           <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Point.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Food.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="16" column="24" lean-forward="false" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
+        <state relative-caret-position="52">
+          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Actor.java">
+    <entry file="jar://$PROJECT_DIR$/../../Android/Sdk/platforms/android-25/android.jar!/java/util/ArrayList.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4706">
-          <caret line="193" column="54" lean-forward="false" selection-start-line="193" selection-start-column="54" selection-end-line="193" selection-end-column="54" />
+        <state relative-caret-position="678">
+          <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/GameActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="25" column="23" lean-forward="false" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Blinky.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="10" column="115" lean-forward="false" selection-start-line="10" selection-start-column="115" selection-end-line="10" selection-end-column="115" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Clyde.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="29" column="37" lean-forward="false" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Inky.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="11" column="100" lean-forward="false" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="100" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3368,75 +3405,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Blinky.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="10" column="115" lean-forward="false" selection-start-line="10" selection-start-column="115" selection-end-line="10" selection-end-column="115" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Inky.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="11" column="100" lean-forward="false" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="100" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Clyde.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="754">
-          <caret line="29" column="37" lean-forward="false" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/PacmanGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-17">
-          <caret line="53" column="28" lean-forward="false" selection-start-line="53" selection-start-column="28" selection-end-line="53" selection-end-column="28" />
+        <state relative-caret-position="-390">
+          <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/GameActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Actor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="25" column="23" lean-forward="false" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
+        <state relative-caret-position="1712">
+          <caret line="193" column="54" lean-forward="false" selection-start-line="193" selection-start-column="54" selection-end-line="193" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/FoodDrawManager.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Point.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state relative-caret-position="390">
+          <caret line="16" column="24" lean-forward="false" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Pacman.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="806">
-          <caret line="51" column="22" lean-forward="false" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
-          <folding>
-            <element signature="method#Pacman#0;class#Pacman#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/Playfield.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-251">
-          <caret line="111" column="21" lean-forward="false" selection-start-line="111" selection-start-column="21" selection-end-line="111" selection-end-column="21" />
+        <state relative-caret-position="588">
+          <caret line="81" column="15" lean-forward="false" selection-start-line="81" selection-start-column="15" selection-end-line="81" selection-end-column="15" />
           <folding>
+            <element signature="e#1808#1809#0" expanded="true" />
+            <element signature="e#1833#1834#0" expanded="true" />
             <element signature="method#restartGame#0;class#Playfield#0" expanded="false" />
             <element signature="e#2001#2002#0" expanded="true" />
             <element signature="e#2020#2021#0" expanded="true" />
@@ -3463,43 +3462,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Food.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Pacman.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="962">
+          <caret line="51" column="22" lean-forward="false" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
+          <folding>
+            <element signature="method#Pacman#0;class#Pacman#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/entity/Ghost.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="172" column="11" lean-forward="false" selection-start-line="172" selection-start-column="11" selection-end-line="172" selection-end-column="11" />
+        <state relative-caret-position="-407">
+          <caret line="188" column="33" lean-forward="false" selection-start-line="188" selection-start-column="33" selection-end-line="188" selection-end-column="33" />
           <folding>
-            <element signature="e#1814#1815#0" expanded="true" />
-            <element signature="e#1846#1847#0" expanded="true" />
+            <element signature="e#1897#1898#0" expanded="true" />
+            <element signature="e#1929#1930#0" expanded="true" />
             <element signature="method#exitFromCage#0;class#Ghost#0" expanded="false" />
             <element signature="method#moveInCage#0;class#Ghost#0" expanded="false" />
-            <element signature="method#animate#0;class#Ghost#0" expanded="false" />
-            <element signature="e#7027#7028#0" expanded="true" />
-            <element signature="e#7056#7057#0" expanded="true" />
-            <element signature="method#findShortestDirection#0;class#Ghost#0" expanded="false" />
+            <element signature="e#4947#4948#0" expanded="true" />
+            <element signature="e#4981#4982#0" expanded="true" />
+            <element signature="e#7545#7546#0" expanded="true" />
+            <element signature="e#7574#7575#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/GhostManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1524">
-          <caret line="145" column="31" lean-forward="false" selection-start-line="145" selection-start-column="16" selection-end-line="145" selection-end-column="31" />
+        <state relative-caret-position="520">
+          <caret line="39" column="33" lean-forward="false" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="33" />
           <folding>
-            <element signature="e#3403#3404#0" expanded="true" />
-            <element signature="e#3454#3455#0" expanded="true" />
-            <element signature="e#4376#4377#0" expanded="true" />
-            <element signature="e#4416#4417#0" expanded="true" />
-            <element signature="e#4449#4450#0" expanded="true" />
-            <element signature="e#4491#4492#0" expanded="true" />
+            <element signature="e#5085#5086#0" expanded="true" />
+            <element signature="e#5125#5126#0" expanded="true" />
+            <element signature="e#5158#5159#0" expanded="true" />
+            <element signature="e#5200#5201#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/andrey/pacman/FoodDrawManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-338">
+          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
