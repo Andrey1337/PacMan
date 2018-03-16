@@ -87,8 +87,7 @@ public class GhostManager {
         changeGameMode(GameMode.CHASE);
     }
 
-    public void increaseEatenDots()
-    {
+    public void increaseEatenDots() {
         afkTimer = 0;
         eatedDots++;
     }
@@ -145,6 +144,7 @@ public class GhostManager {
 
         if(gameMode == GameMode.CHASE && waveTimeCounter > waves[waveNum].getChaseTime()) {
             waveTimeCounter = 0;
+            waveNum++;
             safePrevMode = GameMode.CHASE;
             changeGameMode(GameMode.SCATTER);
         }
@@ -164,7 +164,7 @@ public class GhostManager {
             case CHASE:
                 break;
             case SCATTER:
-                waveNum++;
+
                 break;
             case FRIGHTENED:
                 frightenedTimer = 0;

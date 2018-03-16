@@ -92,8 +92,8 @@ public class Playfield {
 
 	public void nextLevel()
 	{
-		initCharacters(view);
 		initMap();
+		initCharacters(view);
 	}
 
 	public Pinky getPinky() {
@@ -159,8 +159,9 @@ public class Playfield {
 			return;
 
 		if(foodMap[pacmanPoint.x][pacmanPoint.y] != null) {
-			game.eatPoint(foodMap[pacmanPoint.x][pacmanPoint.y]);
+			Food food = foodMap[pacmanPoint.x][pacmanPoint.y];
 			foodMap[pacmanPoint.x][pacmanPoint.y] = null;
+			game.eatPoint(food);
 		}
 
 	}
@@ -170,13 +171,14 @@ public class Playfield {
 		for(Ghost ghost : ghosts) {
 			if(Math.abs(pacman.getX() - ghost.getX()) <= 0.8f && Math.abs(pacman.getY() - ghost.getY()) <= 0.8f)
 			{
-				if(gameMode != GameMode.FRIGHTENED && !ghost.isEyes())
+				if(!ghost.isFrightened() && !ghost.isEyes())
 					game.killPacman();
 
-				/*if(!ghost.isEyes())
-				{
-					ghost.beEaten();
-				}*/
+				if(gameMode == GameMode.FRIGHTENED) {
+                    if (!ghost.isEyes() && ghost.isFrightened()) {
+                        ghost.beEaten();
+                    }
+                }
 			}
 		}
 	}

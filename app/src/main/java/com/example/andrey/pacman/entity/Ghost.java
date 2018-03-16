@@ -17,12 +17,12 @@ import java.util.Random;
 public abstract class Ghost extends Actor {
 
     private Bitmap scaryGhost;
+    private Bitmap eyesGhost;
+
     boolean inCage;
 
     Point destPoint;
     Point scatterPoint;
-
-    private boolean isNormalPoint;
 
     private float bottomCagePosition;
     private float topCagePosition;
@@ -39,16 +39,22 @@ public abstract class Ghost extends Actor {
     private boolean isFrightened;
     private boolean isWhite;
 
+
+    private Point cagePoint;
     private boolean isEyes;
+    private float eyesSpeed;
 
     Ghost(Playfield playfield, View view, Bitmap bitmap, Point scatterPoint, float x, float y) {
         super(playfield, bitmap, x, y, 8, 8);
-
+        currentPoint = new Point(x,y);
 
         scaryGhost = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.frightened), frameWidth * 2, frameHeight* 2,false);
+        eyesGhost = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.eyes_moving), frameWidth, frameHeight * 4,false);
 
         this.scatterPoint = scatterPoint;
         destPoint = this.scatterPoint;
+
+        cagePoint = new Point(13.5f, 10);
 
         movementDirection = Direction.LEFT;
         nextDirection = Direction.NONE;
@@ -60,6 +66,7 @@ public abstract class Ghost extends Actor {
 
         speedInTonel = 0.003f;
         speedInCage = 0.002f;
+        eyesSpeed = 0.01f;
         speedInFrightened = 0.003f;
         frameLengthInMillisecond = 110;
         setSpeed(0.005f);
@@ -89,7 +96,6 @@ public abstract class Ghost extends Actor {
             {
                 nextPositionY = bottomCagePosition;
                 touchTheBottom = true;
-                topCagePosition = 10f;
                 movementDirection = movementDirection.getOposite();
             }
         }
@@ -115,20 +121,21 @@ public abstract class Ghost extends Actor {
             movementDirection = Direction.UP;
         }
 
+
+
         if(movementDirection == Direction.UP)
         {
-            if(nextPositionY <= topCagePosition)
+            if(touchTheBottom)
             {
-                if(touchTheBottom)
+                if(nextPositionY <= cagePoint.y)
                 {
                     movementDirection = Direction.LEFT;
+                    nextPositionY = cagePoint.y;
                     inCage = false;
                 }
-                else {
-                    movementDirection = movementDirection.getOposite();
-                }
-                nextPositionY = topCagePosition;
             }
+            else if(nextPositionY <= topCagePosition)
+                    movementDirection = movementDirection.getOposite();
         }
     }
 
@@ -160,23 +167,56 @@ public abstract class Ghost extends Actor {
         }
     }
 
+    private void eyesMove(float frameSpeed)
+    {
+        if(movementDirection == Direction.RIGHT)
+            nextPositionX = x + frameSpeed;
+        if(movementDirection == Direction.LEFT)
+            nextPositionX = x - frameSpeed;
+        if(movementDirection == Direction.UP)
+            nextPositionY = y - frameSpeed;
+        if(movementDirection == Direction.DOWN)
+            nextPositionY = y + frameSpeed;
+
+        if(x <= cagePoint.floatX && nextPositionX >= cagePoint.floatX && y == cagePoint.floatY
+                || x >= cagePoint.floatX && nextPositionX <= cagePoint.floatX && y == cagePoint.floatY) {
+            nextPositionX = cagePoint.floatX;
+            movementDirection = Direction.DOWN;
+            nextDirection = Direction.NONE;
+            return;
+        }
+
+        if(x == cagePoint.floatX && y <= middleCagePositionY && nextPositionY >= middleCagePositionY)
+        {
+            isEyes = false;
+            movementDirection = Direction.UP;
+            inCage = true;
+            isExiting = true;
+            touchTheBottom = true;
+            return;
+        }
+
+        choseDirection(movementDirection);
+        this.checkNextDirection();
+    }
+
     public boolean isEyes() {
         return isEyes;
     }
 
-    public void ping()
-    {
+    public void ping() {
         isWhite = !isWhite;
     }
 
     public void changeMode(GameMode prevGameMode,GameMode newGameMode)
     {
+        if(isEyes)
+            return;
         isFrightened = newGameMode == GameMode.FRIGHTENED;
-        if(prevGameMode == GameMode.FRIGHTENED) {
+        if(prevGameMode == GameMode.FRIGHTENED)
             isWhite = false;
-        }
 
-        if(inCage)
+        if(inCage )
             return;
 
         if(prevGameMode != GameMode.FRIGHTENED) {
@@ -188,7 +228,6 @@ public abstract class Ghost extends Actor {
             case CHASE:
                 choseNextPoint();
                 isWhite = false;
-                isNormalPoint = !destPoint.isWall(map);
                 isFrightened = false;
                 break;
             case SCATTER:
@@ -217,7 +256,8 @@ public abstract class Ghost extends Actor {
             }
         }
 
-        if(!isFrightened) {
+        if(!isFrightened)
+        {
             frameToDraw.left = currentFrame * frameWidth;
             frameToDraw.right = frameToDraw.left + frameWidth;
 
@@ -237,6 +277,15 @@ public abstract class Ghost extends Actor {
             }
 
         }
+
+        if(isEyes)
+        {
+            frameToDraw.left = 0;
+            frameToDraw.right = frameToDraw.left + frameWidth;
+            frameToDraw.top = movementDirection.getValue() * frameHeight;
+            frameToDraw.bottom = frameToDraw.top + frameHeight;
+        }
+
     }
 
     @Override
@@ -248,7 +297,8 @@ public abstract class Ghost extends Actor {
 
         RectF whereToDraw = new RectF(left, top, left + actorWidth, top + actorHeight);
 
-        canvas.drawBitmap(isFrightened ? scaryGhost: bitmap, frameToDraw, whereToDraw, null);
+        if(isEyes) canvas.drawBitmap(eyesGhost, frameToDraw, whereToDraw, null);
+        else canvas.drawBitmap(isFrightened ? scaryGhost: bitmap, frameToDraw, whereToDraw, null);
     }
 
     public boolean isInCage() {
@@ -258,12 +308,18 @@ public abstract class Ghost extends Actor {
     @Override
     public void move(long deltaTime) {
 
+        Log.i("Y POS", nextDirection.toString());
+
+        currentPoint = new Point(Math.round(x), Math.round(y));
+
         float frameSpeed = deltaTime;
-        if(isFrightened)
+        if(isFrightened) {
             frameSpeed *= speedInFrightened;
-        else if(isInTonel())
+        } else if(isEyes) {
+            frameSpeed *= eyesSpeed;
+        } else if(isInTonel()) {
             frameSpeed *= speedInTonel;
-        else
+        } else
             frameSpeed *= speed;
 
         if(inCage)
@@ -273,9 +329,10 @@ public abstract class Ghost extends Actor {
             else
                 exitFromCage(deltaTime);
         }
-        else
-        {
-            currentPoint = new Point(Math.round(x), Math.round(y));
+        else if(isEyes) {
+            eyesMove(frameSpeed);
+        }
+        else {
             switch (movementDirection) {
                 case RIGHT:
                     nextPositionX = x + frameSpeed;
@@ -291,9 +348,10 @@ public abstract class Ghost extends Actor {
                     break;
             }
 
-            ghostLogic();
+            if (playfield.getGameMode() == GameMode.CHASE)
+                ghostLogic();
 
-            choseDirection( movementDirection);
+            choseDirection(movementDirection);
             this.checkNextDirection();
         }
 
@@ -306,20 +364,16 @@ public abstract class Ghost extends Actor {
 
     void ghostLogic()
     {
-        Point currentPoint = new Point(Math.round(x), Math.round(y));
-        if (currentPoint.isEqual(destPoint) || (!isNormalPoint && playfield.getGameMode() == GameMode.CHASE)) {
-            choseNextPoint();
-            isNormalPoint = !destPoint.isWall(map);
-        }
+        choseNextPoint();
     }
 
-    public void beEaten()
-    {
+
+    public void beEaten() {
         isEyes = true;
         isFrightened = false;
-        destPoint = new Point(13, 10);
-        movementDirection = Direction.NONE;
+        destPoint = new Point(13f, 10);
         nextDirection = Direction.NONE;
+        findShortestDirection(Direction.NONE, new Point(Math.round(x), Math.round(y)));
     }
 
     abstract void choseNextPoint();
@@ -415,5 +469,9 @@ public abstract class Ghost extends Actor {
         }
 
        nextDirection = bestDirection;
+    }
+
+    public boolean isFrightened() {
+        return isFrightened;
     }
 }

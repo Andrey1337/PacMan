@@ -15,6 +15,7 @@ public class Pacman extends Actor{
 
 	public Pacman(Playfield playfield, View view, float x, float y) {
 		super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_move) ,x, y, 8,8);
+		currentPoint = new Point(x,y);
 		movementDirection = Direction.NONE;
 		lookingDirection = Direction.RIGHT;
 
@@ -82,6 +83,28 @@ public class Pacman extends Actor{
 
         checkTunnel();
         animate(deltaTime);
+    }
+
+    @Override
+    void animate(long deltaTime)
+    {
+        if(movementDirection == Direction.NONE)
+            return;
+
+        animationTime += deltaTime;
+        if (animationTime > frameLengthInMillisecond) {
+            currentFrame++;
+            animationTime = 0;
+            if (currentFrame >= frameCount) {
+                currentFrame = 0;
+            }
+        }
+
+        frameToDraw.left = currentFrame * frameWidth;
+        frameToDraw.right = frameToDraw.left + frameWidth;
+
+        frameToDraw.top = movementDirection.getValue() * frameHeight;
+        frameToDraw.bottom = frameToDraw.top + frameHeight;
     }
 
 

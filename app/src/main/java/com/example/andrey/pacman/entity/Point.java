@@ -21,6 +21,8 @@ public class Point {
     {
         floatX = x;
         floatY = y;
+        this.x = Math.round(x);
+        this.y = Math.round(y);
     }
 
     public double distance(Point point) {

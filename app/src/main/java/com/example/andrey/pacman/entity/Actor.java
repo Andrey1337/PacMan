@@ -85,35 +85,12 @@ public abstract class Actor extends Entity{
 
 	boolean isInTonel()
 	{
-		if(y == 13 && (x < 4 || x > map.length - 5))
-		{
-			return true;
-		}
-		return false;
+		return y == 13 && (x < 4 || x > map.length - 5);
 	}
 
 
 	long animationTime;
-	void animate(long deltaTime)
-	{
-        if(movementDirection == Direction.NONE)
-            return;
-
-        animationTime += deltaTime;
-        if (animationTime > frameLengthInMillisecond) {
-            currentFrame++;
-            animationTime = 0;
-            if (currentFrame >= frameCount) {
-                currentFrame = 0;
-            }
-        }
-
-		frameToDraw.left = currentFrame * frameWidth;
-		frameToDraw.right = frameToDraw.left + frameWidth;
-
-		frameToDraw.top = movementDirection.getValue() * frameHeight;
-		frameToDraw.bottom = frameToDraw.top + frameHeight;
-    }
+	abstract void animate(long deltaTime);
 
 	void checkTunnel()
 	{
@@ -129,8 +106,6 @@ public abstract class Actor extends Entity{
 		{
 			x = -1.5f;
 		}
-
-
 	}
 
 	float turnCutSpeed;

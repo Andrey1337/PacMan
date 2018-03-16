@@ -27,12 +27,11 @@ public class Clyde extends Ghost {
         Point currentPoint = new Point(Math.round(x), Math.round(y));
         Point pacmanPoint = new Point(Math.round(playfield.getPacman().getX()),Math.round(playfield.getPacman().getY()));
 
-        if(playfield.getGameMode() == GameMode.CHASE) {
-            if (currentPoint.distance(pacmanPoint) > 8) {
-                choseNextPoint();
-            } else {
-                destPoint = scatterPoint;
-            }
+        if (currentPoint.distance(pacmanPoint) > 8) {
+            choseNextPoint();
+        } else {
+            destPoint = scatterPoint;
         }
+
     }
 }
