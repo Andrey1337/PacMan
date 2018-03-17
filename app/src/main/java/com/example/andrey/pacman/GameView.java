@@ -24,6 +24,15 @@ class GameView extends View {
 
     }
 
+    public void onResume()
+    {
+        game.onResume();
+    }
+
+    public void onPause()
+    {
+        game.onPause();
+    }
     @Override
     public void onDraw(Canvas canvas) {
         game.onDraw(canvas);
@@ -45,6 +54,8 @@ class GameView extends View {
         }
     }
 
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -61,4 +72,6 @@ class GameView extends View {
         }
         return true;
     }
+
+
 }

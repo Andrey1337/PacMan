@@ -12,7 +12,7 @@ public class PacmanGame{
 	private Playfield playfield;
 
 	private GhostManager ghostModeController;
-
+    private CutsceneManager cutsceneManager;
 	private GameView view;
 
 	private int pacmanLives = 4;
@@ -29,6 +29,8 @@ public class PacmanGame{
 
 	private float tickInterval;
 
+	private boolean pause;
+
 	PacmanGame(GameView view)
 	{
 	    this.view = view;
@@ -36,10 +38,17 @@ public class PacmanGame{
 		countPoints = playfield.getCountPoints();
 
 		ghostModeController = new GhostManager(playfield);
+        cutsceneManager = new CutsceneManager(this,view, playfield);
 
 		tickInterval = 1000 / 90;
-		setTimeout();
-		lastTime = new Date().getTime();
+        setTimeout();
+        lastTime = new Date().getTime();
+
+        cutsceneManager.addStartGameScene();
+    }
+
+	public CutsceneManager getCutsceneManager() {
+		return cutsceneManager;
 	}
 
 	private void nextLevel()
@@ -47,12 +56,24 @@ public class PacmanGame{
 		playfield.nextLevel();
 		countPoints = playfield.getCountPoints();
 		ghostModeController.nextLevel();
-
+		cutsceneManager.addStartGameScene();
 	}
 
-
-	public void killPacman()
+	public void onResume()
 	{
+	    cutsceneManager.addResumeScene();
+		pause = false;
+	}
+
+    public void onPause()
+    {
+        pause = true;
+    }
+
+
+
+	public void killPacman() {
+		cutsceneManager.addStartGameScene();
 		pacmanLives--;
 		playfield.initCharacters(view);
 		ghostModeController.pacmanDied();
@@ -65,19 +86,17 @@ public class PacmanGame{
         ghostModeController.increaseEatenDots();
 
         if(food == Food.ENERGIZER)
-        {
             ghostModeController.startFrightened();
-        }
 
 		if(countPoints <= 0)
-		{
 			nextLevel();
-		}
 	}
 
 	public void onDraw(Canvas canvas)
 	{
 		playfield.onDraw(canvas);
+		if(cutsceneManager.hasScene())
+			cutsceneManager.onDraw(canvas);
 	}
 
 	private void setTimeout() {
@@ -87,10 +106,15 @@ public class PacmanGame{
 
 	public void tick() {
 		long now = new Date().getTime();
-
-		if(view.isGameRunning) {
-			playfield.update(now - lastTime);
-			ghostModeController.update(now - lastTime);
+		long deltaTime = now - lastTime;
+		if(!pause ) {
+			if(cutsceneManager.hasScene()) {
+				cutsceneManager.playScene(deltaTime);
+			}
+			else {
+				playfield.update(deltaTime);
+				ghostModeController.update(deltaTime);
+			}
 		}
 
 		lastTime = now;

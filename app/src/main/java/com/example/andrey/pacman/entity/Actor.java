@@ -16,7 +16,7 @@ public abstract class Actor extends Entity{
 	int frameWidth, frameHeight;
 
 	int frameCount = 2;
-    private int framesMovesCount = 4;
+    int framesMovesCount = 4;
 
     Rect frameToDraw;
 
@@ -27,6 +27,8 @@ public abstract class Actor extends Entity{
 	Direction lookingDirection;
 
 	Point currentPoint;
+
+	public boolean isVisible = true;
 
 	TileSpecification[][] map;
 	float speed;
@@ -50,7 +52,8 @@ public abstract class Actor extends Entity{
 		frameWidth *= 6;
 		frameHeight *= 6;
 
-        this.bitmap  = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount, frameHeight * framesMovesCount,false);
+        this.bitmap = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount,
+				frameHeight * framesMovesCount,false);
 
 		actorWidth = (int)((float)bitmap.getWidth() * playfield.scale / (float)frameCount);
 		actorHeight = (int)((float)bitmap.getHeight() * playfield.scale / (float)framesMovesCount);
@@ -90,7 +93,7 @@ public abstract class Actor extends Entity{
 
 
 	long animationTime;
-	abstract void animate(long deltaTime);
+	public abstract void animate(long deltaTime);
 
 	void checkTunnel()
 	{

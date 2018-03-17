@@ -62,7 +62,7 @@ public abstract class Ghost extends Actor {
         topCagePosition = 12.50f;
         bottomCagePosition = 13.50f;
         middleCagePositionX = 13.5f;
-        middleCagePositionY = (bottomCagePosition + topCagePosition)/2;
+        middleCagePositionY = (bottomCagePosition + topCagePosition) / 2;
 
         speedInTonel = 0.003f;
         speedInCage = 0.002f;
@@ -120,8 +120,6 @@ public abstract class Ghost extends Actor {
             nextPositionX = middleCagePositionX;
             movementDirection = Direction.UP;
         }
-
-
 
         if(movementDirection == Direction.UP)
         {
@@ -186,8 +184,7 @@ public abstract class Ghost extends Actor {
             return;
         }
 
-        if(x == cagePoint.floatX && y <= middleCagePositionY && nextPositionY >= middleCagePositionY)
-        {
+        if(x == cagePoint.floatX && y <= middleCagePositionY && nextPositionY >= middleCagePositionY) {
             isEyes = false;
             movementDirection = Direction.UP;
             inCage = true;
@@ -242,7 +239,7 @@ public abstract class Ghost extends Actor {
     }
 
     @Override
-    void animate(long deltaTime) {
+    public void animate(long deltaTime) {
 
         if(movementDirection == Direction.NONE)
             return;
@@ -291,6 +288,9 @@ public abstract class Ghost extends Actor {
     @Override
     public void onDraw(Canvas canvas)
     {
+        if(!isVisible)
+            return;
+
         float left = playfield.X_OFFSET + x * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_X_OFFSET;
 
         float top = playfield.Y_OFFSET + y * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_Y_OFFSET;
@@ -362,16 +362,15 @@ public abstract class Ghost extends Actor {
         animate(deltaTime);
     }
 
-    void ghostLogic()
-    {
+    void ghostLogic() {
         choseNextPoint();
     }
 
-
     public void beEaten() {
         isEyes = true;
+        isWhite = false;
         isFrightened = false;
-        destPoint = new Point(13f, 10);
+        destPoint = cagePoint;
         nextDirection = Direction.NONE;
         findShortestDirection(Direction.NONE, new Point(Math.round(x), Math.round(y)));
     }
@@ -382,7 +381,7 @@ public abstract class Ghost extends Actor {
         if (nextDirection != Direction.NONE || isInTonel())
             return;
 
-        Point nextPoint = new Point(0, 0);
+        Point nextPoint = new Point(currentPoint.x, currentPoint.y);
 
         switch (currentDirection) {
             case RIGHT:
@@ -396,9 +395,6 @@ public abstract class Ghost extends Actor {
                 break;
             case DOWN:
                 nextPoint = new Point(currentPoint.x, currentPoint.y + 1);
-                break;
-            case NONE:
-                nextPoint = new Point(currentPoint.x, currentPoint.y);
                 break;
         }
 

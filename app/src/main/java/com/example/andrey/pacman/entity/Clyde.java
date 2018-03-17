@@ -14,6 +14,7 @@ public class Clyde extends Ghost {
         inCage = true;
         movementDirection = Direction.DOWN;
         nextDirection = Direction.NONE;
+        animate(0);
     }
 
 

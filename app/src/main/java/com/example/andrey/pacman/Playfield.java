@@ -172,7 +172,9 @@ public class Playfield {
 			if(Math.abs(pacman.getX() - ghost.getX()) <= 0.8f && Math.abs(pacman.getY() - ghost.getY()) <= 0.8f)
 			{
 				if(!ghost.isFrightened() && !ghost.isEyes())
-					game.killPacman();
+				{
+					game.getCutsceneManager().addKillPacmanScene();
+				}
 
 				if(gameMode == GameMode.FRIGHTENED) {
                     if (!ghost.isEyes() && ghost.isFrightened()) {

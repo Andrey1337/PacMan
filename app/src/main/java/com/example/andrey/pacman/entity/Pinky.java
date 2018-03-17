@@ -12,8 +12,8 @@ public class Pinky extends Ghost {
         super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.mipmap.pinky_move), new Point(3, -3), x, y);
         inCage = true;
         movementDirection = Direction.UP;
-
         nextDirection = Direction.NONE;
+        animate(0);
     }
 
     @Override

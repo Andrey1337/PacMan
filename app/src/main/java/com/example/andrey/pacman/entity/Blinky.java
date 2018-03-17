@@ -11,6 +11,7 @@ public class Blinky extends Ghost {
         super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.mipmap.blinky_move),new Point(25, -3),x,y);
 
         inCage = false;
+        animate(0);
     }
 
     @Override

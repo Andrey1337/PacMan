@@ -15,7 +15,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        gameView =new GameView(this);
+        gameView = new GameView(this);
         setContentView(gameView);
         //gameBoardView = (GameBoardView) findViewById(R.id.matrix_view);
     }
@@ -35,8 +35,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onResume() {
+        gameView.onResume();
+        super.onResume();
+    }
 
-        super.onStop();
+    @Override
+    protected void onPause() {
+        gameView.onPause();
+        super.onPause();
     }
 }
