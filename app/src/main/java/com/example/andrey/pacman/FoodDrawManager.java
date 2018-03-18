@@ -60,7 +60,7 @@ public class FoodDrawManager {
                 {
                     case POINT:
                         canvas.drawBitmap(pointBitmap, playfield.X_OFFSET + i * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
-                                ,playfield.Y_OFFSET + j * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth(), null);
+                                ,playfield.Y_OFFSET + j * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() + playfield.STARTPOS_Y, null);
                         break;
                     case ENERGIZER:
                         if(!isEnergizerVisible)
@@ -68,7 +68,7 @@ public class FoodDrawManager {
                         canvas.drawBitmap(energizerBitmap, playfield.X_OFFSET + i * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
                                         - ENERGIZER_OFFSET_X
                                 ,playfield.Y_OFFSET + j * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
-                                        - ENERGIZER_OFFSET_Y, null);
+                                        - ENERGIZER_OFFSET_Y + playfield.STARTPOS_Y, null);
                         break;
                     case FRUIT:
                         break;

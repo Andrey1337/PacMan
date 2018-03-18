@@ -10,7 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-class GameView extends View {
+public class GameView extends View {
 
     public Boolean isGameRunning;
 

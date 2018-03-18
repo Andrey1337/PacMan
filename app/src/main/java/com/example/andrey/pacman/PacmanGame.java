@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import com.example.andrey.pacman.entity.Food;
 import com.example.andrey.pacman.entity.Pacman;
+import com.example.andrey.pacman.entity.Point;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ public class PacmanGame{
 
 	private GhostManager ghostModeController;
     private CutsceneManager cutsceneManager;
+    private UserInterfaceDrawManager userInterfaceDrawManager;
 	private GameView view;
 
 	private int pacmanLives = 4;
@@ -31,6 +33,8 @@ public class PacmanGame{
 
 	private boolean pause;
 
+	private int score;
+
 	PacmanGame(GameView view)
 	{
 	    this.view = view;
@@ -38,7 +42,8 @@ public class PacmanGame{
 		countPoints = playfield.getCountPoints();
 
 		ghostModeController = new GhostManager(playfield);
-        cutsceneManager = new CutsceneManager(this,view, playfield);
+		userInterfaceDrawManager = new UserInterfaceDrawManager(view, this);
+        cutsceneManager = new CutsceneManager(view,this, playfield);
 
 		tickInterval = 1000 / 90;
         setTimeout();
@@ -49,6 +54,14 @@ public class PacmanGame{
 
 	public CutsceneManager getCutsceneManager() {
 		return cutsceneManager;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public int getPacmanLives() {
+		return pacmanLives;
 	}
 
 	private void nextLevel()
@@ -65,29 +78,45 @@ public class PacmanGame{
 		pause = false;
 	}
 
-    public void onPause()
-    {
+    public void onPause() {
         pause = true;
     }
 
 
+    public void gameOver() {
+		pause = true;
+	}
+
 
 	public void killPacman() {
-		cutsceneManager.addStartGameScene();
-		pacmanLives--;
-		playfield.initCharacters(view);
-		ghostModeController.pacmanDied();
+
+		if(pacmanLives <= 0)
+		{
+			cutsceneManager.addGameOverScene();
+		}
+		else {
+			cutsceneManager.addStartGameScene();
+			pacmanLives--;
+			playfield.initCharacters(view);
+			ghostModeController.pacmanDied();
+		}
 	}
 
 
 	public void eatPoint(Food food)
 	{
+
 		countPoints--;
         ghostModeController.increaseEatenDots();
 
-        if(food == Food.ENERGIZER)
-            ghostModeController.startFrightened();
+        if(food == Food.POINT) {
+			score += 10;
+		}
 
+        if(food == Food.ENERGIZER) {
+			ghostModeController.startFrightened();
+			score += 50;
+		}
 		if(countPoints <= 0)
 			nextLevel();
 	}
@@ -95,6 +124,8 @@ public class PacmanGame{
 	public void onDraw(Canvas canvas)
 	{
 		playfield.onDraw(canvas);
+		userInterfaceDrawManager.onDraw(canvas);
+
 		if(cutsceneManager.hasScene())
 			cutsceneManager.onDraw(canvas);
 	}
@@ -106,8 +137,9 @@ public class PacmanGame{
 
 	public void tick() {
 		long now = new Date().getTime();
+
 		long deltaTime = now - lastTime;
-		if(!pause ) {
+		if(!pause) {
 			if(cutsceneManager.hasScene()) {
 				cutsceneManager.playScene(deltaTime);
 			}
@@ -128,7 +160,6 @@ public class PacmanGame{
 	{
 		return playfield.getPacman();
 	}
-
 
 	void handleTouchStart(MotionEvent e) {
 		touchDX = 0;

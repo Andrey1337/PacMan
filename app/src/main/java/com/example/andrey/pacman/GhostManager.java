@@ -164,7 +164,6 @@ public class GhostManager {
             case CHASE:
                 break;
             case SCATTER:
-
                 break;
             case FRIGHTENED:
                 frightenedTimer = 0;

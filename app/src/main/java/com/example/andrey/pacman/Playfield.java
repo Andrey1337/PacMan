@@ -24,6 +24,8 @@ public class Playfield {
 	public final int X_OFFSET;
 	public final int Y_OFFSET;
 
+	public final int STARTPOS_Y;
+
 	public final float CELLS_SPACE_PERCENT;
 
 	public final float scale;
@@ -69,6 +71,12 @@ public class Playfield {
 		this.X_OFFSET = (int) ((float) X_OFFSET / (float) MAP_WIDTH * mapTexture.getWidth());
 		this.Y_OFFSET = (int) ((float) Y_OFFSET / (float) MAP_HEIGHT * mapTexture.getHeight());
 		this.CELLS_SPACE_PERCENT = (float) CELLS_SPACE / (float) MAP_WIDTH;
+
+
+		Bitmap hightScoreLabel = BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score);
+		hightScoreLabel = Bitmap.createScaledBitmap(hightScoreLabel, (int) (hightScoreLabel.getWidth() * scale),
+				(int)(hightScoreLabel.getHeight() *  scale), false);
+		STARTPOS_Y = hightScoreLabel.getHeight() / 2 + hightScoreLabel.getHeight();
 
 		map = new TileSpecification[28][29];
 		foodMap = new Food[28][29];
@@ -170,14 +178,17 @@ public class Playfield {
 	{
 		for(Ghost ghost : ghosts) {
 			if(Math.abs(pacman.getX() - ghost.getX()) <= 0.8f && Math.abs(pacman.getY() - ghost.getY()) <= 0.8f)
+			//if(Math.round(pacman.getX()) == Math.round(ghost.getX()) && Math.round(pacman.getY()) == Math.round(ghost.getY()))
 			{
 				if(!ghost.isFrightened() && !ghost.isEyes())
 				{
+                    game.getCutsceneManager().addWaitingScene();
 					game.getCutsceneManager().addKillPacmanScene();
 				}
 
 				if(gameMode == GameMode.FRIGHTENED) {
                     if (!ghost.isEyes() && ghost.isFrightened()) {
+						game.getCutsceneManager().addEatingGhostScene(ghost);
                         ghost.beEaten();
                     }
                 }
@@ -203,7 +214,7 @@ public class Playfield {
 
 	public void onDraw(Canvas canvas)
 	{
-		canvas.drawBitmap(mapTexture,0,0, null);
+		canvas.drawBitmap(mapTexture,0,STARTPOS_Y, null);
 		foodDrawController.onDraw(canvas);
 
 		pacman.onDraw(canvas);

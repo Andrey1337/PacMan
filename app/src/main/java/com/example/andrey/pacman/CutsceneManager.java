@@ -2,10 +2,8 @@ package com.example.andrey.pacman;
 
 
 import android.graphics.Canvas;
-import com.example.andrey.pacman.cutscenes.Cutscene;
-import com.example.andrey.pacman.cutscenes.KillPacmanCutscene;
-import com.example.andrey.pacman.cutscenes.ResumeGameCutScene;
-import com.example.andrey.pacman.cutscenes.StartGameCutScene;
+import com.example.andrey.pacman.cutscenes.*;
+import com.example.andrey.pacman.entity.Ghost;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -19,8 +17,7 @@ public class CutsceneManager {
     private PacmanGame pacmanGame;
     private Playfield playfield;
 
-    CutsceneManager(PacmanGame game,GameView gameView, Playfield playfield)
-    {
+    CutsceneManager(GameView gameView,PacmanGame game, Playfield playfield) {
         view = gameView;
         pacmanGame = game;
         this.playfield = playfield;
@@ -35,8 +32,19 @@ public class CutsceneManager {
         scenes.add(new KillPacmanCutscene(pacmanGame, playfield));
     }
 
-    public void addResumeScene()
-    {
+    public void addWaitingScene() {
+        scenes.add(new WaitingCutscene(playfield));
+    }
+
+    public void addEatingGhostScene(Ghost ghost) {
+        scenes.add(new EatingGhostScene(playfield, ghost));
+    }
+
+    public void addGameOverScene() {
+        scenes.add(new GameOverCutscene(view, pacmanGame, playfield));
+    }
+
+    public void addResumeScene() {
         for(Cutscene scene : scenes)
         {
             if(scene.getClass() == StartGameCutScene.class && currentScene == null)

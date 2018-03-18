@@ -68,7 +68,7 @@ public abstract class Ghost extends Actor {
         speedInCage = 0.002f;
         eyesSpeed = 0.01f;
         speedInFrightened = 0.003f;
-        frameLengthInMillisecond = 110;
+        frameLengthInMillisecond = 70;
         setSpeed(0.005f);
     }
 
@@ -293,7 +293,7 @@ public abstract class Ghost extends Actor {
 
         float left = playfield.X_OFFSET + x * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_X_OFFSET;
 
-        float top = playfield.Y_OFFSET + y * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_Y_OFFSET;
+        float top = playfield.Y_OFFSET + y * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_Y_OFFSET  + playfield.STARTPOS_Y;
 
         RectF whereToDraw = new RectF(left, top, left + actorWidth, top + actorHeight);
 
@@ -307,8 +307,6 @@ public abstract class Ghost extends Actor {
 
     @Override
     public void move(long deltaTime) {
-
-        Log.i("Y POS", nextDirection.toString());
 
         currentPoint = new Point(Math.round(x), Math.round(y));
 

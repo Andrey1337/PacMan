@@ -27,13 +27,15 @@ public class Pacman extends Actor{
 		movementDirection = Direction.LEFT;
 		lookingDirection = Direction.LEFT;
 
+		isPacManBall = true;
+
 		pacmanStartGame = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_startgame), frameWidth, frameHeight ,false);
 
 		pacmanDying =  Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_dying), frameWidth * 12, frameHeight ,false);
 
-		dyingTime = 900;
+		dyingTime = 1000;
 
-		frameLengthInMillisecond = 60;
+		frameLengthInMillisecond = 55;
         turnCutSpeed = 0.02f;
 		setSpeed(0.006f);
 	}
@@ -116,7 +118,7 @@ public class Pacman extends Actor{
     @Override
     public void animate(long deltaTime)
     {
-        if(movementDirection == Direction.NONE)
+        if(movementDirection == Direction.NONE && !isDying)
             return;
 
         animationTime += deltaTime;
@@ -162,7 +164,7 @@ public class Pacman extends Actor{
 
         float left = playfield.X_OFFSET + x * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_X_OFFSET;
 
-        float top = playfield.Y_OFFSET + y * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_Y_OFFSET;
+        float top = playfield.Y_OFFSET + y * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - ACTOR_Y_OFFSET + playfield.STARTPOS_Y;
 
         RectF whereToDraw = new RectF(left, top, left + actorWidth, top + actorHeight);
 

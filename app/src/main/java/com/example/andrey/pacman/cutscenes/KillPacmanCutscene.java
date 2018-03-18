@@ -10,15 +10,11 @@ public class KillPacmanCutscene extends Cutscene{
     private PacmanGame pacmanGame;
 
     public KillPacmanCutscene(PacmanGame game, Playfield playfield) {
-        super(playfield, 1500);
+        super(playfield, 1600);
 
         pacmanGame = game;
     }
 
-    @Override
-    public void onDraw(Canvas canvas) {
-
-    }
 
     @Override
     public void startOfScene() {
