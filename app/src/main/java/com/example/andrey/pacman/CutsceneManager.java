@@ -15,7 +15,7 @@ public class CutsceneManager {
     private Queue<Cutscene> scenes;
     GameView view;
     private PacmanGame pacmanGame;
-    private Playfield playfield;
+    Playfield playfield;
 
     CutsceneManager(GameView gameView,PacmanGame game, Playfield playfield) {
         view = gameView;
@@ -36,12 +36,20 @@ public class CutsceneManager {
         scenes.add(new WaitingCutscene(playfield));
     }
 
-    public void addEatingGhostScene(Ghost ghost) {
-        scenes.add(new EatingGhostScene(playfield, ghost));
+    public void addEatingGhostScene(Ghost ghost, int ghostMultiplyer) {
+        scenes.add(new EatingGhostScene(view,playfield, ghost, ghostMultiplyer));
     }
 
     public void addGameOverScene() {
         scenes.add(new GameOverCutscene(view, pacmanGame, playfield));
+    }
+
+    public void addNextLevelScene() {
+        scenes.add(new NextLevelCutscene(playfield));
+    }
+
+    public void addPlayfieldPingingScene() {
+        scenes.add(new PlayfieldPingingCutscene(pacmanGame,playfield));
     }
 
     public void addResumeScene() {

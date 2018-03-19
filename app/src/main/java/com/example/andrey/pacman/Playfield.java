@@ -17,6 +17,7 @@ public class Playfield {
 	private Food foodMap[][];
 
 	public Bitmap mapTexture;
+	public Bitmap mapTextureWhite;
 
 	public final int MAP_WIDTH;
 	public final int MAP_HEIGHT;
@@ -46,6 +47,7 @@ public class Playfield {
 
 	GameView view;
 
+	public boolean isPing;
 
 	Playfield(PacmanGame game, GameView view) {
 		gameMode = GameMode.SCATTER;
@@ -68,14 +70,19 @@ public class Playfield {
 		mapTexture = Bitmap.createScaledBitmap(mapTexture, (int) (mapTexture.getWidth() * scale),
 				(int) (mapTexture.getHeight() * scale), false);
 
+		mapTextureWhite = Bitmap.createScaledBitmap(
+				BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_map_pinging),
+				(int) (BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_map_pinging).getWidth() * scale),
+				(int) (BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_map_pinging).getHeight() * scale), false);
+
 		this.X_OFFSET = (int) ((float) X_OFFSET / (float) MAP_WIDTH * mapTexture.getWidth());
 		this.Y_OFFSET = (int) ((float) Y_OFFSET / (float) MAP_HEIGHT * mapTexture.getHeight());
 		this.CELLS_SPACE_PERCENT = (float) CELLS_SPACE / (float) MAP_WIDTH;
 
 
 		Bitmap hightScoreLabel = BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score);
-		hightScoreLabel = Bitmap.createScaledBitmap(hightScoreLabel, (int) (hightScoreLabel.getWidth() * scale),
-				(int)(hightScoreLabel.getHeight() *  scale), false);
+		hightScoreLabel = Bitmap.createScaledBitmap(hightScoreLabel, (int) (hightScoreLabel.getWidth()  * 5/6 * scale),
+				(int)(hightScoreLabel.getHeight() * 5/6 *  scale), false);
 		STARTPOS_Y = hightScoreLabel.getHeight() / 2 + hightScoreLabel.getHeight();
 
 		map = new TileSpecification[28][29];
@@ -188,8 +195,7 @@ public class Playfield {
 
 				if(gameMode == GameMode.FRIGHTENED) {
                     if (!ghost.isEyes() && ghost.isFrightened()) {
-						game.getCutsceneManager().addEatingGhostScene(ghost);
-                        ghost.beEaten();
+						game.eatGhost(ghost);
                     }
                 }
 			}
@@ -214,11 +220,10 @@ public class Playfield {
 
 	public void onDraw(Canvas canvas)
 	{
-		canvas.drawBitmap(mapTexture,0,STARTPOS_Y, null);
+		canvas.drawBitmap(isPing ? mapTextureWhite : mapTexture,0,STARTPOS_Y, null);
 		foodDrawController.onDraw(canvas);
 
 		pacman.onDraw(canvas);
-
 
 		for (Ghost ghost : ghosts)
 		{

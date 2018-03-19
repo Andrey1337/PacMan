@@ -3,6 +3,7 @@ package com.example.andrey.pacman;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import com.example.andrey.pacman.entity.Food;
+import com.example.andrey.pacman.entity.Ghost;
 import com.example.andrey.pacman.entity.Pacman;
 import com.example.andrey.pacman.entity.Point;
 
@@ -34,6 +35,9 @@ public class PacmanGame{
 	private boolean pause;
 
 	private int score;
+	private int highScore;
+
+	private int ghostMultiplyer;
 
 	PacmanGame(GameView view)
 	{
@@ -48,7 +52,7 @@ public class PacmanGame{
 		tickInterval = 1000 / 90;
         setTimeout();
         lastTime = new Date().getTime();
-
+		highScore = 5000;
         cutsceneManager.addStartGameScene();
     }
 
@@ -60,11 +64,15 @@ public class PacmanGame{
 		return score;
 	}
 
+	public int getHighScore() {
+		return highScore;
+	}
+
 	public int getPacmanLives() {
 		return pacmanLives;
 	}
 
-	private void nextLevel()
+	public void nextLevel()
 	{
 		playfield.nextLevel();
 		countPoints = playfield.getCountPoints();
@@ -72,8 +80,7 @@ public class PacmanGame{
 		cutsceneManager.addStartGameScene();
 	}
 
-	public void onResume()
-	{
+	public void onResume() {
 	    cutsceneManager.addResumeScene();
 		pause = false;
 	}
@@ -102,10 +109,15 @@ public class PacmanGame{
 		}
 	}
 
+	public void eatGhost(Ghost ghost)
+	{
+		getCutsceneManager().addEatingGhostScene(ghost, ghostMultiplyer);
+		ghost.beEaten();
+	}
+
 
 	public void eatPoint(Food food)
 	{
-
 		countPoints--;
         ghostModeController.increaseEatenDots();
 
@@ -115,10 +127,13 @@ public class PacmanGame{
 
         if(food == Food.ENERGIZER) {
 			ghostModeController.startFrightened();
+			ghostMultiplyer = 0;
 			score += 50;
 		}
-		if(countPoints <= 0)
-			nextLevel();
+		if(countPoints <= 0) {
+			cutsceneManager.addNextLevelScene();
+			cutsceneManager.addPlayfieldPingingScene();
+		}
 	}
 
 	public void onDraw(Canvas canvas)
