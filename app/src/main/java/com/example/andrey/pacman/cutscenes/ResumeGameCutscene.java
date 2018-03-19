@@ -4,12 +4,12 @@ import android.view.View;
 import com.example.andrey.pacman.Playfield;
 
 
-public class ResumeGameCutScene extends StartGameCutScene{
+public class ResumeGameCutscene extends StartGameCutscene {
 
     private long pingTime;
     private long pingingTimer;
 
-    public ResumeGameCutScene(View view, Playfield playfield) {
+    public ResumeGameCutscene(View view, Playfield playfield) {
         super(view, playfield);
          pingTime = getSceneTime() / 9;
     }

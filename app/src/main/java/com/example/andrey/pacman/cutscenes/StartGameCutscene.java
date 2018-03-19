@@ -8,7 +8,7 @@ import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.R;
 import com.example.andrey.pacman.entity.Point;
 
-public class StartGameCutScene extends Cutscene{
+public class StartGameCutscene extends Cutscene{
 
     private Bitmap readyBitmap;
 
@@ -19,11 +19,11 @@ public class StartGameCutScene extends Cutscene{
 
     boolean isVisible;
 
-    public StartGameCutScene(View view,Playfield playfield) {
+    public StartGameCutscene(View view, Playfield playfield) {
         super(playfield, 2 * 1000);
 
         X_OFFSET = (int)(22 / (float)playfield.MAP_WIDTH * playfield.mapTexture.getWidth());
-        Y_OFFSET = (int)(3 / (float)playfield.MAP_HEIGHT * playfield.mapTexture.getHeight());
+        Y_OFFSET = (int)(2 / (float)playfield.MAP_HEIGHT * playfield.mapTexture.getHeight());
 
         drawPoint = new Point(13.65f,16f);
         isVisible = true;

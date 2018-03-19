@@ -185,7 +185,6 @@ public class Playfield {
 	{
 		for(Ghost ghost : ghosts) {
 			if(Math.abs(pacman.getX() - ghost.getX()) <= 0.8f && Math.abs(pacman.getY() - ghost.getY()) <= 0.8f)
-			//if(Math.round(pacman.getX()) == Math.round(ghost.getX()) && Math.round(pacman.getY()) == Math.round(ghost.getY()))
 			{
 				if(!ghost.isFrightened() && !ghost.isEyes())
 				{

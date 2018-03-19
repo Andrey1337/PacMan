@@ -1,6 +1,5 @@
 package com.example.andrey.pacman.cutscenes;
 
-import android.graphics.Canvas;
 import com.example.andrey.pacman.PacmanGame;
 import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.entity.Ghost;

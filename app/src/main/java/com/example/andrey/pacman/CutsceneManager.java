@@ -10,7 +10,7 @@ import java.util.Queue;
 
 public class CutsceneManager {
 
-    private ResumeGameCutScene resumeGameCutScene;
+    private ResumeGameCutscene resumeGameCutScene;
 
     private Queue<Cutscene> scenes;
     GameView view;
@@ -25,7 +25,7 @@ public class CutsceneManager {
     }
 
     public void addStartGameScene() {
-        scenes.add(new StartGameCutScene(view, playfield));
+        scenes.add(new StartGameCutscene(view, playfield));
     }
 
     public void addKillPacmanScene() {
@@ -37,7 +37,7 @@ public class CutsceneManager {
     }
 
     public void addEatingGhostScene(Ghost ghost, int ghostMultiplyer) {
-        scenes.add(new EatingGhostScene(view,playfield, ghost, ghostMultiplyer));
+        scenes.add(new EatingGhostCutscene(view,playfield, ghost, ghostMultiplyer));
     }
 
     public void addGameOverScene() {
@@ -55,10 +55,10 @@ public class CutsceneManager {
     public void addResumeScene() {
         for(Cutscene scene : scenes)
         {
-            if(scene.getClass() == StartGameCutScene.class && currentScene == null)
+            if(scene.getClass() == StartGameCutscene.class && currentScene == null)
                 return;
         }
-        resumeGameCutScene = new ResumeGameCutScene(view, playfield);
+        resumeGameCutScene = new ResumeGameCutscene(view, playfield);
         resumePlayingTime = 0;
     }
 

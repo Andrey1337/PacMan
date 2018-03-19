@@ -45,7 +45,7 @@ public class PacmanGame{
 		playfield = new Playfield(this,view);
 		countPoints = playfield.getCountPoints();
 
-		ghostModeController = new GhostManager(playfield);
+		ghostModeController = new GhostManager(this, playfield);
 		userInterfaceDrawManager = new UserInterfaceDrawManager(view, this);
         cutsceneManager = new CutsceneManager(view,this, playfield);
 
@@ -109,10 +109,11 @@ public class PacmanGame{
 		}
 	}
 
-	public void eatGhost(Ghost ghost)
-	{
+	public void eatGhost(Ghost ghost) {
 		getCutsceneManager().addEatingGhostScene(ghost, ghostMultiplyer);
 		ghost.beEaten();
+		ghostMultiplyer++;
+		score += 200 * ghostMultiplyer;
 	}
 
 
@@ -130,6 +131,7 @@ public class PacmanGame{
 			ghostMultiplyer = 0;
 			score += 50;
 		}
+
 		if(countPoints <= 0) {
 			cutsceneManager.addNextLevelScene();
 			cutsceneManager.addPlayfieldPingingScene();

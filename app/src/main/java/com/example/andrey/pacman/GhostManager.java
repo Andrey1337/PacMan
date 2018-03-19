@@ -41,8 +41,10 @@ public class GhostManager {
     private long pingingTime;
     private long pingingTimer = 0;
 
-    GhostManager(Playfield playfield) {
+    private PacmanGame pacmanGame;
+    GhostManager(PacmanGame game,Playfield playfield) {
         this.playfield = playfield;
+        pacmanGame = game;
         pingingTime = 300;
         startPingingTime = frightenedTime - pingingTime * 10;
 
@@ -162,6 +164,7 @@ public class GhostManager {
         switch (newGameMode)
         {
             case CHASE:
+
                 break;
             case SCATTER:
                 break;
