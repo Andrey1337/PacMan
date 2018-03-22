@@ -45,7 +45,7 @@ public abstract class Ghost extends Actor {
     private float eyesSpeed;
 
     Ghost(Playfield playfield, View view, Bitmap bitmap, Point scatterPoint, float x, float y) {
-        super(playfield, bitmap, x, y, 8, 8);
+        super(playfield, bitmap, x, y, 8, 8, 2,4);
         currentPoint = new Point(x,y);
 
         scaryGhost = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.frightened), frameWidth * 2, frameHeight* 2,false);
@@ -210,16 +210,17 @@ public abstract class Ghost extends Actor {
         if(isEyes)
             return;
         isFrightened = newGameMode == GameMode.FRIGHTENED;
-        if(prevGameMode == GameMode.FRIGHTENED)
+        //if(prevGameMode == GameMode.FRIGHTENED)
             isWhite = false;
 
-        if(inCage )
+        if(inCage)
             return;
 
         if(prevGameMode != GameMode.FRIGHTENED) {
             movementDirection = movementDirection.getOposite();
             nextDirection = Direction.NONE;
         }
+
         switch (newGameMode)
         {
             case CHASE:
@@ -307,7 +308,6 @@ public abstract class Ghost extends Actor {
 
     @Override
     public void move(long deltaTime) {
-
         currentPoint = new Point(Math.round(x), Math.round(y));
 
         float frameSpeed = deltaTime;
@@ -369,7 +369,7 @@ public abstract class Ghost extends Actor {
         isWhite = false;
         isFrightened = false;
         destPoint = cagePoint;
-        nextDirection = Direction.NONE;
+        //nextDirection = Direction.NONE;
         findShortestDirection(Direction.NONE, new Point(Math.round(x), Math.round(y)));
     }
 
@@ -404,6 +404,61 @@ public abstract class Ghost extends Actor {
         {
             findShortestDirection(currentDirection, nextPoint);
         }
+    }
+
+
+    private void checkNextDirection()
+    {
+
+        switch (nextDirection)
+        {
+            case NONE:
+                return;
+            case UP:
+                if(!new Point(currentPoint.x, currentPoint.y - 1).isWall(map)
+                        && (x <= currentPoint.x && nextPositionX >= currentPoint.x
+                        || x >= currentPoint.x && nextPositionX <= currentPoint.x))
+                {
+                    this.nextPositionX = currentPoint.x;
+
+                    movementDirection = Direction.UP;
+                    nextDirection = Direction.NONE;
+                }
+                break;
+            case DOWN:
+                if(!new Point(currentPoint.x, currentPoint.y + 1).isWall(map)
+                        && (x <= currentPoint.x && nextPositionX >= currentPoint.x
+                        || x >= currentPoint.x && nextPositionX <= currentPoint.x))
+                {
+                    this.nextPositionX = currentPoint.x;
+                    movementDirection = Direction.DOWN;
+                    nextDirection = Direction.NONE;
+                }
+                break;
+            case RIGHT:
+                if(!new Point(currentPoint.x + 1, currentPoint.y).isWall(map)
+                        && (y <= currentPoint.y && nextPositionY >= currentPoint.y
+                        || y >= currentPoint.y && nextPositionY <= currentPoint.y))
+                {
+                    this.nextPositionY = currentPoint.y;
+                    movementDirection = Direction.RIGHT;
+                    nextDirection = Direction.NONE;
+                }
+                break;
+            case LEFT:
+                if(!new Point(currentPoint.x - 1, currentPoint.y).isWall(map)
+                        && (y <= currentPoint.y && nextPositionY >= currentPoint.y
+                        || y >= currentPoint.y && nextPositionY <= currentPoint.y))
+                {
+                    this.nextPositionY = currentPoint.y;
+                    movementDirection = Direction.LEFT;
+                    nextDirection = Direction.NONE;
+                }
+                break;
+
+        }
+
+        lookingDirection = movementDirection;
     }
 
     private void findShortestDirection(Direction currentDirection, Point point) {

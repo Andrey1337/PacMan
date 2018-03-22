@@ -1,9 +1,6 @@
 package com.example.andrey.pacman.entity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.RectF;
+import android.graphics.*;
 import android.view.View;
 import com.example.andrey.pacman.Direction;
 import com.example.andrey.pacman.Playfield;
@@ -22,7 +19,8 @@ public class Pacman extends Actor{
     private long dyingTime;
 
 	public Pacman(Playfield playfield, View view, float x, float y) {
-		super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_move) ,x, y, 8,8);
+		super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_move) ,x, y, 8,8,
+                2,4);
 		currentPoint = new Point(x,y);
 		movementDirection = Direction.LEFT;
 		lookingDirection = Direction.LEFT;
@@ -36,7 +34,7 @@ public class Pacman extends Actor{
 		dyingTime = 1000;
 
 		frameLengthInMillisecond = 55;
-        turnCutSpeed = 0.02f;
+        turnCutSpeed = 0.15f;
 		setSpeed(0.006f);
 	}
 
@@ -72,6 +70,7 @@ public class Pacman extends Actor{
                 }
                 else {
                     nextPositionY = y - frameSpeed;
+                    nextPositionX = currentPoint.x;
                 }
                 break;
             case DOWN:
@@ -82,6 +81,7 @@ public class Pacman extends Actor{
                 }
                 else {
                     nextPositionY = y + frameSpeed;
+                    nextPositionX = currentPoint.x;
                 }
                 break;
             case LEFT:
@@ -92,6 +92,7 @@ public class Pacman extends Actor{
                 }
                 else {
                     nextPositionX = x - frameSpeed;
+                    nextPositionY = currentPoint.y;
                 }
                 break;
             case RIGHT:
@@ -102,17 +103,91 @@ public class Pacman extends Actor{
                 }
                 else {
                     nextPositionX = x + frameSpeed;
+                    nextPositionY = currentPoint.y;
                 }
                 break;
         }
 
-        checkNextDirection();
+        checkNextDirection(frameSpeed);
 
         x = nextPositionX;
         y = nextPositionY;
 
         checkTunnel();
         animate(deltaTime);
+    }
+
+
+    private float turnCutSpeed;
+    private void checkNextDirection(float speed)
+    {
+        float nextPositionXWithCut = nextPositionX;
+        float nextPositionYWithCut = nextPositionY;
+        switch (movementDirection)
+        {
+            case RIGHT:
+                nextPositionXWithCut += turnCutSpeed;
+                break;
+            case LEFT:
+                nextPositionXWithCut -= turnCutSpeed;
+                break;
+            case UP:
+                nextPositionYWithCut -= turnCutSpeed;
+                break;
+            case DOWN:
+                nextPositionYWithCut += turnCutSpeed;
+                break;
+
+        }
+
+        switch (nextDirection)
+        {
+            case NONE:
+                return;
+            case UP:
+                if(!new Point(currentPoint.x, currentPoint.y - 1).isWall(map)
+                        && (x <= currentPoint.x && nextPositionXWithCut >= currentPoint.x
+                        || x >= currentPoint.x && nextPositionXWithCut <= currentPoint.x))
+                {
+                    nextPositionY = y - speed / 2;
+                    movementDirection = Direction.UP;
+                    nextDirection = Direction.NONE;
+                }
+                break;
+            case DOWN:
+                if(!new Point(currentPoint.x, currentPoint.y + 1).isWall(map)
+                        && (x <= currentPoint.x && nextPositionXWithCut >= currentPoint.x
+                        || x >= currentPoint.x && nextPositionXWithCut <= currentPoint.x))
+                {
+                    nextPositionY = y + speed / 2;
+                    movementDirection = Direction.DOWN;
+                    nextDirection = Direction.NONE;
+                }
+                break;
+            case RIGHT:
+                if(!new Point(currentPoint.x + 1, currentPoint.y).isWall(map)
+                        && (y <= currentPoint.y && nextPositionYWithCut >= currentPoint.y
+                        || y >= currentPoint.y && nextPositionYWithCut <= currentPoint.y))
+                {
+                    nextPositionX = x + speed / 2;
+                    movementDirection = Direction.RIGHT;
+                    nextDirection = Direction.NONE;
+                }
+                break;
+            case LEFT:
+                if(!new Point(currentPoint.x - 1, currentPoint.y).isWall(map)
+                        && (y <= currentPoint.y && nextPositionYWithCut >= currentPoint.y
+                        || y >= currentPoint.y && nextPositionYWithCut <= currentPoint.y))
+                {
+                    nextPositionX = x - speed / 2;
+                    movementDirection = Direction.LEFT;
+                    nextDirection = Direction.NONE;
+                }
+                break;
+
+        }
+
+        lookingDirection = movementDirection;
     }
 
     @Override
@@ -169,10 +244,9 @@ public class Pacman extends Actor{
         RectF whereToDraw = new RectF(left, top, left + actorWidth, top + actorHeight);
 
         if(isDying)
-        {
             canvas.drawBitmap(pacmanDying, frameToDraw, whereToDraw, null);
-        }
-        else canvas.drawBitmap(isPacManBall ? pacmanStartGame : bitmap, frameToDraw, whereToDraw, null);
+        else if(isPacManBall) canvas.drawBitmap(pacmanStartGame, new Rect(0,0,frameWidth, frameHeight), whereToDraw, null);
+            else canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, null);
     }
 }
 

@@ -14,6 +14,7 @@ public class NextLevelCutscene extends Cutscene{
         {
             ghost.isVisible = false;
         }
+        playfield.getPacman().isVisible = true;
         playfield.getPacman().isPacManBall = true;
     }
 }

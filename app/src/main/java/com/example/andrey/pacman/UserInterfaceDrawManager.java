@@ -7,7 +7,7 @@ import android.view.View;
 
 public class UserInterfaceDrawManager {
 
-    private View view;
+    private GameView view;
     private PacmanGame game;
 
     private Bitmap highScoreLabel;
@@ -17,7 +17,7 @@ public class UserInterfaceDrawManager {
     private int frameWidth, frameHeight;
     private int numberWidth, numberHeight;
 
-    UserInterfaceDrawManager(View view, PacmanGame game)
+    UserInterfaceDrawManager(GameView view, PacmanGame game)
     {
         this.view = view;
         this.game = game;
@@ -79,6 +79,7 @@ public class UserInterfaceDrawManager {
                     frameHeight), whereToDraw, null);
         }
     }
+
 
     public void onDraw(Canvas canvas)
     {

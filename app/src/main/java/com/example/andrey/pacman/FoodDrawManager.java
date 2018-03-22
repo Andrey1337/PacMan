@@ -1,16 +1,15 @@
 package com.example.andrey.pacman;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
+import android.graphics.*;
 import android.view.View;
-import com.example.andrey.pacman.entity.Food;
+import com.example.andrey.pacman.entity.FOOD;
 
 public class FoodDrawManager {
 
     private Bitmap pointBitmap;
     private Bitmap energizerBitmap;
-    private Food foodMap[][];
+
+    private FOOD foodMap[][];
 
     private Playfield playfield;
 
@@ -18,8 +17,9 @@ public class FoodDrawManager {
     private long energizerTickTime;
     private boolean isEnergizerVisible;
 
-    private int ENERGIZER_OFFSET_X;
-    private int ENERGIZER_OFFSET_Y;
+    private int ENERGIZER_OFFSET_X, ENERGIZER_OFFSET_Y;
+
+
     FoodDrawManager(View view, Playfield playfield){
         this.playfield = playfield;
         foodMap = playfield.getFoodMap();
@@ -29,6 +29,7 @@ public class FoodDrawManager {
 
         energizerBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.energizer), (int)(8 / (float) playfield.MAP_WIDTH * playfield.mapTexture.getWidth()),
                 (int)(8 / (float) playfield.MAP_WIDTH * playfield.mapTexture.getWidth()),false);
+
 
         ENERGIZER_OFFSET_X = (int)(3 / (float)playfield.MAP_WIDTH * playfield.mapTexture.getWidth());
         ENERGIZER_OFFSET_Y = (int)(3 / (float)playfield.MAP_HEIGHT * playfield.mapTexture.getHeight());
@@ -56,23 +57,21 @@ public class FoodDrawManager {
                 if(foodMap[i][j] == null)
                     continue;
 
-                switch (foodMap[i][j])
-                {
-                    case POINT:
-                        canvas.drawBitmap(pointBitmap, playfield.X_OFFSET + i * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
-                                ,playfield.Y_OFFSET + j * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() + playfield.STARTPOS_Y, null);
-                        break;
-                    case ENERGIZER:
-                        if(!isEnergizerVisible)
-                            break;
-                        canvas.drawBitmap(energizerBitmap, playfield.X_OFFSET + i * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
-                                        - ENERGIZER_OFFSET_X
-                                ,playfield.Y_OFFSET + j * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
-                                        - ENERGIZER_OFFSET_Y + playfield.STARTPOS_Y, null);
-                        break;
-                    case FRUIT:
-                        break;
+                FOOD food = foodMap[i][j];
+
+                if(food == FOOD.POINT) {
+                    canvas.drawBitmap(pointBitmap, playfield.X_OFFSET + i * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
+                            , playfield.Y_OFFSET + j * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() + playfield.STARTPOS_Y, null);
                 }
+                if(food == FOOD.ENERGIZER) {
+                    if(isEnergizerVisible)
+                        canvas.drawBitmap(energizerBitmap, playfield.X_OFFSET + i * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
+                                    - ENERGIZER_OFFSET_X
+                            , playfield.Y_OFFSET + j * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
+                                    - ENERGIZER_OFFSET_Y + playfield.STARTPOS_Y, null);
+                }
+
+
             }
         }
 

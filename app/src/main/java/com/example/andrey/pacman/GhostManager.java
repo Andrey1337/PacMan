@@ -80,6 +80,10 @@ public class GhostManager {
 
     public void nextLevel()
     {
+        pinky = playfield.getPinky();
+        inky = playfield.getInky();
+        clyde = playfield.getClyde();
+
         eatedDots = 0;
         waveNum = 0;
         frightenedTimer = 0;

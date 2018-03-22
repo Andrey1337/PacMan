@@ -14,10 +14,10 @@ public class Playfield {
 
 	private TileSpecification map[][];
 
-	private Food foodMap[][];
+	private FOOD foodMap[][];
 
 	public Bitmap mapTexture;
-	public Bitmap mapTextureWhite;
+	private Bitmap mapTextureWhite;
 
 	public final int MAP_WIDTH;
 	public final int MAP_HEIGHT;
@@ -35,7 +35,7 @@ public class Playfield {
 
 	private PacmanGame game;
 
-	GameMode gameMode;
+	private GameMode gameMode;
 
 	Pacman pacman;
 	private ArrayList<Ghost> ghosts;
@@ -80,13 +80,15 @@ public class Playfield {
 		this.CELLS_SPACE_PERCENT = (float) CELLS_SPACE / (float) MAP_WIDTH;
 
 
+
+
 		Bitmap hightScoreLabel = BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score);
 		hightScoreLabel = Bitmap.createScaledBitmap(hightScoreLabel, (int) (hightScoreLabel.getWidth()  * 5/6 * scale),
 				(int)(hightScoreLabel.getHeight() * 5/6 *  scale), false);
 		STARTPOS_Y = hightScoreLabel.getHeight() / 2 + hightScoreLabel.getHeight();
 
 		map = new TileSpecification[28][29];
-		foodMap = new Food[28][29];
+		foodMap = new FOOD[28][29];
 		initMap();
 
 		initCharacters(view);
@@ -161,8 +163,14 @@ public class Playfield {
 			ghost.move(deltaTime);
 		}
 
-		pacmanFoodIntersect();
-		charactersIntersect();
+
+        if(game.getFruitManager().canEatFruit() && Math.abs(pacman.getX() - game.getFruitManager().getFruit().getX()) <= 0.8f && Math.abs(pacman.getY() - game.getFruitManager().getFruit().getY()) <= 0.8f)
+        {
+			game.getFruitManager().eatFruit();
+        }
+
+        pacmanFoodIntersect();
+        charactersIntersect();
         foodDrawController.onUpdate(deltaTime);
 	}
 
@@ -174,12 +182,13 @@ public class Playfield {
 			return;
 
 		if(foodMap[pacmanPoint.x][pacmanPoint.y] != null) {
-			Food food = foodMap[pacmanPoint.x][pacmanPoint.y];
+			FOOD food = foodMap[pacmanPoint.x][pacmanPoint.y];
 			foodMap[pacmanPoint.x][pacmanPoint.y] = null;
 			game.eatPoint(food);
 		}
 
 	}
+
 
 	private void charactersIntersect()
 	{
@@ -207,7 +216,7 @@ public class Playfield {
 		return this.map;
 	}
 
-	public Food[][] getFoodMap()
+	public FOOD[][] getFoodMap()
 	{
 		return this.foodMap;
 	}
@@ -228,6 +237,8 @@ public class Playfield {
 		{
 			ghost.onDraw(canvas);
 		}
+
+
 	}
 
 	public ArrayList<Ghost> getGhosts() {
@@ -239,10 +250,10 @@ public class Playfield {
 		for(int i = startPointX; i < endPointX; i++)
 		{
 			map[i][y] = TileSpecification.PATH;
-			if(haveFood && foodMap[i][y] != Food.POINT)
+			if(haveFood && foodMap[i][y] != FOOD.POINT)
 			{
 				countPoints++;
-				foodMap[i][y] = Food.POINT;
+				foodMap[i][y] = FOOD.POINT;
 			}
 		}
 	}
@@ -252,10 +263,10 @@ public class Playfield {
 		for(int i = startPointY; i < endPointY; i++)
 		{
 			map[x][i] = TileSpecification.PATH;
-			if(haveFood && foodMap[x][i] != Food.POINT)
+			if(haveFood && foodMap[x][i] != FOOD.POINT)
 			{
 				countPoints++;
-				foodMap[x][i] = Food.POINT;
+				foodMap[x][i] = FOOD.POINT;
 			}
 		}
 	}
@@ -276,10 +287,10 @@ public class Playfield {
 		map[12][22]= TileSpecification.SPECIFIC;
 		map[15][22]= TileSpecification.SPECIFIC;
 
-		foodMap[1][2] = Food.ENERGIZER;
-        foodMap[1][22] = Food.ENERGIZER;
-		foodMap[26][2] = Food.ENERGIZER;
-		foodMap[26][22] = Food.ENERGIZER;
+		foodMap[1][2] = FOOD.ENERGIZER;
+        foodMap[1][22] = FOOD.ENERGIZER;
+		foodMap[26][2] = FOOD.ENERGIZER;
+		foodMap[26][22] = FOOD.ENERGIZER;
 
 	}
 

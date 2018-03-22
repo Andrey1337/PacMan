@@ -1,10 +1,12 @@
 package com.example.andrey.pacman;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -12,16 +14,25 @@ import android.view.View;
 
 public class GameView extends View {
 
-    public Boolean isGameRunning;
-
     private PacmanGame game;
+
+    public final int DISPLAY_WIDTH;
+
+    public final int DISPLAY_HEIGHT;
 
     public GameView(Context context) {
         super(context);
-        isGameRunning = true;
         game = new PacmanGame(this);
         setBackgroundColor(Color.BLACK);
 
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) getContext()).getWindowManager()
+                .getDefaultDisplay()
+                .getMetrics(displayMetrics);
+
+        DISPLAY_HEIGHT = displayMetrics.heightPixels;
+        DISPLAY_WIDTH = displayMetrics.widthPixels;
     }
 
     public void onResume()

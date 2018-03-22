@@ -15,7 +15,7 @@ public class CutsceneManager {
     private Queue<Cutscene> scenes;
     GameView view;
     private PacmanGame pacmanGame;
-    Playfield playfield;
+    private Playfield playfield;
 
     CutsceneManager(GameView gameView,PacmanGame game, Playfield playfield) {
         view = gameView;
@@ -50,6 +50,7 @@ public class CutsceneManager {
 
     public void addPlayfieldPingingScene() {
         scenes.add(new PlayfieldPingingCutscene(pacmanGame,playfield));
+
     }
 
     public void addResumeScene() {

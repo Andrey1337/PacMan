@@ -2,10 +2,10 @@ package com.example.andrey.pacman;
 
 import android.graphics.Canvas;
 import android.view.MotionEvent;
-import com.example.andrey.pacman.entity.Food;
+import com.example.andrey.pacman.entity.FOOD;
+import com.example.andrey.pacman.entity.Fruit;
 import com.example.andrey.pacman.entity.Ghost;
 import com.example.andrey.pacman.entity.Pacman;
-import com.example.andrey.pacman.entity.Point;
 
 import java.util.Date;
 
@@ -16,6 +16,8 @@ public class PacmanGame{
 	private GhostManager ghostModeController;
     private CutsceneManager cutsceneManager;
     private UserInterfaceDrawManager userInterfaceDrawManager;
+    private FruitManager fruitManager;
+
 	private GameView view;
 
 	private int pacmanLives = 4;
@@ -39,6 +41,8 @@ public class PacmanGame{
 
 	private int ghostMultiplyer;
 
+	private int levelNum = 1;
+
 	PacmanGame(GameView view)
 	{
 	    this.view = view;
@@ -48,6 +52,7 @@ public class PacmanGame{
 		ghostModeController = new GhostManager(this, playfield);
 		userInterfaceDrawManager = new UserInterfaceDrawManager(view, this);
         cutsceneManager = new CutsceneManager(view,this, playfield);
+		fruitManager = new FruitManager(view, this,playfield);
 
 		tickInterval = 1000 / 90;
         setTimeout();
@@ -55,6 +60,14 @@ public class PacmanGame{
 		highScore = 5000;
         cutsceneManager.addStartGameScene();
     }
+
+	public FruitManager getFruitManager() {
+		return fruitManager;
+	}
+
+	public int getLevelNum() {
+		return levelNum;
+	}
 
 	public CutsceneManager getCutsceneManager() {
 		return cutsceneManager;
@@ -72,13 +85,15 @@ public class PacmanGame{
 		return pacmanLives;
 	}
 
-	public void nextLevel()
-	{
+	public void nextLevel() {
 		playfield.nextLevel();
 		countPoints = playfield.getCountPoints();
 		ghostModeController.nextLevel();
 		cutsceneManager.addStartGameScene();
+		levelNum++;
 	}
+
+
 
 	public void onResume() {
 	    cutsceneManager.addResumeScene();
@@ -116,20 +131,22 @@ public class PacmanGame{
 		score += 200 * ghostMultiplyer;
 	}
 
+	public void eatFruit(Fruit fruit)
+	{
+		score += fruit.getScore();
+	}
 
-	public void eatPoint(Food food)
+	public void eatPoint(FOOD food)
 	{
 		countPoints--;
         ghostModeController.increaseEatenDots();
 
-        if(food == Food.POINT) {
-			score += 10;
-		}
 
-        if(food == Food.ENERGIZER) {
+        score += food.getPoints();
+
+        if(food == FOOD.ENERGIZER) {
 			ghostModeController.startFrightened();
 			ghostMultiplyer = 0;
-			score += 50;
 		}
 
 		if(countPoints <= 0) {
@@ -140,6 +157,8 @@ public class PacmanGame{
 
 	public void onDraw(Canvas canvas)
 	{
+		fruitManager.onDraw(canvas);
+
 		playfield.onDraw(canvas);
 		userInterfaceDrawManager.onDraw(canvas);
 

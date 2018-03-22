@@ -15,8 +15,7 @@ public abstract class Actor extends Entity{
 
 	int frameWidth, frameHeight;
 
-	int frameCount = 2;
-    int framesMovesCount = 4;
+	int frameCount;
 
     Rect frameToDraw;
 
@@ -41,7 +40,7 @@ public abstract class Actor extends Entity{
 	int actorWidth,actorHeight;
 
 
-	Actor(Playfield playfield, Bitmap bitmap, float x, float y, float actorXOffset, float actorYOffset) {
+	Actor(Playfield playfield, Bitmap bitmap, float x, float y, float actorXOffset, float actorYOffset, int frameCount, int frameMovesCount) {
 		super(x, y);
 
 		this.playfield = playfield;
@@ -52,11 +51,13 @@ public abstract class Actor extends Entity{
 		frameWidth *= 6;
 		frameHeight *= 6;
 
+		this.frameCount = frameCount;
+
         this.bitmap = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount,
-				frameHeight * framesMovesCount,false);
+				frameHeight * frameMovesCount,false);
 
 		actorWidth = (int)((float)bitmap.getWidth() * playfield.scale / (float)frameCount);
-		actorHeight = (int)((float)bitmap.getHeight() * playfield.scale / (float)framesMovesCount);
+		actorHeight = (int)((float)bitmap.getHeight() * playfield.scale / (float) frameMovesCount);
 
 		nextPositionX = x;
 		nextPositionY = y;
@@ -84,7 +85,7 @@ public abstract class Actor extends Entity{
 
 	public abstract void onDraw(Canvas canvas);
 
-	public abstract void move(long deltaTime);
+	public void move(long deltaTime){}
 
 	boolean isInTonel()
 	{
@@ -93,7 +94,7 @@ public abstract class Actor extends Entity{
 
 
 	long animationTime;
-	public abstract void animate(long deltaTime);
+	public void animate(long deltaTime) {}
 
 	void checkTunnel()
 	{
@@ -111,76 +112,5 @@ public abstract class Actor extends Entity{
 		}
 	}
 
-	float turnCutSpeed;
-	void checkNextDirection()
-	{
-		float nextPositionXWithCut = nextPositionX;
-		float nextPositionYWithCut = nextPositionY;
-		switch (movementDirection)
-		{
-			case RIGHT:
-				nextPositionXWithCut += turnCutSpeed;
-				break;
-			case LEFT:
-				nextPositionXWithCut -= turnCutSpeed;
-				break;
-			case UP:
-				nextPositionYWithCut -= turnCutSpeed;
-				break;
-			case DOWN:
-				nextPositionYWithCut += turnCutSpeed;
-				break;
-
-		}
-
-	    switch (nextDirection)
-        {
-            case NONE:
-                return;
-            case UP:
-                if(!new Point(currentPoint.x, currentPoint.y - 1).isWall(map)
-                        && (x <= currentPoint.x && nextPositionXWithCut >= currentPoint.x
-						|| x >= currentPoint.x && nextPositionXWithCut <= currentPoint.x))
-				{
-					nextPositionX = currentPoint.x;
-					movementDirection = Direction.UP;
-					nextDirection = Direction.NONE;
-				}
-                break;
-            case DOWN:
-				if(!new Point(currentPoint.x, currentPoint.y + 1).isWall(map)
-						&& (x <= currentPoint.x && nextPositionXWithCut >= currentPoint.x
-						|| x >= currentPoint.x && nextPositionXWithCut <= currentPoint.x))
-				{
-					nextPositionX = currentPoint.x;
-					movementDirection = Direction.DOWN;
-					nextDirection = Direction.NONE;
-				}
-                break;
-            case RIGHT:
-				if(!new Point(currentPoint.x + 1, currentPoint.y).isWall(map)
-						&& (y <= currentPoint.y && nextPositionYWithCut >= currentPoint.y
-						|| y >= currentPoint.y && nextPositionYWithCut <= currentPoint.y))
-				{
-					nextPositionY = currentPoint.y;
-					movementDirection = Direction.RIGHT;
-					nextDirection = Direction.NONE;
-				}
-                break;
-            case LEFT:
-				if(!new Point(currentPoint.x - 1, currentPoint.y).isWall(map)
-						&& (y <= currentPoint.y && nextPositionYWithCut >= currentPoint.y
-						|| y >= currentPoint.y && nextPositionYWithCut <= currentPoint.y))
-				{
-					nextPositionY = currentPoint.y;
-					movementDirection = Direction.LEFT;
-					nextDirection = Direction.NONE;
-				}
-                break;
-
-        }
-
-		lookingDirection = movementDirection;
-	}
 
 }
