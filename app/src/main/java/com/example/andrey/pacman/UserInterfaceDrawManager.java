@@ -2,6 +2,7 @@ package com.example.andrey.pacman;
 
 
 import android.graphics.*;
+import com.example.andrey.pacman.entity.Actor;
 
 
 public class UserInterfaceDrawManager {
@@ -9,94 +10,139 @@ public class UserInterfaceDrawManager {
     private GameView view;
     private PacmanGame game;
 
-    private Bitmap highScoreLabel;
-    private Bitmap pacmanLife;
-    private Bitmap numbers;
 
-    private int frameWidth, frameHeight;
-    private int numberWidth, numberHeight;
+    private PacmanLife pacmanLife;
+    private HighScore highScore;
+    private ScoreNumber scoreNumber;
+
 
     UserInterfaceDrawManager(GameView view, PacmanGame game)
     {
         this.view = view;
         this.game = game;
 
-        pacmanLife = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_life),
-                (int) (BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_life).getWidth() * game.getPlayfield().scale),
-                (int)(BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_life).getHeight() *  game.getPlayfield().scale), false);
+        pacmanLife = new PacmanLife(game.getPlayfield(), BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_life),0,0);
+        highScore = new HighScore(game.getPlayfield(), BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score),0,0);
+        highScore.setX(highScore.getActorHeight() / 4);
+        highScore.setY(highScore.getActorHeight() / 4);
 
-        highScoreLabel = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score),
-                (int) (BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score).getWidth() * 5/6 * game.getPlayfield().scale),
-                (int)(BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score).getHeight() * 5/6 *  game.getPlayfield().scale), false);
-
-        frameWidth = 7;
-        frameHeight= 7;
-
-        frameHeight *= 8;
-        frameWidth *= 8;
-
-        numbers = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.numbers),
-                (int) (BitmapFactory.decodeResource(view.getResources(), R.mipmap.numbers).getWidth() * 5/6 * game.getPlayfield().scale),
-                (int)(BitmapFactory.decodeResource(view.getResources(), R.mipmap.numbers).getHeight() * 5/6 * game.getPlayfield().scale), false);
-
-        int numbersCount = 10;
-        numberWidth = numbers.getWidth() / numbersCount;
-        numberHeight = numbers.getHeight();
-
-        numbers = Bitmap.createScaledBitmap(numbers, frameWidth * numbersCount,
-                frameHeight, false);
+        scoreNumber = new ScoreNumber(game.getPlayfield(), BitmapFactory.decodeResource(view.getResources(), R.mipmap.numbers),0,0,0);
 
     }
 
     private void drawHighScore(Canvas canvas, int highScore) {
 
-        int width = Integer.toString(highScore).toCharArray().length * numberWidth / 2;
+        int width = Integer.toString(highScore).toCharArray().length * scoreNumber.getActorWidth() / 2;
         float left = game.getPlayfield().mapTexture.getWidth()/2 - width;
-        float top = numbers.getHeight() / 6;
+        float top = scoreNumber.getActorHeight() / 6;
 
         char[] numberChars = Integer.toString(highScore).toCharArray();
 
         for (int i = 0; i < String.valueOf(highScore).length(); i++) {
-            RectF whereToDraw = new RectF(left + numberWidth * i, top, left + numberWidth * (i + 1), top + numberHeight);
-            canvas.drawBitmap(numbers, new Rect(Character.getNumericValue(numberChars[i]) * frameWidth, 0, (Character.getNumericValue(numberChars[i]) * frameWidth) + frameWidth,
-                    frameHeight), whereToDraw, null);
+
+            scoreNumber.setX(left + scoreNumber.getActorWidth() * i);
+            scoreNumber.setY(top);
+            scoreNumber.setCurrentFrame(Character.getNumericValue(numberChars[i]));
+            scoreNumber.onDraw(canvas);
         }
     }
 
     private void drawScore(Canvas canvas, int score)
     {
-        int width = Integer.toString(score).toCharArray().length * numberWidth ;
+        int width = Integer.toString(score).toCharArray().length * scoreNumber.getActorWidth();
         float left = game.getPlayfield().mapTexture.getWidth() - 1 - width;
 
-        float top = numbers.getHeight() / 6;
+        float top = scoreNumber.getActorHeight()/ 6;
 
         char[] numberChars = Integer.toString(score).toCharArray();
 
-        for (int i = 0; i < String.valueOf(score).length(); i++) {
-            RectF whereToDraw = new RectF(left + numberWidth * i, top, left + numberWidth * (i + 1), top + numberHeight);
-            canvas.drawBitmap(numbers, new Rect(Character.getNumericValue(numberChars[i]) * frameWidth, 0, (Character.getNumericValue(numberChars[i]) * frameWidth) + frameWidth,
-                    frameHeight), whereToDraw, null);
+        for (int i = 0; i < String.valueOf(score).length(); i++) { ;
+
+            scoreNumber.setX(left + scoreNumber.getActorWidth() * i);
+            scoreNumber.setY(top);
+            scoreNumber.setCurrentFrame(Character.getNumericValue(numberChars[i]));
+            scoreNumber.onDraw(canvas);
         }
     }
 
 
     public void onDraw(Canvas canvas)
     {
-        float left =  highScoreLabel.getHeight() / 4;
-        float top = highScoreLabel.getHeight() / 4;
-        canvas.drawBitmap(highScoreLabel, left, top, null);
+        highScore.onDraw(canvas);
 
         drawHighScore(canvas, game.getHighScore());
 
         drawScore(canvas, game.getScore());
 
-        left = game.getPlayfield().mapTexture.getWidth()/ game.getPlayfield().MAP_WIDTH;
-        top = game.getPlayfield().mapTexture.getHeight() + game.getPlayfield().STARTPOS_Y +
-                game.getPlayfield().mapTexture.getWidth()/ game.getPlayfield().MAP_WIDTH;
+        pacmanLife.setX(game.getPlayfield().mapTexture.getWidth()/ game.getPlayfield().MAP_WIDTH);
+        pacmanLife.setY(game.getPlayfield().mapTexture.getHeight() + game.getPlayfield().STARTPOS_Y + 10);
         for (int i = 0; i <  game.getPacmanLives() ;i++) {
-            canvas.drawBitmap(pacmanLife, left, top, null);
-
-            left += pacmanLife.getWidth();
+            pacmanLife.onDraw(canvas);
+            pacmanLife.setX(pacmanLife.getX() + pacmanLife.getActorWidth());
         }
+    }
+
+    class ScoreNumber extends Actor{
+
+        ScoreNumber(Playfield playfield, Bitmap bitmap, int number, float x, float y) {
+            super(playfield, bitmap, 7, 7, 0, 0, 10, 1, x, y);
+            currentFrame = number;
+
+            actorWidth = actorWidth * 5 / 6;
+            actorHeight = actorHeight * 5 /6;
+        }
+
+        @Override
+        public void onDraw(Canvas canvas) {
+
+            float left = getX();
+            float top = getY();
+
+            frameToDraw = new Rect(currentFrame * getFrameWidth(), 0, currentFrame * getFrameWidth() + getFrameWidth(), getFrameHeight());
+            RectF whereToDraw = new RectF(left, top, left + getActorWidth(), top + getActorHeight());
+            canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, null);
+        }
+
+    }
+
+    class PacmanLife extends Actor{
+        PacmanLife(Playfield playfield, Bitmap bitmap, float x, float y) {
+            super(playfield, bitmap, 13, 13, 0, 0, 1, 1, x, y);
+        }
+
+        @Override
+        public void onDraw(Canvas canvas) {
+
+            float left = getX();
+            float top = getY();
+
+            frameToDraw = new Rect(0, 0, getFrameWidth(), getFrameHeight());
+            RectF whereToDraw = new RectF(left, top, left + getActorWidth(), top + getActorHeight());
+            canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, null);
+        }
+    }
+
+    class HighScore extends Actor{
+
+        HighScore(Playfield playfield, Bitmap bitmap, float x, float y) {
+            super(playfield, bitmap, 76, 7, 0, 0, 1, 1, x, y);
+
+            actorWidth = actorWidth * 5 / 6;
+            actorHeight = actorHeight * 5 /6;
+        }
+
+
+
+        @Override
+        public void onDraw(Canvas canvas) {
+
+            float left = getX();
+            float top = getY();
+
+            frameToDraw = new Rect(0, 0, getFrameWidth(), getFrameHeight());
+            RectF whereToDraw = new RectF(left, top, left + getActorWidth(), top + getActorHeight());
+            canvas.drawBitmap(bitmap, frameToDraw, whereToDraw, null);
+        }
+
     }
 }

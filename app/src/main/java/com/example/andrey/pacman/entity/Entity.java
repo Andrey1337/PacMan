@@ -8,7 +8,7 @@ import android.util.Log;
 
 public abstract class Entity {
 
-	Bitmap bitmap;
+	protected Bitmap bitmap;
 	float x;
 	float y;
 	
@@ -25,6 +25,14 @@ public abstract class Entity {
 	public float getY()
 	{
 		return y;
+	}
+
+	public void setX(float x) {
+		this.x = x;
+	}
+
+	public void setY(float y) {
+		this.y = y;
 	}
 
 	public abstract void onDraw(Canvas canvas);

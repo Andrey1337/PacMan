@@ -14,12 +14,12 @@ public abstract class Actor extends Entity {
     final int ACTOR_X_OFFSET;
     final int ACTOR_Y_OFFSET;
 
-    int actorWidth,actorHeight;
+    protected int actorWidth,actorHeight;
     int frameWidth, frameHeight;
 
     int frameCount;
 
-    Rect frameToDraw;
+    protected Rect frameToDraw;
 
     protected int currentFrame = 0;
     int frameLengthInMillisecond;
@@ -49,6 +49,25 @@ public abstract class Actor extends Entity {
 
     }
 
+    public void setCurrentFrame(int currentFrame) {
+        this.currentFrame = currentFrame;
+    }
+
+    public int getActorHeight() {
+        return actorHeight;
+    }
+
+    public int getActorWidth() {
+        return actorWidth;
+    }
+
+    protected int getFrameWidth() {
+        return frameWidth;
+    }
+
+    protected int getFrameHeight() {
+        return frameHeight;
+    }
 
     public void onDraw(Canvas canvas)
     {

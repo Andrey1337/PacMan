@@ -80,11 +80,9 @@ public class Playfield {
 		this.CELLS_SPACE_PERCENT = (float) CELLS_SPACE / (float) MAP_WIDTH;
 
 
-
-
 		Bitmap hightScoreLabel = BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score);
-		hightScoreLabel = Bitmap.createScaledBitmap(hightScoreLabel, (int) (hightScoreLabel.getWidth()  * 5/6 * scale),
-				(int)(hightScoreLabel.getHeight() * 5/6 *  scale), false);
+		hightScoreLabel = Bitmap.createScaledBitmap(hightScoreLabel, (int) (hightScoreLabel.getWidth()  * 5 / 6 * scale),
+				(int)(hightScoreLabel.getHeight() * 5 / 6 *scale), false);
 		STARTPOS_Y = hightScoreLabel.getHeight() / 2 + hightScoreLabel.getHeight();
 
 		map = new TileSpecification[28][29];

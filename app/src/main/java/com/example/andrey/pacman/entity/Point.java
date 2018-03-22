@@ -5,7 +5,6 @@ import com.example.andrey.pacman.TileSpecification;
 
 public class Point {
 
-
     public int x;
     public int y;
 
