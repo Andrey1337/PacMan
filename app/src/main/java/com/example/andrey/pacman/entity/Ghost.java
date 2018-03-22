@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.View;
 import com.example.andrey.pacman.Direction;
 import com.example.andrey.pacman.GameMode;
@@ -14,7 +13,7 @@ import com.example.andrey.pacman.R;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class Ghost extends Actor {
+public abstract class Ghost extends PlayfieldActor {
 
     private Bitmap scaryGhost;
     private Bitmap eyesGhost;
@@ -45,7 +44,7 @@ public abstract class Ghost extends Actor {
     private float eyesSpeed;
 
     Ghost(Playfield playfield, View view, Bitmap bitmap, Point scatterPoint, float x, float y) {
-        super(playfield, bitmap, x, y, 8, 8, 2,4);
+        super(playfield, bitmap, x, y,18,18, 8, 8, 2,4);
         currentPoint = new Point(x,y);
 
         scaryGhost = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.frightened), frameWidth * 2, frameHeight* 2,false);

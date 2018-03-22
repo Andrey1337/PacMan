@@ -22,7 +22,7 @@ public class ResumeGameCutscene extends StartGameCutscene {
         if(pingingTimer >= pingTime)
         {
             pingingTimer = 0;
-            isVisible = !isVisible;
+            readyLabel.isVisible = !readyLabel.isVisible;
         }
 
     }

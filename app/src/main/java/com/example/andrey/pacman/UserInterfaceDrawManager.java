@@ -2,7 +2,6 @@ package com.example.andrey.pacman;
 
 
 import android.graphics.*;
-import android.view.View;
 
 
 public class UserInterfaceDrawManager {

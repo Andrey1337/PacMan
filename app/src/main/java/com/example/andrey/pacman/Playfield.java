@@ -231,12 +231,14 @@ public class Playfield {
 		canvas.drawBitmap(isPing ? mapTextureWhite : mapTexture,0,STARTPOS_Y, null);
 		foodDrawController.onDraw(canvas);
 
+		game.getFruitManager().onDraw(canvas);
 		pacman.onDraw(canvas);
 
 		for (Ghost ghost : ghosts)
 		{
 			ghost.onDraw(canvas);
 		}
+
 
 
 	}

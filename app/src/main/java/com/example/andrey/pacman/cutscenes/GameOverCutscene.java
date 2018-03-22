@@ -8,42 +8,27 @@ import com.example.andrey.pacman.GameView;
 import com.example.andrey.pacman.PacmanGame;
 import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.R;
+import com.example.andrey.pacman.entity.Actor;
 import com.example.andrey.pacman.entity.Ghost;
 import com.example.andrey.pacman.entity.Point;
 
 public class GameOverCutscene extends Cutscene {
 
-    private Bitmap gameOver;
-    private int X_OFFSET;
-    private int Y_OFFSET;
-
-    private Point drawPoint;
-
     private PacmanGame pacmanGame;
 
+    private GameOverLabel gameOverLabel;
 
     public GameOverCutscene(View view, PacmanGame game, Playfield playfield) {
         super(playfield, 2 * 1000);
 
         pacmanGame = game;
 
-        X_OFFSET = (int)(39 / (float)playfield.MAP_WIDTH * playfield.mapTexture.getWidth());
-        Y_OFFSET = (int)(3 / (float)playfield.MAP_HEIGHT * playfield.mapTexture.getHeight());
-
-        drawPoint = new Point(13.65f,16f);
-        gameOver = BitmapFactory.decodeResource(view.getResources(), R.mipmap.game_over);
-        gameOver = Bitmap.createScaledBitmap(gameOver, (int) (gameOver.getWidth() * playfield.scale),
-                (int)(gameOver.getHeight() * playfield.scale), false);
-
+        gameOverLabel = new GameOverLabel(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.game_over),13.65f,16f);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        float left = playfield.X_OFFSET + drawPoint.floatX * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - X_OFFSET;
-
-        float top = playfield.Y_OFFSET + drawPoint.floatY * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() - Y_OFFSET  + playfield.STARTPOS_Y;
-
-        canvas.drawBitmap(gameOver, left, top, null);
+        gameOverLabel.onDraw(canvas);
     }
 
     @Override
@@ -54,9 +39,15 @@ public class GameOverCutscene extends Cutscene {
         playfield.getPacman().isVisible = false;
     }
 
-
     @Override
     public void endOfScene() {
         pacmanGame.gameOver();
+    }
+
+    class GameOverLabel extends Actor {
+
+        GameOverLabel(Playfield playfield, Bitmap bitmap, float x, float y) {
+            super(playfield, bitmap, 79, 7, 39, 3, 1, 1, x, y);
+        }
     }
 }

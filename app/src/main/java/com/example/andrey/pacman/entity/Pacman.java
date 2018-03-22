@@ -7,10 +7,9 @@ import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.R;
 
 
-public class Pacman extends Actor{
+public class Pacman extends PlayfieldActor {
 
     private Bitmap pacmanStartGame;
-
     private Bitmap pacmanDying;
 
     public boolean isPacManBall;
@@ -19,8 +18,9 @@ public class Pacman extends Actor{
     private long dyingTime;
 
 	public Pacman(Playfield playfield, View view, float x, float y) {
-		super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_move) ,x, y, 8,8,
-                2,4);
+	    super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_move),
+                x, y,18,18, 8, 8, 2,4);
+
 		currentPoint = new Point(x,y);
 		movementDirection = Direction.LEFT;
 		lookingDirection = Direction.LEFT;
@@ -28,7 +28,6 @@ public class Pacman extends Actor{
 		isPacManBall = true;
 
 		pacmanStartGame = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_startgame), frameWidth, frameHeight ,false);
-
 		pacmanDying =  Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_dying), frameWidth * 12, frameHeight ,false);
 
 		dyingTime = 1000;

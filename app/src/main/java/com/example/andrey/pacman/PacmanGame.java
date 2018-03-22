@@ -131,8 +131,7 @@ public class PacmanGame{
 		score += 200 * ghostMultiplyer;
 	}
 
-	public void eatFruit(Fruit fruit)
-	{
+	public void eatFruit(Fruit fruit) {
 		score += fruit.getScore();
 	}
 
@@ -157,10 +156,8 @@ public class PacmanGame{
 
 	public void onDraw(Canvas canvas)
 	{
-		fruitManager.onDraw(canvas);
-
-		playfield.onDraw(canvas);
-		userInterfaceDrawManager.onDraw(canvas);
+        playfield.onDraw(canvas);
+        userInterfaceDrawManager.onDraw(canvas);
 
 		if(cutsceneManager.hasScene())
 			cutsceneManager.onDraw(canvas);
@@ -181,6 +178,7 @@ public class PacmanGame{
 			}
 			else {
 				playfield.update(deltaTime);
+				fruitManager.update(deltaTime);
 				ghostModeController.update(deltaTime);
 			}
 		}

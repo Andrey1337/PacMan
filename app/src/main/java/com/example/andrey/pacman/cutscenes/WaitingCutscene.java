@@ -8,8 +8,7 @@ public class WaitingCutscene extends Cutscene{
     public WaitingCutscene(Playfield playfield) {
         super(playfield, 1200);
     }
-
-
+    
     @Override
     public void play(long deltaTime) {
 
