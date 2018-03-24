@@ -2,7 +2,7 @@ package com.example.andrey.pacman;
 
 import android.graphics.Canvas;
 import android.view.MotionEvent;
-import com.example.andrey.pacman.entity.FOOD;
+import com.example.andrey.pacman.entity.Food;
 import com.example.andrey.pacman.entity.Fruit;
 import com.example.andrey.pacman.entity.Ghost;
 import com.example.andrey.pacman.entity.Pacman;
@@ -135,15 +135,16 @@ public class PacmanGame{
 		score += fruit.getScore();
 	}
 
-	public void eatPoint(FOOD food)
+	public void eatPoint(Food food)
 	{
 		countPoints--;
-        ghostModeController.increaseEatenDots();
+		fruitManager.eatPoint();
 
+        ghostModeController.increaseEatenDots();
 
         score += food.getPoints();
 
-        if(food == FOOD.ENERGIZER) {
+        if(food == Food.ENERGIZER) {
 			ghostModeController.startFrightened();
 			ghostMultiplyer = 0;
 		}
@@ -175,6 +176,7 @@ public class PacmanGame{
 		if(!pause) {
 			if(cutsceneManager.hasScene()) {
 				cutsceneManager.playScene(deltaTime);
+
 			}
 			else {
 				playfield.update(deltaTime);

@@ -1,8 +1,5 @@
 package com.example.andrey.pacman.entity;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import com.example.andrey.pacman.Direction;
 import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.TileSpecification;

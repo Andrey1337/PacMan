@@ -18,7 +18,7 @@ public class EatingGhostCutscene extends Cutscene {
         super(playfield, 1000);
 
         ghostWasEaten = ghost;
-        ghostPoints = new GhostPoints(playfield,BitmapFactory.decodeResource(view.getResources(), R.mipmap.ghost_points),ghostMultiplyer,ghostWasEaten.getX(), ghostWasEaten.getY());
+        ghostPoints = new GhostPoints(view, playfield,ghostMultiplyer,ghostWasEaten.getX(), ghostWasEaten.getY());
 
     }
 
@@ -38,9 +38,10 @@ public class EatingGhostCutscene extends Cutscene {
         playfield.getPacman().isVisible = true;
         ghostWasEaten.isVisible = true;
     }
+
     class GhostPoints extends Actor {
-        GhostPoints(Playfield playfield, Bitmap bitmap,int ghostMultiplyer, float x, float y) {
-            super(playfield, bitmap, 18, 9, 8, 4, 4, 1, x, y);
+        GhostPoints(View view, Playfield playfield,int ghostMultiplyer, float x, float y) {
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.ghost_points), 18, 9, 8, 4, 4, 1, x, y);
             currentFrame = ghostMultiplyer;
         }
     }

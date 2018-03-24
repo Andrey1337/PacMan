@@ -1,9 +1,6 @@
 package com.example.andrey.pacman.entity;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.*;
 import com.example.andrey.pacman.Playfield;
 
 public abstract class Actor extends Entity {
@@ -36,6 +33,7 @@ public abstract class Actor extends Entity {
         this.playfield = playfield;
         this.bitmap = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount,
                 frameHeight * frameMovesCount,false);
+
 
         this.frameCount = frameCount;
 

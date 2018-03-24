@@ -15,6 +15,7 @@ public class KillPacmanCutscene extends Cutscene{
     }
 
 
+
     @Override
     public void startOfScene() {
         for(Ghost ghost : playfield.getGhosts()) {
@@ -30,12 +31,13 @@ public class KillPacmanCutscene extends Cutscene{
         }
         playfield.getPacman().stopDying();
 
+        pacmanGame.getFruitManager().killPacman();
         pacmanGame.killPacman();
     }
 
     @Override
     public void play(long deltaTime) {
-
         playfield.getPacman().animate(deltaTime);
+        pacmanGame.getFruitManager().update(deltaTime);
     }
 }

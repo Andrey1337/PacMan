@@ -1,16 +1,13 @@
 package com.example.andrey.pacman.cutscenes;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.View;
-import com.example.andrey.pacman.GameView;
 import com.example.andrey.pacman.PacmanGame;
 import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.R;
 import com.example.andrey.pacman.entity.Actor;
 import com.example.andrey.pacman.entity.Ghost;
-import com.example.andrey.pacman.entity.Point;
 
 public class GameOverCutscene extends Cutscene {
 
@@ -23,7 +20,7 @@ public class GameOverCutscene extends Cutscene {
 
         pacmanGame = game;
 
-        gameOverLabel = new GameOverLabel(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.game_over),13.65f,16f);
+        gameOverLabel = new GameOverLabel(view, playfield,13.65f,16f);
     }
 
     @Override
@@ -46,8 +43,8 @@ public class GameOverCutscene extends Cutscene {
 
     class GameOverLabel extends Actor {
 
-        GameOverLabel(Playfield playfield, Bitmap bitmap, float x, float y) {
-            super(playfield, bitmap, 79, 7, 39, 3, 1, 1, x, y);
+        GameOverLabel(View view,Playfield playfield, float x, float y) {
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.game_over), 79, 7, 39, 3, 1, 1, x, y);
         }
     }
 }

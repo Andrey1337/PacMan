@@ -2,6 +2,7 @@ package com.example.andrey.pacman;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +18,7 @@ public class GameActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         gameView = new GameView(this);
         setContentView(gameView);
+
         //gameBoardView = (GameBoardView) findViewById(R.id.matrix_view);
     }
 

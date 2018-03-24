@@ -1,6 +1,6 @@
 package com.example.andrey.pacman.entity;
 
-public enum FRUIT_TYPE {
+public enum FruitType {
 
     CHERRY(100,0),
     STRAWBERRY(300,1),
@@ -11,12 +11,10 @@ public enum FRUIT_TYPE {
     BELL(3000,6),
     KEY(5000,7);
 
-
-
     private final int scorePoints;
     private final int drawPosition;
 
-    private FRUIT_TYPE(int scorePoints, int drawPosition) {
+    FruitType(int scorePoints, int drawPosition) {
         this.scorePoints = scorePoints;
         this.drawPosition = drawPosition;
     }

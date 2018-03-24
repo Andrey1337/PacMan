@@ -33,7 +33,7 @@ public class CutsceneManager {
     }
 
     public void addWaitingScene() {
-        scenes.add(new WaitingCutscene(playfield));
+        scenes.add(new WaitingCutscene(pacmanGame,playfield));
     }
 
     public void addEatingGhostScene(Ghost ghost, int ghostMultiplyer) {

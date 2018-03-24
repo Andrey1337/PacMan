@@ -2,14 +2,14 @@ package com.example.andrey.pacman;
 
 import android.graphics.*;
 import android.view.View;
-import com.example.andrey.pacman.entity.FOOD;
+import com.example.andrey.pacman.entity.Food;
 
 public class FoodDrawManager {
 
     private Bitmap pointBitmap;
     private Bitmap energizerBitmap;
 
-    private FOOD foodMap[][];
+    private Food foodMap[][];
 
     private Playfield playfield;
 
@@ -57,13 +57,13 @@ public class FoodDrawManager {
                 if(foodMap[i][j] == null)
                     continue;
 
-                FOOD food = foodMap[i][j];
+                Food food = foodMap[i][j];
 
-                if(food == FOOD.POINT) {
+                if(food == Food.POINT) {
                     canvas.drawBitmap(pointBitmap, playfield.X_OFFSET + i * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
                             , playfield.Y_OFFSET + j * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth() + playfield.STARTPOS_Y, null);
                 }
-                if(food == FOOD.ENERGIZER) {
+                if(food == Food.ENERGIZER) {
                     if(isEnergizerVisible)
                         canvas.drawBitmap(energizerBitmap, playfield.X_OFFSET + i * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()
                                     - ENERGIZER_OFFSET_X

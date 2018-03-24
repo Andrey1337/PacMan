@@ -1,12 +1,12 @@
 package com.example.andrey.pacman.entity;
 
-public enum FOOD {
+public enum Food {
     POINT(10),
     ENERGIZER(50);
 
     private final int scorePoints;
 
-    FOOD(int scorePoints) {
+    Food(int scorePoints) {
         this.scorePoints = scorePoints;
     }
 

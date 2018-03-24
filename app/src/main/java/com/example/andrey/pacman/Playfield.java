@@ -14,7 +14,7 @@ public class Playfield {
 
 	private TileSpecification map[][];
 
-	private FOOD foodMap[][];
+	private Food foodMap[][];
 
 	public Bitmap mapTexture;
 	private Bitmap mapTextureWhite;
@@ -86,7 +86,7 @@ public class Playfield {
 		STARTPOS_Y = hightScoreLabel.getHeight() / 2 + hightScoreLabel.getHeight();
 
 		map = new TileSpecification[28][29];
-		foodMap = new FOOD[28][29];
+		foodMap = new Food[28][29];
 		initMap();
 
 		initCharacters(view);
@@ -180,7 +180,7 @@ public class Playfield {
 			return;
 
 		if(foodMap[pacmanPoint.x][pacmanPoint.y] != null) {
-			FOOD food = foodMap[pacmanPoint.x][pacmanPoint.y];
+			Food food = foodMap[pacmanPoint.x][pacmanPoint.y];
 			foodMap[pacmanPoint.x][pacmanPoint.y] = null;
 			game.eatPoint(food);
 		}
@@ -214,7 +214,7 @@ public class Playfield {
 		return this.map;
 	}
 
-	public FOOD[][] getFoodMap()
+	public Food[][] getFoodMap()
 	{
 		return this.foodMap;
 	}
@@ -250,10 +250,10 @@ public class Playfield {
 		for(int i = startPointX; i < endPointX; i++)
 		{
 			map[i][y] = TileSpecification.PATH;
-			if(haveFood && foodMap[i][y] != FOOD.POINT)
+			if(haveFood && foodMap[i][y] != Food.POINT)
 			{
 				countPoints++;
-				foodMap[i][y] = FOOD.POINT;
+				foodMap[i][y] = Food.POINT;
 			}
 		}
 	}
@@ -263,10 +263,10 @@ public class Playfield {
 		for(int i = startPointY; i < endPointY; i++)
 		{
 			map[x][i] = TileSpecification.PATH;
-			if(haveFood && foodMap[x][i] != FOOD.POINT)
+			if(haveFood && foodMap[x][i] != Food.POINT)
 			{
 				countPoints++;
-				foodMap[x][i] = FOOD.POINT;
+				foodMap[x][i] = Food.POINT;
 			}
 		}
 	}
@@ -287,10 +287,10 @@ public class Playfield {
 		map[12][22]= TileSpecification.SPECIFIC;
 		map[15][22]= TileSpecification.SPECIFIC;
 
-		foodMap[1][2] = FOOD.ENERGIZER;
-        foodMap[1][22] = FOOD.ENERGIZER;
-		foodMap[26][2] = FOOD.ENERGIZER;
-		foodMap[26][22] = FOOD.ENERGIZER;
+		foodMap[1][2] = Food.ENERGIZER;
+        foodMap[1][22] = Food.ENERGIZER;
+		foodMap[26][2] = Food.ENERGIZER;
+		foodMap[26][22] = Food.ENERGIZER;
 
 	}
 
