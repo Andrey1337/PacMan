@@ -103,7 +103,7 @@ public class UserInterfaceDrawManager {
     class HighScore extends UserInterfaceActor{
 
         HighScore(View view, Playfield playfield, float x, float y) {
-            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score), 76, 7, 0, 0, 1, 1, x, y);
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.high_score), 75, 7, 0, 0, 1, 1, x, y);
 
             actorWidth = actorWidth * 5 / 6;
             actorHeight = actorHeight * 5 /6;

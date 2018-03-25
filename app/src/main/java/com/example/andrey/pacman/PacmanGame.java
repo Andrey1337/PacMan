@@ -1,7 +1,9 @@
 package com.example.andrey.pacman;
 
 import android.graphics.Canvas;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.widget.Toast;
 import com.example.andrey.pacman.entity.Food;
 import com.example.andrey.pacman.entity.Fruit;
 import com.example.andrey.pacman.entity.Ghost;
@@ -43,9 +45,38 @@ public class PacmanGame{
 
 	private int levelNum = 1;
 
+
+	String picturesFile;
+
 	PacmanGame(GameView view)
 	{
 	    this.view = view;
+
+		int density= view.getResources().getDisplayMetrics().densityDpi;
+
+		picturesFile = "XHDPI";
+		switch(density)
+		{
+			case DisplayMetrics.DENSITY_LOW:
+				picturesFile = "LDPI";
+				break;
+			case DisplayMetrics.DENSITY_MEDIUM:
+				picturesFile = "MDPI";
+				break;
+			case DisplayMetrics.DENSITY_HIGH:
+				picturesFile = "HDPI";
+				break;
+			case DisplayMetrics.DENSITY_XHIGH:
+				picturesFile = "XHDPI";
+				break;
+			case DisplayMetrics.DENSITY_XXHIGH:
+				picturesFile = "XXHDPI";
+				break;
+			case DisplayMetrics.DENSITY_XXXHIGH:
+				picturesFile = "XXXHDPI";
+				break;
+		}
+
 		playfield = new Playfield(this,view);
 		countPoints = playfield.getCountPoints();
 
@@ -60,6 +91,11 @@ public class PacmanGame{
 		highScore = 5000;
         cutsceneManager.addStartGameScene();
     }
+
+
+	public String getPicturesFile() {
+		return picturesFile;
+	}
 
 	public FruitManager getFruitManager() {
 		return fruitManager;

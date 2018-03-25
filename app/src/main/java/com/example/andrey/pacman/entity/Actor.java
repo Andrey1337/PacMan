@@ -25,8 +25,10 @@ public abstract class Actor extends Entity {
                     float actorXOffset, float actorYOffset, int frameCount, int frameMovesCount, float x, float y) {
         super(x, y);
 
-        frameWidth *= 15;
-        frameHeight *= 15;
+
+        frameWidth *= 3;
+        frameHeight *= 3;
+
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
 

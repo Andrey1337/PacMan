@@ -1,10 +1,10 @@
 package com.example.andrey.pacman;
 
 
-import android.graphics.*;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.view.View;
 import com.example.andrey.pacman.entity.Actor;
-import com.example.andrey.pacman.entity.FruitType;
 import com.example.andrey.pacman.entity.Fruit;
 import com.example.andrey.pacman.entity.UserInterfaceActor;
 
@@ -111,7 +111,7 @@ public class FruitManager {
     public class FruitPoints extends Actor {
 
         FruitPoints(View view, Playfield playfield,  int currentFrame, float x, float y) {
-            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.fruit_points), 22, 7, 11, 3, 8, 1, x, y);
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.food_points), 22, 7, 11, 3, 8, 1, x, y);
             this.currentFrame = currentFrame;
         }
 
