@@ -46,4 +46,5 @@ public class Inky extends Ghost {
         Point vector = new Point(pacmanPoint.x - blinkyPoint.x, pacmanPoint.y - blinkyPoint.y);
         destPoint = new Point(pacmanPoint.x + vector.x , pacmanPoint.y + vector.y );
     }
+
 }

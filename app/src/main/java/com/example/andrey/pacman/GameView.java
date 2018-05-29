@@ -45,6 +45,7 @@ public class GameView extends View {
     public void onPause()
     {
         game.onPause();
+        game.saveHighScore();
     }
     @Override
     public void onDraw(Canvas canvas) {

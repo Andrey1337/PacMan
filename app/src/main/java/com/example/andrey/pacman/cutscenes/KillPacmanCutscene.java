@@ -26,8 +26,10 @@ public class KillPacmanCutscene extends Cutscene{
 
     @Override
     public void endOfScene() {
-        for(Ghost ghost : playfield.getGhosts()) {
-            ghost.isVisible = true;
+        if(!(pacmanGame.getPacmanLives() <= 0)) {
+            for (Ghost ghost : playfield.getGhosts()) {
+                ghost.isVisible = true;
+            }
         }
         playfield.getPacman().stopDying();
 

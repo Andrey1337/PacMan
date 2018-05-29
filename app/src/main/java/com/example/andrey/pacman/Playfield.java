@@ -49,6 +49,11 @@ public class Playfield {
 
 	public boolean isPing;
 
+
+	private Point topCagePoint;
+	private Point middleCagePoint;
+	private Point bottomCagePoint;
+
 	Playfield(PacmanGame game, GameView view) {
 		gameMode = GameMode.SCATTER;
 
@@ -62,6 +67,11 @@ public class Playfield {
 		int Y_OFFSET = 11;
 
 		int CELLS_SPACE = 8;
+
+		topCagePoint = new Point(13.5f, 12.5f);
+		bottomCagePoint = new Point(13.5f,13.5f);
+		middleCagePoint = new Point(13.5f, (topCagePoint.floatY + bottomCagePoint.floatY)/2);
+
 
 		mapTexture = BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_map);
 
@@ -92,6 +102,18 @@ public class Playfield {
 		initCharacters(view);
 
 		foodDrawController = new FoodDrawManager(view, this);
+	}
+
+	public Point getBottomCagePoint() {
+		return bottomCagePoint;
+	}
+
+	public Point getTopCagePoint() {
+		return topCagePoint;
+	}
+
+	public Point getMiddleCagePoint() {
+		return middleCagePoint;
 	}
 
 	public int getCountPoints()
@@ -169,6 +191,7 @@ public class Playfield {
 
         pacmanFoodIntersect();
         charactersIntersect();
+
         foodDrawController.onUpdate(deltaTime);
 	}
 

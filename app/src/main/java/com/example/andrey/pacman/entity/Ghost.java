@@ -23,10 +23,11 @@ public abstract class Ghost extends PlayfieldActor {
     Point destPoint;
     Point scatterPoint;
 
-    private float bottomCagePosition;
-    private float topCagePosition;
-    private float middleCagePositionX;
-    private float middleCagePositionY;
+    private Point bottomCagePoint;
+    private Point topCagePoing;
+    private Point middleCagePoint;
+    private Point starPoint;
+
     private boolean isExiting;
 
     private float speedInCage;
@@ -50,6 +51,8 @@ public abstract class Ghost extends PlayfieldActor {
         scaryGhost = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.frightened), frameWidth * 2, frameHeight* 2,false);
         eyesGhost = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(view.getResources(), R.mipmap.eyes_moving), frameWidth, frameHeight * 4,false);
 
+        starPoint = new Point(x,y);
+
         this.scatterPoint = scatterPoint;
         destPoint = this.scatterPoint;
 
@@ -58,10 +61,9 @@ public abstract class Ghost extends PlayfieldActor {
         movementDirection = Direction.LEFT;
         nextDirection = Direction.NONE;
 
-        topCagePosition = 12.50f;
-        bottomCagePosition = 13.50f;
-        middleCagePositionX = 13.5f;
-        middleCagePositionY = (bottomCagePosition + topCagePosition) / 2;
+        bottomCagePoint = playfield.getBottomCagePoint();
+        middleCagePoint = playfield.getMiddleCagePoint();
+        topCagePoing = playfield.getTopCagePoint();
 
         speedInTonel = 0.003f;
         speedInCage = 0.002f;
@@ -91,9 +93,9 @@ public abstract class Ghost extends PlayfieldActor {
 
         if(movementDirection == Direction.DOWN)
         {
-            if(nextPositionY >= bottomCagePosition)
+            if(nextPositionY >= bottomCagePoint.floatY)
             {
-                nextPositionY = bottomCagePosition;
+                nextPositionY = bottomCagePoint.floatY;
                 touchTheBottom = true;
                 movementDirection = movementDirection.getOposite();
             }
@@ -101,22 +103,22 @@ public abstract class Ghost extends PlayfieldActor {
 
         if(movementDirection == Direction.UP && touchTheBottom)
         {
-            if(x < middleCagePositionX && nextPositionY <= middleCagePositionY)
+            if(x < middleCagePoint.floatX && nextPositionY <= middleCagePoint.floatY)
             {
-                nextPositionY = middleCagePositionY;
+                nextPositionY = middleCagePoint.floatY;
                 movementDirection = Direction.RIGHT;
             }
-            if(x > middleCagePositionX && nextPositionY <= middleCagePositionY)
+            if(x > middleCagePoint.floatX && nextPositionY <= middleCagePoint.floatY)
             {
-                nextPositionY = middleCagePositionY;
+                nextPositionY = middleCagePoint.floatY;
                 movementDirection = Direction.LEFT;
             }
         }
 
-        if(movementDirection == Direction.LEFT && nextPositionX <= middleCagePositionX
-                || movementDirection == Direction.RIGHT && nextPositionX >= middleCagePositionX)
+        if(movementDirection == Direction.LEFT && nextPositionX <= middleCagePoint.floatX
+                || movementDirection == Direction.RIGHT && nextPositionX >= middleCagePoint.floatX)
         {
-            nextPositionX = middleCagePositionX;
+            nextPositionX = middleCagePoint.floatX;
             movementDirection = Direction.UP;
         }
 
@@ -131,7 +133,7 @@ public abstract class Ghost extends PlayfieldActor {
                     inCage = false;
                 }
             }
-            else if(nextPositionY <= topCagePosition)
+            else if(nextPositionY <= topCagePoing.floatY)
                     movementDirection = movementDirection.getOposite();
         }
     }
@@ -145,21 +147,21 @@ public abstract class Ghost extends PlayfieldActor {
         if(movementDirection == Direction.DOWN)
             nextPositionY += frameSpeed;
 
-        if(nextPositionY >= bottomCagePosition)
+        if(nextPositionY >= bottomCagePoint.floatY)
         {
-            nextPositionY = bottomCagePosition;
+            nextPositionY = bottomCagePoint.floatY;
             movementDirection = movementDirection.getOposite();
         }
 
-        if(nextPositionY < topCagePosition)
+        if(nextPositionY < topCagePoing.floatY)
         {
-            nextPositionY = topCagePosition;
+            nextPositionY = topCagePoing.floatY;
             movementDirection = movementDirection.getOposite();
         }
 
-        if(nextPositionY > bottomCagePosition)
+        if(nextPositionY > bottomCagePoint.floatY)
         {
-            nextPositionY = bottomCagePosition;
+            nextPositionY = bottomCagePoint.floatY;
             movementDirection = movementDirection.getOposite();
         }
     }
@@ -183,14 +185,31 @@ public abstract class Ghost extends PlayfieldActor {
             return;
         }
 
-        if(x == cagePoint.floatX && y <= middleCagePositionY && nextPositionY >= middleCagePositionY) {
+        if(x == cagePoint.floatX && y <= middleCagePoint.floatY && nextPositionY >= middleCagePoint.floatY) {
+
+            if(starPoint.floatX == x) {
+                movementDirection = Direction.UP;
+                isEyes = false;
+                inCage = true;
+                isExiting = true;
+                touchTheBottom = true;
+            }
+            else
+                movementDirection = x > starPoint.floatX ? Direction.LEFT : Direction.RIGHT;
+
+            nextPositionY = middleCagePoint.floatY;
+        }
+
+        if(y == middleCagePoint.floatY && (nextPositionX <= starPoint.floatX && x >= starPoint.floatX
+                || nextPositionX >= starPoint.floatX && x <= starPoint.floatX))
+        {
+            movementDirection = movementDirection.getOposite();
             isEyes = false;
-            movementDirection = Direction.UP;
             inCage = true;
             isExiting = true;
             touchTheBottom = true;
-            return;
         }
+
 
         choseDirection(movementDirection);
         this.checkNextDirection();

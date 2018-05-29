@@ -5,6 +5,17 @@ import com.example.andrey.pacman.Playfield;
 
 public abstract class Actor extends Entity {
 
+    /**
+     * @param playfield contains playfield
+     * @param ACTOR_X_OFFSET actors bitmap's x offset
+     * @param ACTOR_Y_OFFSET actors bitmap's y offset
+     * @param frameCount the count of frames that bitmap contains
+     * @param currentFrame frame counter for choose each frame to draw
+     * @param frameToDraw rectangle that choose each peace of bitmap to draw
+     * @param frameLengthInMillisecond time to show each frame
+     * @param isVisible if actor is visible
+     */
+
     public boolean isVisible = true;
 
     Playfield playfield;
@@ -16,7 +27,7 @@ public abstract class Actor extends Entity {
 
     int frameCount;
 
-    protected Rect frameToDraw;
+    Rect frameToDraw;
 
     protected int currentFrame = 0;
     int frameLengthInMillisecond;
@@ -61,11 +72,11 @@ public abstract class Actor extends Entity {
         return actorWidth;
     }
 
-    protected int getFrameWidth() {
+    int getFrameWidth() {
         return frameWidth;
     }
 
-    protected int getFrameHeight() {
+    int getFrameHeight() {
         return frameHeight;
     }
 

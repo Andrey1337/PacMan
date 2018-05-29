@@ -1,9 +1,10 @@
 package com.example.andrey.pacman;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
-import android.widget.Toast;
 import com.example.andrey.pacman.entity.Food;
 import com.example.andrey.pacman.entity.Fruit;
 import com.example.andrey.pacman.entity.Ghost;
@@ -22,7 +23,7 @@ public class PacmanGame{
 
 	private GameView view;
 
-	private int pacmanLives = 4;
+	private int pacmanLives = 1;
 
 	private long lastTime;
 
@@ -39,43 +40,23 @@ public class PacmanGame{
 	private boolean pause;
 
 	private int score;
-	private int highScore;
 
 	private int ghostMultiplyer;
 
 	private int levelNum = 1;
 
-
-	String picturesFile;
-
+	private int highScore;
+	private SharedPreferences preferences;
+	private SharedPreferences.Editor editor;
 	PacmanGame(GameView view)
 	{
 	    this.view = view;
 
-		int density= view.getResources().getDisplayMetrics().densityDpi;
-
-		picturesFile = "XHDPI";
-		switch(density)
-		{
-			case DisplayMetrics.DENSITY_LOW:
-				picturesFile = "LDPI";
-				break;
-			case DisplayMetrics.DENSITY_MEDIUM:
-				picturesFile = "MDPI";
-				break;
-			case DisplayMetrics.DENSITY_HIGH:
-				picturesFile = "HDPI";
-				break;
-			case DisplayMetrics.DENSITY_XHIGH:
-				picturesFile = "XHDPI";
-				break;
-			case DisplayMetrics.DENSITY_XXHIGH:
-				picturesFile = "XXHDPI";
-				break;
-			case DisplayMetrics.DENSITY_XXXHIGH:
-				picturesFile = "XXXHDPI";
-				break;
-		}
+		preferences = view.getContext().getSharedPreferences("myPrefsKey", Context.MODE_PRIVATE);
+		editor = preferences.edit();
+		//editor.putInt("highScore", 0);
+		//editor.commit();
+		highScore = preferences.getInt("highScore", 0);
 
 		playfield = new Playfield(this,view);
 		countPoints = playfield.getCountPoints();
@@ -88,14 +69,11 @@ public class PacmanGame{
 		tickInterval = 1000 / 90;
         setTimeout();
         lastTime = new Date().getTime();
-		highScore = 5000;
+
         cutsceneManager.addStartGameScene();
     }
 
 
-	public String getPicturesFile() {
-		return picturesFile;
-	}
 
 	public FruitManager getFruitManager() {
 		return fruitManager;
@@ -122,14 +100,12 @@ public class PacmanGame{
 	}
 
 	public void nextLevel() {
+		levelNum++;
 		playfield.nextLevel();
 		countPoints = playfield.getCountPoints();
 		ghostModeController.nextLevel();
 		cutsceneManager.addStartGameScene();
-		levelNum++;
 	}
-
-
 
 	public void onResume() {
 	    cutsceneManager.addResumeScene();
@@ -140,8 +116,9 @@ public class PacmanGame{
         pause = true;
     }
 
-
     public void gameOver() {
+		Intent intent = new Intent(view.getContext(), MainActivity.class);
+		view.getContext().startActivity(intent);
 		pause = true;
 	}
 
@@ -191,6 +168,19 @@ public class PacmanGame{
 		}
 	}
 
+	private void handleHighScore()
+	{
+		if(highScore <= score) {
+			highScore = score;
+		}
+	}
+
+	public void saveHighScore()
+	{
+		editor.putInt("highScore", highScore);
+		editor.commit();
+	}
+
 	public void onDraw(Canvas canvas)
 	{
         playfield.onDraw(canvas);
@@ -216,6 +206,7 @@ public class PacmanGame{
 			}
 			else {
 				playfield.update(deltaTime);
+				handleHighScore();
 				fruitManager.update(deltaTime);
 				ghostModeController.update(deltaTime);
 			}

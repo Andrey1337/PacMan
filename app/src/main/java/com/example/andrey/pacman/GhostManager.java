@@ -89,7 +89,12 @@ public class GhostManager {
         frightenedTimer = 0;
         waveTimeCounter = 0;
         afkTimer = 0;
+        levelNum = pacmanGame.getLevelNum();
 
+        if(levelNum >= 2) {
+            waves[2].chaseTime = 1033 * 1000;
+            waves[2].scatterTime = (int)((double)1 / 60 * 1000);
+        }
         changeGameMode(GameMode.CHASE);
     }
 
@@ -180,7 +185,7 @@ public class GhostManager {
 
         changeGameModeToGhosts(prevMode, gameMode);
 
-        playfield.setGameMode(newGameMode);
+        playfield.setGameMode(gameMode);
     }
 
     private void changeGameModeToGhosts(GameMode prevMode,GameMode newGameMode)

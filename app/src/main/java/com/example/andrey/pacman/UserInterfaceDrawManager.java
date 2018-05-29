@@ -85,7 +85,7 @@ public class UserInterfaceDrawManager {
     class ScoreNumber extends UserInterfaceActor{
 
         ScoreNumber(View view, Playfield playfield, int number, float x, float y) {
-            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.numbers), 7, 7, 0, 0, 10, 1, x, y);
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.numbers), 9, 7, 0, 0, 10, 1, x, y);
             currentFrame = number;
 
             actorWidth = actorWidth * 5 / 6;
