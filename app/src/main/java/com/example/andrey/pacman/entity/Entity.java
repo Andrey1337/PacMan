@@ -9,13 +9,8 @@ import android.util.Log;
 public abstract class Entity {
 
 
-	/**
-	 * @param bitmap picture of entity
-	 * @param x x position of entity
-	 * @param y y position of entity
-	 */
-	Bitmap bitmap;
 
+	Bitmap bitmap;
 	float x;
 	float y;
 
@@ -24,11 +19,16 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 	}
-
+	/**
+	 * @return entity's x position.
+	 */
 	public float getX()
 	{
 		return x;
 	}
+	/**
+	 * @return entity's y position.
+	 */
 	public float getY()
 	{
 		return y;

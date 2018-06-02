@@ -6,14 +6,14 @@ import com.example.andrey.pacman.Playfield;
 public abstract class Actor extends Entity {
 
     /**
-     * @param playfield contains playfield
-     * @param ACTOR_X_OFFSET actors bitmap's x offset
-     * @param ACTOR_Y_OFFSET actors bitmap's y offset
-     * @param frameCount the count of frames that bitmap contains
-     * @param currentFrame frame counter for choose each frame to draw
-     * @param frameToDraw rectangle that choose each peace of bitmap to draw
-     * @param frameLengthInMillisecond time to show each frame
-     * @param isVisible if actor is visible
+     * @param playfield contains playfield.
+     * @param ACTOR_X_OFFSET actors bitmap's x offset.
+     * @param ACTOR_Y_OFFSET actors bitmap's y offset.
+     * @param frameCount the count of frames that bitmap contains.
+     * @param currentFrame frame counter for choose each frame to draw.
+     * @param frameToDraw rectangle that choose each peace of bitmap to draw.
+     * @param frameLengthInMillisecond time to show each frame.
+     * @param isVisible if actor is visible.
      */
 
     public boolean isVisible = true;
@@ -64,22 +64,41 @@ public abstract class Actor extends Entity {
         this.currentFrame = currentFrame;
     }
 
+    /**
+     *
+     * @return actor's display height
+     */
     public int getActorHeight() {
         return actorHeight;
     }
-
+    /**
+     *
+     * @return actor's display width
+     */
     public int getActorWidth() {
         return actorWidth;
     }
 
+    /**
+     *
+     * @return actor's frame width
+     */
     int getFrameWidth() {
         return frameWidth;
     }
 
+    /**
+     *
+     * @return actor's frame height
+     */
     int getFrameHeight() {
         return frameHeight;
     }
 
+    /**
+     * Draws the actor's bitmap.
+     * @param canvas to draw actor's bitmap
+     */
     public void onDraw(Canvas canvas)
     {
         if(!isVisible)
