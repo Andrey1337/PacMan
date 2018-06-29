@@ -22,7 +22,7 @@ public abstract class Actor extends Entity {
     final int ACTOR_X_OFFSET;
     final int ACTOR_Y_OFFSET;
 
-    protected int actorWidth,actorHeight;
+    protected int actorWidth, actorHeight;
     int frameWidth, frameHeight;
 
     int frameCount;
@@ -45,18 +45,18 @@ public abstract class Actor extends Entity {
 
         this.playfield = playfield;
         this.bitmap = Bitmap.createScaledBitmap(bitmap, frameWidth * frameCount,
-                frameHeight * frameMovesCount,false);
+                frameHeight * frameMovesCount, false);
 
 
         this.frameCount = frameCount;
 
-        actorWidth = (int)((float)bitmap.getWidth() * playfield.scale / (float)frameCount);
-        actorHeight = (int)((float)bitmap.getHeight() * playfield.scale / (float) frameMovesCount);
+        actorWidth = (int) ((float) bitmap.getWidth() * playfield.scale / (float) frameCount);
+        actorHeight = (int) ((float) bitmap.getHeight() * playfield.scale / (float) frameMovesCount);
 
         frameToDraw = new Rect(0, 0, frameWidth, frameHeight);
 
-        ACTOR_X_OFFSET = (int)(actorXOffset / (float)playfield.MAP_WIDTH * playfield.mapTexture.getWidth());
-        ACTOR_Y_OFFSET = (int)(actorYOffset / (float)playfield.MAP_HEIGHT * playfield.mapTexture.getHeight());
+        ACTOR_X_OFFSET = (int) (actorXOffset / (float) playfield.MAP_WIDTH * playfield.mapTexture.getWidth());
+        ACTOR_Y_OFFSET = (int) (actorYOffset / (float) playfield.MAP_HEIGHT * playfield.mapTexture.getHeight());
 
     }
 
@@ -65,14 +65,13 @@ public abstract class Actor extends Entity {
     }
 
     /**
-     *
      * @return actor's display height
      */
     public int getActorHeight() {
         return actorHeight;
     }
+
     /**
-     *
      * @return actor's display width
      */
     public int getActorWidth() {
@@ -80,7 +79,6 @@ public abstract class Actor extends Entity {
     }
 
     /**
-     *
      * @return actor's frame width
      */
     int getFrameWidth() {
@@ -88,7 +86,6 @@ public abstract class Actor extends Entity {
     }
 
     /**
-     *
      * @return actor's frame height
      */
     int getFrameHeight() {
@@ -97,11 +94,11 @@ public abstract class Actor extends Entity {
 
     /**
      * Draws the actor's bitmap.
+     *
      * @param canvas to draw actor's bitmap
      */
-    public void onDraw(Canvas canvas)
-    {
-        if(!isVisible)
+    public void onDraw(Canvas canvas) {
+        if (!isVisible)
             return;
 
         float left = playfield.X_OFFSET + x * playfield.CELLS_SPACE_PERCENT * playfield.mapTexture.getWidth()

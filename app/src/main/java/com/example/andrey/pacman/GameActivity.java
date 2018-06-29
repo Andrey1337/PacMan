@@ -7,16 +7,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 public class GameActivity extends AppCompatActivity {
 
     private GameView gameView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         gameView = new GameView(this);
+
         setContentView(gameView);
 
         //gameBoardView = (GameBoardView) findViewById(R.id.matrix_view);

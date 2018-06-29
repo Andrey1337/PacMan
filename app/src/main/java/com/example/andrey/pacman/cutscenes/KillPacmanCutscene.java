@@ -4,7 +4,7 @@ import com.example.andrey.pacman.PacmanGame;
 import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.entity.Ghost;
 
-public class KillPacmanCutscene extends Cutscene{
+public class KillPacmanCutscene extends Cutscene {
 
     private PacmanGame pacmanGame;
 
@@ -15,10 +15,9 @@ public class KillPacmanCutscene extends Cutscene{
     }
 
 
-
     @Override
     public void startOfScene() {
-        for(Ghost ghost : playfield.getGhosts()) {
+        for (Ghost ghost : playfield.getGhosts()) {
             ghost.isVisible = false;
         }
         playfield.getPacman().startDying();
@@ -26,7 +25,7 @@ public class KillPacmanCutscene extends Cutscene{
 
     @Override
     public void endOfScene() {
-        if(!(pacmanGame.getPacmanLives() <= 0)) {
+        if (!(pacmanGame.getPacmanLives() <= 0)) {
             for (Ghost ghost : playfield.getGhosts()) {
                 ghost.isVisible = true;
             }

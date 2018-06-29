@@ -1,7 +1,6 @@
 package com.example.andrey.pacman;
 
 
-import android.util.Log;
 import com.example.andrey.pacman.entity.Clyde;
 import com.example.andrey.pacman.entity.Ghost;
 import com.example.andrey.pacman.entity.Inky;
@@ -42,7 +41,8 @@ public class GhostManager {
     private long pingingTimer = 0;
 
     private PacmanGame pacmanGame;
-    GhostManager(PacmanGame game,Playfield playfield) {
+
+    GhostManager(PacmanGame game, Playfield playfield) {
         this.playfield = playfield;
         pacmanGame = game;
         pingingTime = 300;
@@ -68,8 +68,7 @@ public class GhostManager {
         afkTimer = 0;
     }
 
-    public void pacmanDied()
-    {
+    public void pacmanDied() {
         afkTimer = 0;
         inkyPointsExit -= inkyPointsExit / 4;
         clydePointsExit -= clydePointsExit / 4;
@@ -78,8 +77,7 @@ public class GhostManager {
         clyde = playfield.getClyde();
     }
 
-    public void nextLevel()
-    {
+    public void nextLevel() {
         pinky = playfield.getPinky();
         inky = playfield.getInky();
         clyde = playfield.getClyde();
@@ -91,9 +89,9 @@ public class GhostManager {
         afkTimer = 0;
         levelNum = pacmanGame.getLevelNum();
 
-        if(levelNum >= 2) {
+        if (levelNum >= 2) {
             waves[2].chaseTime = 1033 * 1000;
-            waves[2].scatterTime = (int)((double)1 / 60 * 1000);
+            waves[2].scatterTime = (int) ((double) 1 / 60 * 1000);
         }
         changeGameMode(GameMode.CHASE);
     }
@@ -104,45 +102,41 @@ public class GhostManager {
     }
 
     private void ghostPing() {
-        for (Ghost ghost : playfield.getGhosts())
-        {
+        for (Ghost ghost : playfield.getGhosts()) {
             ghost.ping();
         }
     }
 
     public void update(long deltaTime) {
 
-        if(gameMode != GameMode.FRIGHTENED) {
+        if (gameMode != GameMode.FRIGHTENED) {
             waveTimeCounter += deltaTime;
             afkTimer += deltaTime;
-        }
-        else {
+        } else {
             frightenedTimer += deltaTime;
-            if(frightenedTimer >= startPingingTime)
-            {
+            if (frightenedTimer >= startPingingTime) {
                 pingingTimer += deltaTime;
             }
 
-            if(pingingTimer >= pingingTime)
-            {
+            if (pingingTimer >= pingingTime) {
                 ghostPing();
                 pingingTimer = 0;
             }
 
-            if(frightenedTimer >= frightenedTime)
+            if (frightenedTimer >= frightenedTime)
                 changeGameMode(safePrevMode);
         }
 
-        if(pinky.isInCage()) {
+        if (pinky.isInCage()) {
             playfield.getPinky().startExit();
         }
 
-        if(!pinky.isInCage() && inky.isInCage() && (eatedDots >= inkyPointsExit || afkTimer > inkyExitTime)) {
+        if (!pinky.isInCage() && inky.isInCage() && (eatedDots >= inkyPointsExit || afkTimer > inkyExitTime)) {
             afkTimer = 0;
             playfield.getInky().startExit();
         }
 
-        if(!inky.isInCage() && clyde.isInCage() && (eatedDots >= clydePointsExit || afkTimer > clydeExitTime)) {
+        if (!inky.isInCage() && clyde.isInCage() && (eatedDots >= clydePointsExit || afkTimer > clydeExitTime)) {
             afkTimer = 0;
             playfield.getClyde().startExit();
         }
@@ -153,7 +147,7 @@ public class GhostManager {
             changeGameMode(GameMode.CHASE);
         }
 
-        if(gameMode == GameMode.CHASE && waveTimeCounter > waves[waveNum].getChaseTime()) {
+        if (gameMode == GameMode.CHASE && waveTimeCounter > waves[waveNum].getChaseTime()) {
             waveTimeCounter = 0;
             waveNum++;
             safePrevMode = GameMode.CHASE;
@@ -167,11 +161,9 @@ public class GhostManager {
         changeGameMode(GameMode.FRIGHTENED);
     }
 
-    private void changeGameMode(GameMode newGameMode)
-    {
+    private void changeGameMode(GameMode newGameMode) {
         prevMode = gameMode;
-        switch (newGameMode)
-        {
+        switch (newGameMode) {
             case CHASE:
 
                 break;
@@ -188,21 +180,18 @@ public class GhostManager {
         playfield.setGameMode(gameMode);
     }
 
-    private void changeGameModeToGhosts(GameMode prevMode,GameMode newGameMode)
-    {
-        for(Ghost ghost : playfield.getGhosts())
-        {
+    private void changeGameModeToGhosts(GameMode prevMode, GameMode newGameMode) {
+        for (Ghost ghost : playfield.getGhosts()) {
             ghost.changeMode(prevMode, newGameMode);
         }
     }
 
 
-    private class Wave
-    {
+    private class Wave {
         private long scatterTime;
         private long chaseTime;
-        Wave(long scatterTime, long chaseTime)
-        {
+
+        Wave(long scatterTime, long chaseTime) {
             this.scatterTime = scatterTime;
             this.chaseTime = chaseTime;
         }

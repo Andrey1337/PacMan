@@ -11,7 +11,7 @@ public class ResumeGameCutscene extends StartGameCutscene {
 
     public ResumeGameCutscene(View view, Playfield playfield) {
         super(view, playfield);
-         pingTime = getSceneTime() / 9;
+        pingTime = getSceneTime() / 9;
     }
 
 
@@ -19,8 +19,7 @@ public class ResumeGameCutscene extends StartGameCutscene {
     public void play(long deltaTime) {
 
         pingingTimer += deltaTime;
-        if(pingingTimer >= pingTime)
-        {
+        if (pingingTimer >= pingTime) {
             pingingTimer = 0;
             readyLabel.isVisible = !readyLabel.isVisible;
         }
@@ -28,8 +27,10 @@ public class ResumeGameCutscene extends StartGameCutscene {
     }
 
     @Override
-    public void startOfScene() { }
+    public void startOfScene() {
+    }
 
     @Override
-    public void endOfScene() { }
+    public void endOfScene() {
+    }
 }

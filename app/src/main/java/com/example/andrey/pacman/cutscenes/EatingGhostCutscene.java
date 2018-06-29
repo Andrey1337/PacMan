@@ -1,12 +1,12 @@
 package com.example.andrey.pacman.cutscenes;
 
-import android.graphics.*;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.view.View;
 import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.R;
 import com.example.andrey.pacman.entity.Actor;
 import com.example.andrey.pacman.entity.Ghost;
-import com.example.andrey.pacman.entity.Point;
 
 public class EatingGhostCutscene extends Cutscene {
 
@@ -18,7 +18,7 @@ public class EatingGhostCutscene extends Cutscene {
         super(playfield, 1000);
 
         ghostWasEaten = ghost;
-        ghostPoints = new GhostPoints(view, playfield,ghostMultiplyer,ghostWasEaten.getX(), ghostWasEaten.getY());
+        ghostPoints = new GhostPoints(view, playfield, ghostMultiplyer, ghostWasEaten.getX(), ghostWasEaten.getY());
 
     }
 
@@ -40,8 +40,8 @@ public class EatingGhostCutscene extends Cutscene {
     }
 
     class GhostPoints extends Actor {
-        GhostPoints(View view, Playfield playfield,int ghostMultiplyer, float x, float y) {
-            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.ghost_points), 18, 9, 8, 4, 4, 1, x, y);
+        GhostPoints(View view, Playfield playfield, int ghostMultiplyer, float x, float y) {
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.drawable.ghost_points), 18, 9, 8, 4, 4, 1, x, y);
             currentFrame = ghostMultiplyer;
         }
     }

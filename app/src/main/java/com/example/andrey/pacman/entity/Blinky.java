@@ -7,8 +7,8 @@ import com.example.andrey.pacman.R;
 
 public class Blinky extends Ghost {
 
-    public Blinky(Playfield playfield, View view,float x, float y) {
-        super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.mipmap.blinky_move),new Point(25, -3),x,y);
+    public Blinky(Playfield playfield, View view, float x, float y) {
+        super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.drawable.blinky_move), new Point(25, -3), x, y);
 
         inCage = false;
         animate(0);

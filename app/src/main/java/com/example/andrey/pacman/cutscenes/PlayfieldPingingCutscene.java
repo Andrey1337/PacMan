@@ -10,6 +10,7 @@ public class PlayfieldPingingCutscene extends Cutscene {
 
     private long timeCounter;
     private long pingTime;
+
     public PlayfieldPingingCutscene(PacmanGame game, Playfield playfield) {
         super(playfield, 1500);
         this.game = game;
@@ -19,8 +20,7 @@ public class PlayfieldPingingCutscene extends Cutscene {
 
     @Override
     public void startOfScene() {
-        for(Ghost ghost : playfield.getGhosts())
-        {
+        for (Ghost ghost : playfield.getGhosts()) {
             ghost.isVisible = false;
         }
         playfield.getPacman().isVisible = false;
@@ -32,7 +32,7 @@ public class PlayfieldPingingCutscene extends Cutscene {
     public void play(long deltaTime) {
 
         timeCounter += deltaTime;
-        if(timeCounter >= pingTime) {
+        if (timeCounter >= pingTime) {
             timeCounter = 0;
             playfield.isPing = !playfield.isPing;
         }
@@ -40,8 +40,7 @@ public class PlayfieldPingingCutscene extends Cutscene {
 
     @Override
     public void endOfScene() {
-        for(Ghost ghost : playfield.getGhosts())
-        {
+        for (Ghost ghost : playfield.getGhosts()) {
             ghost.isVisible = true;
         }
         playfield.getPacman().isVisible = true;

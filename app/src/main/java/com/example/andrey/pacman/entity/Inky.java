@@ -9,7 +9,7 @@ import com.example.andrey.pacman.R;
 public class Inky extends Ghost {
 
     public Inky(Playfield playfield, View view, float x, float y) {
-        super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.mipmap.inky_move), new Point(28, 31), x, y);
+        super(playfield, view, BitmapFactory.decodeResource(view.getResources(), R.drawable.inky_move), new Point(28, 31), x, y);
         inCage = true;
         movementDirection = Direction.DOWN;
         nextDirection = Direction.NONE;
@@ -23,10 +23,9 @@ public class Inky extends Ghost {
         Point pacmanPoint = new Point(Math.round(pacman.getX()), Math.round(pacman.getY()));
 
         Blinky blinky = playfield.getBlinky();
-        Point blinkyPoint = new Point(Math.round(blinky.getX()),Math.round(blinky.getY()));
+        Point blinkyPoint = new Point(Math.round(blinky.getX()), Math.round(blinky.getY()));
 
-        switch (pacman.lookingDirection)
-        {
+        switch (pacman.lookingDirection) {
             case RIGHT:
                 pacmanPoint = new Point(pacmanPoint.x + 2, pacmanPoint.y);
                 break;
@@ -44,7 +43,7 @@ public class Inky extends Ghost {
         }
 
         Point vector = new Point(pacmanPoint.x - blinkyPoint.x, pacmanPoint.y - blinkyPoint.y);
-        destPoint = new Point(pacmanPoint.x + vector.x , pacmanPoint.y + vector.y );
+        destPoint = new Point(pacmanPoint.x + vector.x, pacmanPoint.y + vector.y);
     }
 
 }

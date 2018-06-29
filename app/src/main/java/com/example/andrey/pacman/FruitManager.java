@@ -25,33 +25,30 @@ public class FruitManager {
     private FruitPoints fruitPoints;
     private FruitsLabel fruitsLabel;
 
-    FruitManager(View view, PacmanGame pacmanGame, Playfield playfield)
-    {
+    FruitManager(View view, PacmanGame pacmanGame, Playfield playfield) {
         this.view = view;
         this.pacmanGame = pacmanGame;
         this.playfield = playfield;
         eatFruitTime = 10 * 1000;
-        fruitsLabel = new FruitsLabel(view, playfield, 0,0);
+        fruitsLabel = new FruitsLabel(view, playfield, 0, 0);
         pointsToNextFruit = 70;
     }
 
     public void eatFruit() {
         pacmanGame.eatFruit(fruit);
-        fruitPoints = new FruitPoints(view, playfield,fruit.getFruitType().getDrawPosition(),13.5f,16);
+        fruitPoints = new FruitPoints(view, playfield, fruit.getFruitType().getDrawPosition(), 13.5f, 16);
         fruit = null;
         timer = 0;
         pointsToNextFruit = pointsEated + 100;
     }
 
-    public void killPacman()
-    {
+    public void killPacman() {
         fruit = null;
         pointsToNextFruit = pointsEated + 100;
         timer = 0;
     }
 
-    public boolean canEatFruit()
-    {
+    public boolean canEatFruit() {
         return fruit != null;
     }
 
@@ -59,18 +56,17 @@ public class FruitManager {
         return fruit;
     }
 
-    public void update(long deltaTime)
-    {
+    public void update(long deltaTime) {
         timer += deltaTime;
 
-        if(fruit != null && timer >= eatFruitTime) {
+        if (fruit != null && timer >= eatFruitTime) {
             fruit = null;
             pointsToNextFruit = pointsEated + 100;
             timer = 0;
         }
 
         long showPointsTime = 2 * 1000;
-        if(fruitPoints != null && timer >= showPointsTime) {
+        if (fruitPoints != null && timer >= showPointsTime) {
             fruitPoints = null;
             timer = 0;
         }
@@ -80,27 +76,24 @@ public class FruitManager {
     public void eatPoint() {
         pointsEated++;
 
-        if(fruit == null && pointsEated >= pointsToNextFruit)
-        {
-            fruit = new Fruit(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_food), pacmanGame.getLevelNum());
+        if (fruit == null && pointsEated >= pointsToNextFruit) {
+            fruit = new Fruit(playfield, BitmapFactory.decodeResource(view.getResources(), R.drawable.pacman_food), pacmanGame.getLevelNum());
             timer = 0;
         }
     }
 
-    public void onDraw(Canvas canvas)
-    {
-        if(fruit != null)
+    public void onDraw(Canvas canvas) {
+        if (fruit != null)
             fruit.onDraw(canvas);
 
-        if(fruitPoints != null)
+        if (fruitPoints != null)
             fruitPoints.onDraw(canvas);
 
 
         fruitsLabel.setX(pacmanGame.getPlayfield().mapTexture.getWidth() - fruitsLabel.getActorWidth() * 1.2f);
         fruitsLabel.setY(pacmanGame.getPlayfield().mapTexture.getHeight() + pacmanGame.getPlayfield().STARTPOS_Y);
 
-        for(int i = 0; i < pacmanGame.getLevelNum() && i < 8; i++)
-        {
+        for (int i = 0; i < pacmanGame.getLevelNum() && i < 8; i++) {
             fruitsLabel.setCurrentFrame(i);
             fruitsLabel.onDraw(canvas);
             fruitsLabel.setX(fruitsLabel.getX() - fruitsLabel.getActorWidth());
@@ -110,8 +103,8 @@ public class FruitManager {
 
     public class FruitPoints extends Actor {
 
-        FruitPoints(View view, Playfield playfield,  int currentFrame, float x, float y) {
-            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.food_points), 22, 7, 11, 3, 8, 1, x, y);
+        FruitPoints(View view, Playfield playfield, int currentFrame, float x, float y) {
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.drawable.food_points), 22, 7, 11, 3, 8, 1, x, y);
             this.currentFrame = currentFrame;
         }
 
@@ -121,7 +114,7 @@ public class FruitManager {
     public class FruitsLabel extends UserInterfaceActor {
 
         FruitsLabel(View view, Playfield playfield, float x, float y) {
-            super(playfield,BitmapFactory.decodeResource(view.getResources(), R.mipmap.pacman_food), 14, 14, 7, 7, 8, 1, x, y);
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.drawable.pacman_food), 14, 14, 7, 7, 8, 1, x, y);
         }
 
     }

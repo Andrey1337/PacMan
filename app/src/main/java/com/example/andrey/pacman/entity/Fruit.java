@@ -8,10 +8,9 @@ public class Fruit extends Actor {
     private FruitType fruitType;
 
     public Fruit(Playfield playfield, Bitmap bitmap, int levelNum) {
-        super(playfield, bitmap, 14, 14, 7 , 7 , 8,1,13.5f,16);
+        super(playfield, bitmap, 14, 14, 7, 7, 8, 1, 13.5f, 16);
 
-        switch (levelNum)
-        {
+        switch (levelNum) {
             case 1:
                 fruitType = FruitType.CHERRY;
                 break;
@@ -48,8 +47,7 @@ public class Fruit extends Actor {
         return fruitType;
     }
 
-    public int getScore()
-    {
+    public int getScore() {
         return fruitType.getPoints();
     }
 }

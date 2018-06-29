@@ -2,8 +2,6 @@ package com.example.andrey.pacman.cutscenes;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.view.View;
 import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.R;
@@ -37,7 +35,7 @@ public class StartGameCutscene extends Cutscene{
     class ReadyLabel extends Actor {
 
         ReadyLabel(View view, Playfield playfield, float x, float y) {
-            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.ready), 46, 7, 22, 2, 1, 1, x, y);
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.drawable.ready), 46, 7, 22, 2, 1, 1, x, y);
         }
 
 

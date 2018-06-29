@@ -9,30 +9,24 @@ public enum Direction {
 
     private final int value;
 
-    Direction(int value)
-    {
+    Direction(int value) {
         this.value = value;
     }
 
-    public int getValue()
-    {
+    public int getValue() {
         return value;
     }
 
-    public Direction getOposite()
-    {
-        if(value == RIGHT.getValue())
-        {
+    public Direction getOposite() {
+        if (value == RIGHT.getValue()) {
             return LEFT;
         }
 
-        if(value == LEFT.getValue())
-        {
+        if (value == LEFT.getValue()) {
             return RIGHT;
         }
 
-        if(value == UP.getValue())
-        {
+        if (value == UP.getValue()) {
             return DOWN;
         }
 

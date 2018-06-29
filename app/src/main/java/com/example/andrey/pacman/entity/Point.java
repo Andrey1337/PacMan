@@ -16,8 +16,7 @@ public class Point {
     public float floatX;
     public float floatY;
 
-    public Point(float x, float y)
-    {
+    public Point(float x, float y) {
         floatX = x;
         floatY = y;
         this.x = Math.round(x);
@@ -39,22 +38,19 @@ public class Point {
 
     }
 
-    public boolean isEqual(Point point)
-    {
+    public boolean isEqual(Point point) {
         return x == point.x && y == point.y;
     }
 
-    public boolean isFork(TileSpecification map[][], Direction currentDirection)
-    {
-        if(currentDirection == Direction.RIGHT || currentDirection == Direction.LEFT)
-        {
+    public boolean isFork(TileSpecification map[][], Direction currentDirection) {
+        if (currentDirection == Direction.RIGHT || currentDirection == Direction.LEFT) {
             Point newPoint = new Point(x, y + 1);
 
             if (!newPoint.isWall(map)) {
                 return true;
             }
 
-            if(!isWall(map) && map[x][y] != TileSpecification.SPECIFIC) {
+            if (!isWall(map) && map[x][y] != TileSpecification.SPECIFIC) {
                 newPoint = new Point(x, y - 1);
 
                 if (!newPoint.isWall(map) && map[newPoint.x][newPoint.y] != TileSpecification.SPECIFIC) {
@@ -63,18 +59,15 @@ public class Point {
             }
         }
 
-        if(currentDirection == Direction.UP || currentDirection == Direction.DOWN )
-        {
+        if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
             Point newPoint = new Point(x - 1, y);
-            if(!newPoint.isWall(map))
-            {
+            if (!newPoint.isWall(map)) {
                 return true;
             }
 
-            newPoint = new Point(x + 1,y);
+            newPoint = new Point(x + 1, y);
 
-            if(!newPoint.isWall(map))
-            {
+            if (!newPoint.isWall(map)) {
                 return true;
             }
         }

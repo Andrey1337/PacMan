@@ -20,7 +20,7 @@ public class GameOverCutscene extends Cutscene {
 
         pacmanGame = game;
 
-        gameOverLabel = new GameOverLabel(view, playfield,13.65f,16f);
+        gameOverLabel = new GameOverLabel(view, playfield, 13.65f, 16f);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class GameOverCutscene extends Cutscene {
 
     @Override
     public void startOfScene() {
-        for(Ghost ghost : playfield.getGhosts()) {
+        for (Ghost ghost : playfield.getGhosts()) {
             ghost.isVisible = false;
         }
         playfield.getPacman().isVisible = false;
@@ -43,8 +43,8 @@ public class GameOverCutscene extends Cutscene {
 
     class GameOverLabel extends Actor {
 
-        GameOverLabel(View view,Playfield playfield, float x, float y) {
-            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.mipmap.game_over), 79, 7, 39, 3, 1, 1, x, y);
+        GameOverLabel(View view, Playfield playfield, float x, float y) {
+            super(playfield, BitmapFactory.decodeResource(view.getResources(), R.drawable.game_over), 79, 7, 39, 3, 1, 1, x, y);
         }
     }
 }

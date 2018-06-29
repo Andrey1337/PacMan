@@ -2,17 +2,14 @@ package com.example.andrey.pacman;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 public class GameView extends View {
 
@@ -37,16 +34,15 @@ public class GameView extends View {
         DISPLAY_WIDTH = displayMetrics.widthPixels;
     }
 
-    public void onResume()
-    {
+    public void onResume() {
         game.onResume();
     }
 
-    public void onPause()
-    {
+    public void onPause() {
         game.onPause();
         game.saveHighScore();
     }
+
     @Override
     public void onDraw(Canvas canvas) {
         game.onDraw(canvas);
@@ -67,7 +63,6 @@ public class GameView extends View {
             sendMessageDelayed(obtainMessage(0), delayMillis);
         }
     }
-
 
 
     @Override

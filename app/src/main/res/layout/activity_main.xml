@@ -3,6 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
 
+        android:background="@color/mainMenuColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.example.andrey.pacman.MainActivity" tools:layout_editor_absoluteY="81dp"
@@ -12,22 +13,26 @@
 
     <ImageView
             android:layout_width="fill_parent"
-            android:layout_height="73dp" app:srcCompat="@mipmap/pac_man_log" android:id="@+id/imageView"
+            android:layout_height="73dp" app:srcCompat="@drawable/pac_man_log" android:id="@+id/imageView"
             android:layout_marginTop="50dp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:contentDescription="logo"/>
 
-    <Button
+    <Button style="@style/Widget.AppCompat.Button"
             android:text="Start Game"
             android:layout_width="match_parent"
             android:onClick="startGame"
-
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@color/mainMenuButtonColor"
             android:layout_height="wrap_content" android:id="@+id/button"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="80dp"
             android:layout_marginRight="80dp"
             android:layout_marginLeft="80dp"
-            />
+    />
 
-
+    <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/items_list" />
 </LinearLayout>

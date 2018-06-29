@@ -17,7 +17,7 @@ public class CutsceneManager {
     private PacmanGame pacmanGame;
     private Playfield playfield;
 
-    CutsceneManager(GameView gameView,PacmanGame game, Playfield playfield) {
+    CutsceneManager(GameView gameView, PacmanGame game, Playfield playfield) {
         view = gameView;
         pacmanGame = game;
         this.playfield = playfield;
@@ -33,11 +33,11 @@ public class CutsceneManager {
     }
 
     public void addWaitingScene() {
-        scenes.add(new WaitingCutscene(pacmanGame,playfield));
+        scenes.add(new WaitingCutscene(pacmanGame, playfield));
     }
 
     public void addEatingGhostScene(Ghost ghost, int ghostMultiplyer) {
-        scenes.add(new EatingGhostCutscene(view,playfield, ghost, ghostMultiplyer));
+        scenes.add(new EatingGhostCutscene(view, playfield, ghost, ghostMultiplyer));
     }
 
     public void addGameOverScene() {
@@ -49,14 +49,13 @@ public class CutsceneManager {
     }
 
     public void addPlayfieldPingingScene() {
-        scenes.add(new PlayfieldPingingCutscene(pacmanGame,playfield));
+        scenes.add(new PlayfieldPingingCutscene(pacmanGame, playfield));
 
     }
 
     public void addResumeScene() {
-        for(Cutscene scene : scenes)
-        {
-            if(scene.getClass() == StartGameCutscene.class && currentScene == null)
+        for (Cutscene scene : scenes) {
+            if (scene.getClass() == StartGameCutscene.class && currentScene == null)
                 return;
         }
         resumeGameCutScene = new ResumeGameCutscene(view, playfield);
@@ -73,18 +72,17 @@ public class CutsceneManager {
     private long currentScenePlayingTime;
 
     public void playScene(long deltaTime) {
-        if (resumeGameCutScene != null)
-        {
+        if (resumeGameCutScene != null) {
             resumePlayingTime += deltaTime;
             resumeGameCutScene.play(deltaTime);
-            if(resumePlayingTime >= resumeGameCutScene.getSceneTime()) {
+            if (resumePlayingTime >= resumeGameCutScene.getSceneTime()) {
                 resumeGameCutScene = null;
                 resumePlayingTime = 0;
             }
             return;
         }
 
-        if(currentScene == null) {
+        if (currentScene == null) {
             currentScene = scenes.remove();
             currentScene.startOfScene();
         }
@@ -93,22 +91,20 @@ public class CutsceneManager {
 
         currentScene.play(deltaTime);
 
-        if(currentScenePlayingTime >= currentScene.getSceneTime()) {
+        if (currentScenePlayingTime >= currentScene.getSceneTime()) {
             currentScene.endOfScene();
             currentScene = null;
             currentScenePlayingTime = 0;
         }
     }
 
-    public void onDraw(Canvas canvas)
-    {
-        if(resumeGameCutScene != null)
-        {
+    public void onDraw(Canvas canvas) {
+        if (resumeGameCutScene != null) {
             resumeGameCutScene.onDraw(canvas);
             return;
         }
 
-        if(currentScene != null)
+        if (currentScene != null)
             currentScene.onDraw(canvas);
     }
 }
