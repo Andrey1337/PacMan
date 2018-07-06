@@ -97,6 +97,8 @@ public class Playfield {
                 (int) (hightScoreLabel.getHeight() * 5 / 6 * scale), false);
         STARTPOS_Y = hightScoreLabel.getHeight() / 2 + hightScoreLabel.getHeight();
 
+        map = new TileSpecification[28][29];
+        foodMap = new Food[28][29];
 
         initMap();
 
@@ -281,8 +283,6 @@ public class Playfield {
 
     private void initMap() {
 
-        map = new TileSpecification[28][29];
-        foodMap = new Food[28][29];
 
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[1].length; j++) {

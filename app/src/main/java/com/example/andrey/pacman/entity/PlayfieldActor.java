@@ -8,12 +8,10 @@ import com.example.andrey.pacman.TileSpecification;
 
 public abstract class PlayfieldActor extends Actor {
 
-
     Direction movementDirection;
     Direction nextDirection;
     Direction lookingDirection;
     Point currentPoint;
-
 
     TileSpecification[][] map;
 
@@ -47,6 +45,10 @@ public abstract class PlayfieldActor extends Actor {
     }
 
     long animationTime;
+
+    public Direction getMovementDirection() {
+        return movementDirection;
+    }
 
     public abstract void animate(long deltaTime);
 

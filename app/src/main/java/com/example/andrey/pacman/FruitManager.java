@@ -42,6 +42,12 @@ public class FruitManager {
         pointsToNextFruit = pointsEated + 100;
     }
 
+    public void nextLevel()
+    {
+        fruit = null;
+        timer = 0;
+    }
+
     public void killPacman() {
         fruit = null;
         pointsToNextFruit = pointsEated + 100;

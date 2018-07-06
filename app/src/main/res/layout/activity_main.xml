@@ -31,8 +31,13 @@
             android:layout_marginLeft="80dp"
     />
 
-    <ListView
-            android:layout_width="fill_parent"
+    <!--<pl.droidsonroids.gif.GifTextView
+            android:scaleType="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/items_list" />
+            android:adjustViewBounds="true"
+            android:background="@drawable/anim"
+            android:id="@+id/gifTextView"/> -->
+
+
 </LinearLayout>

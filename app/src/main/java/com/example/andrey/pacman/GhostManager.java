@@ -59,7 +59,7 @@ public class GhostManager {
         waves[3] = new Wave(1000 * 8, Long.MAX_VALUE);
 
         waveNum = 0;
-        levelNum = 1;
+        levelNum = pacmanGame.getLevelNum();
 
         gameMode = playfield.getGameMode();
         safePrevMode = gameMode;
@@ -89,10 +89,11 @@ public class GhostManager {
         afkTimer = 0;
         levelNum = pacmanGame.getLevelNum();
 
-        if (levelNum >= 2) {
-            waves[2].chaseTime = 1033 * 1000;
-            waves[2].scatterTime = (int) ((double) 1 / 60 * 1000);
-        }
+        frightenedTime = 5 * 1000;
+
+        waves[2].chaseTime = 1033 * 1000;
+        waves[2].scatterTime = (int) ((double) 1 / 60 * 1000);
+
         changeGameMode(GameMode.CHASE);
     }
 
@@ -156,16 +157,24 @@ public class GhostManager {
     }
 
     public void startFrightened() {
-        frightenedTimer = 0;
-        pingingTimer = 0;
-        changeGameMode(GameMode.FRIGHTENED);
+        if(levelNum < 3) {
+            frightenedTimer = 0;
+            pingingTimer = 0;
+            changeGameMode(GameMode.FRIGHTENED);
+        }
+        else {
+            for (Ghost ghost : playfield.getGhosts())
+            {
+                ghost.setRequestDirection(ghost.getMovementDirection().getOposite());
+            }
+
+        }
     }
 
     private void changeGameMode(GameMode newGameMode) {
         prevMode = gameMode;
         switch (newGameMode) {
             case CHASE:
-
                 break;
             case SCATTER:
                 break;

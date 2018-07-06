@@ -71,8 +71,7 @@ public class PacmanGame {
 
         cutsceneManager.addStartGameScene();
     }
-
-
+    
     public FruitManager getFruitManager() {
         return fruitManager;
     }
@@ -158,6 +157,7 @@ public class PacmanGame {
         }
 
         if (countPoints <= 0) {
+            fruitManager.nextLevel();
             cutsceneManager.addNextLevelScene();
             cutsceneManager.addPlayfieldPingingScene();
         }
