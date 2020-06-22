@@ -6,7 +6,6 @@ import com.example.andrey.pacman.Direction;
 import com.example.andrey.pacman.Playfield;
 import com.example.andrey.pacman.R;
 
-
 public class Pacman extends PlayfieldActor {
 
     private Bitmap pacmanStartGame;

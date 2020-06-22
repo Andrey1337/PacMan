@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import com.example.andrey.pacman.entity.Food;
 import com.example.andrey.pacman.entity.Fruit;
@@ -49,6 +51,8 @@ public class PacmanGame {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
+    private MediaPlayer mediaPlayer;
+
     PacmanGame(GameView view) {
         this.view = view;
 
@@ -65,13 +69,18 @@ public class PacmanGame {
         cutsceneManager = new CutsceneManager(view, this, playfield);
         fruitManager = new FruitManager(view, this, playfield);
 
+        //mediaPlayer =  MediaPlayer.create(view.getContext(), R.raw.ingame);
+        //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        //mediaPlayer.setLooping(true);
+        //mediaPlayer.start();
+
         tickInterval = 1000 / 90;
         setTimeout();
         lastTime = new Date().getTime();
 
         cutsceneManager.addStartGameScene();
     }
-    
+
     public FruitManager getFruitManager() {
         return fruitManager;
     }
@@ -107,10 +116,12 @@ public class PacmanGame {
     public void onResume() {
         cutsceneManager.addResumeScene();
         pause = false;
+        //mediaPlayer.start();
     }
 
     public void onPause() {
         pause = true;
+        //mediaPlayer.pause();
     }
 
     public void gameOver() {
